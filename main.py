@@ -20,14 +20,15 @@ def main():
     # dataset = data_loader()
 
     # todo: define next layer after training of the last layer by adding new calls to this method
-    new_train_of_layer(True, model, torch.nn.Conv2d(1, 20, 5), 'relu')
-    new_train_of_layer(True, model, torch.nn.Conv2d(1, 20, 5), 'relu')
+    new_train_of_layer(model, torch.nn.Conv2d(1, 20, 5), 'relu')
+    new_train_of_layer(model, torch.nn.Conv2d(1, 20, 5), 'relu')
+    # new_train_of_layer(model, torch.nn.BatchNorm1d(20)) 4-D-Input?
     # new_train_of_layer(model, torch.nn.AvgPool1d(3, 2))
     # todo: return loss; Abbruch, wenn klein genug, dann das nächste Netz machen mit einem anderen Dataloader und
     # todo: vorhergehendem ersten Netz. Spalten der Datensätze anpassen.
 
 
-def new_train_of_layer(first, model, layer, activation=None):
+def new_train_of_layer(model, layer, activation=None):
     model.add_layer(layer, activation)
 
     dataset = data_loader()
@@ -52,14 +53,10 @@ def new_train_of_layer(first, model, layer, activation=None):
         # todo: dataset hat nur im ersten Layer ein label
         for data, label in dataset:
             optimizer.zero_grad()
-            output = None
+            output = data
             # todo: Das durchgeben aller Daten für die späteren Iterationen muss besser gehen, weil das ewig dauert!
             for layer in model.list_of_layers:
-                if first:
-                    # Only for the first Layer:
-                    output = layer[0](data)
-                else:
-                    output = layer[0](output)
+                output = layer[0](output)
             # output = model.list_of_layers[-1][0](data)
             # crit = torch.nn.CrossEntropyLoss()
             crit = torch.nn.HingeEmbeddingLoss()
