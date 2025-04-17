@@ -13,7 +13,10 @@ class CascadeNetwork(torch.nn.Module):
         for layer in self.list_of_layers:
             if layer[1] == 'relu':
                 x = torch.nn.functional.relu(layer[0](x))
-            x = layer[0](x)
+            elif layer[1] == 'reshape':
+                x = x.reshape(layer[0])
+            else:
+                x = layer[0](x)
         return x
 
     def add_layer(self, neural_node, activation=None):

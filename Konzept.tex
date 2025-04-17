@@ -26,6 +26,9 @@
     Abspeichern zwischen den einzelnen Layern, damit die Trainingsphase 
     schneller wird, muss mit Tensoren passieren, die nicht in einer Liste 
     stehen. 
+    Target Layer muss 3-Dimensional sein, wenn die Batch-Size größer als 1 
+    ist und auch wenn ein multi-Class-Loss wie Negative Log-Likelihood-Loss 
+    genutzt wird. Wie bekommt man das hin?
     \chapter{Regression}
     Bei einer Regression kommt es dazu, dass das NN sich mithilfe 
     der Daten der korrekten Funktion annähert.

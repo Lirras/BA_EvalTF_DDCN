@@ -26,17 +26,21 @@ def main():
     epoch = 1
     # todo: hier eine Iteration in der alle Layer bzgl. des gerade Gegenwärtigen Losses hinzufügen.
     # todo: Problem: es dauert immer länger hier, je länger das Netz wird.
-    model.add_layer(torch.nn.Linear(28, 32).to(device))
+    # todo: Wieso ist das Ergebnis danach immer größer 1?
+    input_size = 28*28
+    model.add_layer((-1, 784), 'reshape')
+    model.add_layer(torch.nn.Linear(input_size, 10).to(device))
     workflow(model, epoch, device)
     # sv_data = []
     # sv_data = save_output(model, sv_data, True)
-
-    model.add_layer(torch.nn.Conv2d(1, 10, 5).to(device), 'relu')
-    workflow(model, epoch, device)
+    # model.add_layer(torch.nn.Linear(128, 10).to(device))
+    # workflow(model, epoch, device)
+    # model.add_layer(torch.nn.Conv2d(1, 1, 5).to(device), 'relu')
+    # workflow(model, epoch, device)
     # sv_data = save_output(model, sv_data)
 
-    model.add_layer(torch.nn.Conv2d(10, 10, 5).to(device), 'relu')
-    workflow(model, epoch, device)
+    # model.add_layer(torch.nn.Conv2d(10, 10, 5).to(device), 'relu')
+    # workflow(model, epoch, device)
     # sv_data = save_output(model, sv_data)
 
     # todo: Transfer-learning Wechsel zu dem nächsten Netzwerk, welches ein Cascade ist.
@@ -88,29 +92,43 @@ def layer_preparation(model):
 
 def epochs(model, epoch, device, sv_data=None):
     # todo: only for first Chapter of Classification
-    train_dataset = mnist_data_loader(True, 1)
-    test_dataset = mnist_data_loader(False, 1)
+    train_dataset, valid_dataset = mnist_data_loader(True, 128)
     optimizer = torch.optim.SGD(model.list_of_layers[-1][0].parameters(), lr=0.01)
-    crit = torch.nn.HingeEmbeddingLoss()
+    crit = torch.nn.NLLLoss()
     i = 0
     while i < epoch:
         train_epoch(train_dataset, model, device, crit, optimizer, sv_data)
-        test_new_layer(test_dataset, model, device, crit, sv_data)
+        test_new_layer(valid_dataset, model, device, crit, sv_data)
         i += 1
 
 
 def train_epoch(dataset, model, device, crit, optimizer, sv_data=None):
     model.list_of_layers[-1][0].to(device)
+    # print(model.list_of_layers[-1][0].weight)  # 1, 1, 5, 5
     for data, label in dataset:
+        # data.squeeze()
+        # print(data.shape)
+        # print(label.shape)
         optimizer.zero_grad()
-        output = data.to(device)
+        output = model(data.to(device))
+        # probability_row = torch.nn.Softmax(output)
+        # print(probability_row)
+        # print(torch.argmax(output, 1))
+        # print(accuracy(output, label))
 
-        for layer in model.list_of_layers:
+        # for layer in model.list_of_layers:
             # todo: ist es sinnvoll, den Kram irgendwo zwischenzuspeichern? -> Ja, ist es
             # todo: Moglichkeit: eine Liste, shuffle wäre dann ein Problem.
-            output = layer[0](output)
+            # output = layer[0](output)
 
-        loss = crit(output, label.float())
+        # print(output.shape)
+        # print(label.shape)
+
+        # weight_tensor = model.list_of_layers[-1][0].weight
+        # print(weight_tensor)
+        # todo: The target need 3D.
+        # loss = torch.nn.functional.nll_loss(output, label, weight_tensor)
+        loss = crit(output, label)
         # todo: Maybe i need something else than backprop
         optimizer.step()
         loss.backward()
@@ -125,23 +143,35 @@ def test_new_layer(test_dataset, model, device, loss_fn, sv_data=None):
     test_loss, correct = 0, 0
     with torch.no_grad():
         for data, label in test_dataset:
-            data, label = data.to(device), label.to(device)
+            output = model(data.to(device))
+            '''data, label = data.to(device), label.to(device)
             output = data
             for layer in model.list_of_layers:
-                output = layer[0](output)
+                output = layer[0](output)'''
             # todo: The rest of the function is from pytorch.org
-            test_loss += loss_fn(output, label.float()).item()
+            test_loss += loss_fn(output, label).item()
+            # print((output.argmax(1) == label).type(torch.float).sum().item())
             correct += (output.argmax(1) == label).type(torch.float).sum().item()
     test_loss /= num_batches
     correct /= size
     print(f"Test Error: \n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
 
+# todo: Function is from https://www.kaggle.com/code/geekysaint/solving-mnist-using-pytorch
+def accuracy(outputs, labels):
+    _, preds = torch.max(outputs, dim = 1)
+    return (torch.tensor(torch.sum(preds == labels).item()/ len(preds)))
+
+
 def mnist_data_loader(train, batch_size):
     # todo: For TF we need another data_loader
     dataset = torchvision.datasets.MNIST(root='', train=train, download=True, transform=torchvision.transforms.ToTensor())
-    data_load = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False)
-    return data_load
+    train_dataset, valid_dataset, test_dataset = torch.utils.data.random_split(dataset, [40000, 10000, 10000])
+    data_load = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    data_load_valid = torch.utils.data.DataLoader(valid_dataset, batch_size=batch_size,shuffle=False)
+    # image_tensor, label = dataset[0]
+    # print(image_tensor.shape, label)
+    return data_load, data_load_valid
 
 
 # Press the green button in the gutter to run the script.
