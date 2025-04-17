@@ -50,3 +50,20 @@ def test_net_of_Nets_as_Cascade_Approach():
     # todo: data through all layers before. Need to freeze weights. This could be freeze
     for layer in network.list_of_nets:
         layer.eval()
+
+
+def save_output(model, list_data, first=None):
+    # todo: das hier muss irgendwie zu einem Tensor verwandelt werden.
+    if first:
+        dataset = mnist_data_loader(False, 1)
+        for data in dataset:
+            x = torch.FloatTensor(1, 1, 28, 28)
+            x = model.list_of_layers[-1][0](data)
+            list_data.append(x)
+            # list_data.append(model.list_of_layers[-1][0](data))
+    else:
+        i = 0
+        for data in list_data:
+            list_data[i] = model.list_of_layers[-1][0](data)
+            i += 1
+    return list_data
