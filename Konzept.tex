@@ -29,6 +29,8 @@
     Target Layer muss 3-Dimensional sein, wenn die Batch-Size größer als 1 
     ist und auch wenn ein multi-Class-Loss wie Negative Log-Likelihood-Loss 
     genutzt wird. Wie bekommt man das hin?
+    Mit einem Reshape der Daten, da es nur mit dem passendem Format klappt. 
+    Aber NLLLoss ist schlecht im Verhältnis zu CrossEntropyLoss.
     \chapter{Regression}
     Bei einer Regression kommt es dazu, dass das NN sich mithilfe 
     der Daten der korrekten Funktion annähert.

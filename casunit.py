@@ -15,6 +15,12 @@ class CascadeNetwork(torch.nn.Module):
                 x = torch.nn.functional.relu(layer[0](x))
             elif layer[1] == 'reshape':
                 x = x.reshape(layer[0])
+            elif layer[1] == 'squeeze':
+                x = x.squeeze(layer[0])
+            elif layer[1] == 'unsqueeze':
+                x = x.unsqueeze(layer[0])
+            elif layer[1] == 'max_pooling':
+                x = torch.nn.functional.max_pool2d(x, layer[0])
             else:
                 x = layer[0](x)
         return x

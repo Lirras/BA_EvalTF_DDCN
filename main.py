@@ -23,23 +23,46 @@ def main():
     print(device)
     device = 'cpu'
 
-    epoch = 30
+    epoch = 5
     # todo: hier eine Iteration in der alle Layer bzgl. des gerade Gegenwärtigen Losses hinzufügen.
     # todo: Problem: es dauert immer länger hier, je länger das Netz wird.
+
+    test_data, valid_data = mnist_data_loader(True, 128)
+    # This Change changes nothing, but its more variable
+
+    # tensor = torch.FloatTensor(torch.randn((1, 2, 3)))
+    # print(tensor.shape)
+    # tensor = torch.unsqueeze(tensor, 0)
+    # print(tensor.shape)
+
+    # model.add_layer((-1, 784), 'reshape')
+    # model.add_layer(1, 'unsqueeze')
+    # model.add_layer(1, 'unsqueeze')
+    # model.add_layer(1, 'squeeze')
+    # model.add_layer((2, 2), 'max_pooling')
+    # model.add_layer(torch.nn.Conv2d(1, 1, 5), 'relu')
+    # workflow(model, epoch, device, test_data, valid_data)
+
     input_size = 28*28
     model.add_layer((-1, 784), 'reshape')
     model.add_layer(torch.nn.Linear(input_size, 10).to(device))
-    workflow(model, epoch, device)
+    workflow(model, epoch, device, test_data, valid_data)
+
+    new_test_data, new_valid_data = svhn_data_loader(128)
+    model.list_of_layers[0] = [(-1, 393216), 'reshape']  # todo: Downscaling
+    model.add_layer(torch.nn.Linear(10, 10).to(device))
+    workflow(model, epoch, device, new_test_data, new_valid_data)
 
     # model.add_layer(torch.nn.Linear(10, 10).to(device))
-    # workflow(model, epoch, device)
+    # workflow(model, epoch, device, test_data, valid_data)
 
     # model.add_layer(torch.nn.Linear(10, 10).to(device))
     # workflow(model, epoch, device)
 
     # model.add_layer(torch.nn.Linear(128, 10).to(device))
     # workflow(model, epoch, device)
-    # model.add_layer(torch.nn.Conv2d(1, 1, 2).to(device), 'relu')
+
+    # model.add_layer(torch.nn.Conv2d(1, 1, 5).to(device), 'relu')
     # workflow(model, epoch, device)
 
     # model.add_layer(torch.nn.Conv2d(10, 10, 5).to(device), 'relu')
@@ -56,14 +79,15 @@ def main():
         print(f"y: {y.shape}")'''
 
 
-def workflow(model, epoch, device, sv_data=None):
+def workflow(model, epoch, device, train, valid, sv_data=None):
 
     layer_preparation(model)
-    epochs(model, epoch, device, sv_data)
+    epochs(model, epoch, device, train, valid, sv_data)
     freezing(model)
 
 
 def freezing(model):
+    # This is functioning
     for i in model.list_of_layers[-1][0].parameters():
         i.requires_grad = False
     model.list_of_layers[-1][0].eval()
@@ -76,11 +100,12 @@ def layer_preparation(model):
             i.requires_grad = True
 
 
-def epochs(model, epoch, device, sv_data=None):
+def epochs(model, epoch, device, train_dataset, valid_dataset, sv_data=None):
     # todo: only for first Chapter of Classification
-    train_dataset, valid_dataset = mnist_data_loader(True, 128)
+    # train_dataset, valid_dataset = mnist_data_loader(True, 128)
     optimizer = torch.optim.SGD(model.list_of_layers[-1][0].parameters(), lr=0.01)
     crit = torch.nn.CrossEntropyLoss()
+    # crit = torch.nn.HingeEmbeddingLoss()
     # crit = torch.nn.NLLLoss()
     i = 0
     while i < epoch:
@@ -121,12 +146,21 @@ def test_new_layer(test_dataset, model, device, loss_fn, sv_data=None):
 
 
 def mnist_data_loader(train, batch_size):
-    # todo: For TF we need another data_loader
-    dataset = torchvision.datasets.MNIST(root='', train=train, download=True, transform=torchvision.transforms.ToTensor())
+    # 1st Dataloader for Source Dataset at Classification Domain TF
+    dataset = torchvision.datasets.MNIST(root='/MNIST', train=train, download=True, transform=torchvision.transforms.ToTensor())
     train_dataset, valid_dataset, test_dataset = torch.utils.data.random_split(dataset, [40000, 10000, 10000])
     data_load = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    data_load_valid = torch.utils.data.DataLoader(valid_dataset, batch_size=batch_size,shuffle=False)
+    data_load_valid = torch.utils.data.DataLoader(valid_dataset, batch_size=batch_size, shuffle=False)
     return data_load, data_load_valid
+
+
+def svhn_data_loader(batch_size):
+    # 2nd Dataloader for Target Dataset at Classification Domain TF
+    train_dataset = torchvision.datasets.SVHN(root='/SVHN', split='train', download=True, transform=torchvision.transforms.ToTensor())
+    test_dataset = torchvision.datasets.SVHN(root='/SVHN', split='test', download=True, transform=torchvision.transforms.ToTensor())
+    train_load = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    test_load = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    return train_load, test_load
 
 
 # Press the green button in the gutter to run the script.
