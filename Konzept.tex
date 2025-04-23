@@ -35,6 +35,9 @@
     Es ist bisher die sinnvollste Loss function.
     Damit irgendetwas für den MNIST-Datensatz funktioniert ist ein 
     Reshape notwendig. Spätestens kurz vor Schluss.
+    Mache lieber eine Batch_Size, die auf die Daten aufgeht. Sonst verändert 
+    sich der Shape der Tensoren nach dem letzten Durchlauf der Epoche und ist 
+    ein anderer Input für das nächste Layer.
     \chapter{Regression}
     Bei einer Regression kommt es dazu, dass das NN sich mithilfe 
     der Daten der korrekten Funktion annähert.
