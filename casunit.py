@@ -11,6 +11,8 @@ class CascadeNetwork(torch.nn.Module):
 
     def forward(self, x):
         for layer in self.list_of_layers:
+            # todo: Das geht nur mit Dingen, die keine Parameter haben
+            # todo: Baue das als Switch-Case um
             if layer[1] == 'relu':
                 x = torch.nn.functional.relu(layer[0](x))
             elif layer[1] == 'reshape':
@@ -20,7 +22,7 @@ class CascadeNetwork(torch.nn.Module):
             elif layer[1] == 'unsqueeze':
                 x = x.unsqueeze(layer[0])
             elif layer[1] == 'max_pooling':
-                x = torch.nn.functional.max_pool2d(x, layer[0])
+                x = torch.nn.functional.max_pool2d(x, kernel_size=layer[0])
             else:
                 x = layer[0](x)
         return x
@@ -28,6 +30,9 @@ class CascadeNetwork(torch.nn.Module):
     def add_layer(self, neural_node, activation=None):
         seclis = [neural_node, activation]
         self.list_of_layers.append(seclis)
+        # This is for reshape at Ending
+        # self.list_of_layers[-1] = seclis
+        # self.list_of_layers.append(old_node_list)
 
 
 # todo: wird nicht genutzt, da es gerade nicht funktioniert
