@@ -1,0 +1,55 @@
+Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu 
+    eindeutigen Klassen zuordnen soll.
+
+\section{Beschreibung der Tätigkeit}
+    
+    Ausführung auf GPU klappt zurzeit nicht. Warum? Wahrscheinlich, 
+    weil das device in jedem Layer händisch bei deren Erstellung mitgegeben 
+    werden muss.
+    Wieso ist nach dem ersten Linearlayer die Accuracy über 8000\%?
+    Es fehlt das Reshape, damit es einen vernünftigen Vergleich 
+    zwischen dem Output und den Labeln geben kann.
+    
+    Wie kann ich es machen, dass es schneller geht bei mehreren Epochen 
+    und einem großen Netz? -> Auf GPU geht ja nicht.
+    Nicht Layerwise den Output berechnen, sondern bzgl. des gesamten Netzes.
+
+    Abspeichern zwischen den einzelnen Layern, damit die Trainingsphase 
+    schneller wird, muss mit Tensoren passieren, die nicht in einer Liste 
+    stehen. Dies geht aber nicht, da diese nicht gut ausgelesen werden können. 
+    Sprich: In der nächsten Iteration gar nicht, bzw. sie sind dann nicht 
+    mehr die benötigten Tensoren.
+
+    Target Layer muss 3-Dimensional sein, wenn die Batch-Size größer als 1 
+    ist und auch wenn ein multi-Class-Loss wie Negative Log-Likelihood-Loss 
+    genutzt wird. Wie bekommt man das hin?
+    Mit einem Reshape der Daten, da es nur mit dem passendem Format klappt. 
+
+    Aber NLLLoss ist schlecht im Verhältnis zu CrossEntropyLoss, weil 
+    CrossEntropyLoss in einem Fall NLLLoss und logSoftmax gemeinsam macht.
+    Es ist bisher die sinnvollste Loss function.
+
+    Mache lieber eine Batch Size, die auf die Daten aufgeht. Sonst verändert 
+    sich der Shape der Tensoren nach dem letzten Durchlauf der Epoche und ist 
+    ein anderer Input für das nächste Layer.
+
+    TF mit Domainwechsel ist nur dadurch möglich, dass am Anfang ein 
+    Identity-Layer genutzt wird, welches durch ein Conv ersetzt wird, 
+    damit die Shapes der Inputs der verschiedenen Datasets zu dem 
+    Netzwerk passen.
+
+    Hier wird aber noch einer Möglichkeit gesucht, die Größe der 
+    Datensätze so umzubauen, dass es mit der Batch Size glatt aufgeht.
+
+    Freezing wird benötigt, was aber sehr leicht umsetzbar ist, indem 
+    der required grad auf False gesetzt wird. Dies sorgt dafür, dass 
+    es für die Gradientenberechnung für die neuen Weights die Lernrate 
+    auf Null gesetzt ist, sodass es kein Update mehr gibt.
+
+    Direct Cascade funktioniert bereits. Auffällig dabei ist, dass 
+    die Performanz des Netzes am Anfang des Trainings des neuen Layers 
+    deutlich schlechter wird, dann aber sehr schnell sich dem vorherigen 
+    Wert angleicht. Aber es wird mit einem neuen Layer insgesamt nicht 
+    signifikant besser, sondern höchstens Minimal mit 2 Prozent maximal. 
+    Es kann sogar passieren, dass es dadurch schlechter wird.
+    

@@ -5,8 +5,8 @@ import math
 
 # Title: Bachelor-Arbeit: Evaluierung von Transferlernen mit Deep Direct Cascade Networks
 # Author: Simon Tarras
-# Date: 17.04.2025
-# Version: 0.0.003
+# Date: 23.04.2025
+# Version: 0.0.004
 
 from casunit import CascadeNetwork
 import torch
@@ -41,7 +41,7 @@ def main():
     # todo: The Datasets are 40000, 10000, 73257, 26032 -> Batch_size=100 -> Size change at last iteration of Epoch
     model.add_layer((100, 1, 28, 28), 'reshape')  # Size 44688
 
-    # todo: Why it Conv so much worse than Linear?
+    # todo: Why is Conv so much worse than Linear?
     model.add_layer(torch.nn.Conv2d(1, 1, 3, stride=1, padding=1, padding_mode='zeros', device=device), 'relu')
     # model.add_layer(1, 'max_pooling')
     model.add_layer((-1, 784), 'reshape')
@@ -54,15 +54,16 @@ def main():
     # todo: make the correct Shape of outputs at here with reshaping for output: 1, size with label: 1-Dim
 
     # Begin of TF:
-    new_test_data, new_valid_data = svhn_data_loader(100)
+    new_test_data, new_valid_data = svhn_data_loader(100)  # Maybe Cut the Last Data?
+
     # for x, y in new_test_data:  # 128, 1, 28, 28 <- Vorher 1 Channel, weil Schwarz-Weiß
     #     print(f"x: {x.shape}")  # 128, 3, 32, 32/ B, C, H, W 3 Channel, weil RGB-Farben
-        # todo Es braucht ein Conv(1, 3, 5), damit aus 32x32 ein 28x28 wird. Dies vor dem Reshape -> Batch_size
-        #  Möglichkeit überprüfen
-    #     break
+    # todo Es braucht ein Conv(1, 3, 5), damit aus 32x32 ein 28x28 wird. Dies vor dem Reshape -> Batch_size
+    #  Möglichkeit überprüfen
 
-    # This is the Downscaling
-    model.list_of_layers[0] = [torch.nn.Conv2d(3, 1, 5, stride=1, padding=0, padding_mode='zeros', device=device), 'relu']
+    # This is the Downscaling for in, out, kernel
+    model.list_of_layers[0] = [torch.nn.Conv2d(3, 1, 5, stride=1, padding=0, padding_mode='zeros',
+                                               device=device), 'relu']
     for i in model.list_of_layers[0][0].parameters():
         if hasattr(i, 'grad_fn'):
             i.requires_grad = True
@@ -72,18 +73,15 @@ def main():
     workflow(model, epoch, device, new_test_data, new_valid_data)
     # todo: This causes Error at first layer. (at Reshape) -> I need b, c, h, w with 100 1 28 28 not 100 3 32 32
 
-    # model.add_layer(torch.nn.Conv2d(1, 1, 5).to(device))  # todo: For RGB: 3, 1, 5 / In, Out, Kernel
-    # workflow(model, epoch, device, test_data, valid_data)
-
     # sv_data = save_output(model, sv_data)
 
     # todo: Transfer-learning Wechsel zu dem nächsten Netzwerk, welches ein Cascade ist.
 
 
-def workflow(model, epoch, device, train, valid, sv_data=None):
+def workflow(model, epoch, device, train, valid):
 
     layer_preparation(model)
-    epochs(model, epoch, device, train, valid, sv_data)
+    epochs(model, epoch, device, train, valid)
     freezing(model)
 
 
@@ -116,46 +114,59 @@ def get_last_layer_params(list_of_layers):
     return -2  # Here is an Error
 
 
-def epochs(model, epoch, device, train_dataset, valid_dataset, sv_data=None):
+def epochs(model, epoch, device, train_dataset, valid_dataset):
 
-    optimizer = torch.optim.SGD(model.list_of_layers[get_last_layer_params(model.list_of_layers)][0].parameters(), lr=0.01)
+    optimizer = torch.optim.SGD(model.list_of_layers[get_last_layer_params(
+        model.list_of_layers)][0].parameters(), lr=0.01)
     crit = torch.nn.CrossEntropyLoss()
     # There is a case, that this is logSoftmax followed by NLLLoss
 
-    # crit = torch.nn.HingeEmbeddingLoss() Der vergleicht, ob die Tensoren gleich sind; Ist also sinnlos.
-    # crit = torch.nn.NLLLoss()  # Der ist auch sinnlos, da CrossentropyLoss das unter anderem mitmacht.
+    # crit = torch.nn.HingeEmbeddingLoss() check how identical the tensors are; That is Senseless
+    # crit = torch.nn.NLLLoss()  # Also Senseless, cause CrossEntropyLoss makes this in it too
     i = 0
     while i < epoch:
-        train_epoch(train_dataset, model, device, crit, optimizer, sv_data)
-        test_new_layer(valid_dataset, model, device, crit, sv_data)
+        train_epoch(train_dataset, model, device, crit, optimizer)
+        test_new_layer(valid_dataset, model, device, crit)
         i += 1
 
 
-def train_epoch(dataset, model, device, crit, optimizer, sv_data=None):
+def train_epoch(dataset, model, device, crit, optimizer):
     model.to(device)
-
+    counter = 1
+    print(len(dataset))
     for data, label in dataset:
+        # todo: this does exactly what i want, but it isnt enough!
+        if counter == len(dataset):
+            print(data.shape)
+            break
         optimizer.zero_grad()
         # Data through the whole Network
         output = model(data.to(device))
         loss = crit(output, label)
         loss.backward()
         optimizer.step()
+        counter += 1
+    print(counter)
 
 
-def test_new_layer(test_dataset, model, device, loss_fn, sv_data=None):
-    # todo: This function is from https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html
+def test_new_layer(test_dataset, model, device, loss_fn):
+    # This function is from https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html
+    # todo: size and num_batches are wrong now -> Await little less ACC
     size = len(test_dataset.dataset)
     num_batches = len(test_dataset)
     # From here the half is from me
     model.eval()
+    counter = 0
     test_loss, correct = 0, 0
     with torch.no_grad():
         for data, label in test_dataset:
+            if counter == len(test_dataset):
+                break
             output = model(data.to(device))
-            # todo: The rest of the function is from pytorch.org
+            # The rest of the function is from pytorch.org
             test_loss += loss_fn(output, label).item()
             correct += (output.argmax(1) == label).type(torch.float).sum().item()
+            counter += 1
     test_loss /= num_batches
     correct /= size
     print(f"Test Error: \n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
@@ -163,7 +174,8 @@ def test_new_layer(test_dataset, model, device, loss_fn, sv_data=None):
 
 def mnist_data_loader(train, batch_size):
     # 1st Dataloader for Source Dataset at Classification Domain TF
-    dataset = torchvision.datasets.MNIST(root='/MNIST', train=train, download=True, transform=torchvision.transforms.ToTensor())
+    dataset = torchvision.datasets.MNIST(root='/MNIST', train=train, download=True,
+                                         transform=torchvision.transforms.ToTensor())
     train_dataset, valid_dataset, test_dataset = torch.utils.data.random_split(dataset, [40000, 10000, 10000])
     data_load = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     data_load_valid = torch.utils.data.DataLoader(valid_dataset, batch_size=batch_size, shuffle=False)
@@ -172,11 +184,20 @@ def mnist_data_loader(train, batch_size):
 
 def svhn_data_loader(batch_size):
     # 2nd Dataloader for Target Dataset at Classification Domain TF
-    train_dataset = torchvision.datasets.SVHN(root='/SVHN', split='train', download=True, transform=torchvision.transforms.ToTensor())
-    test_dataset = torchvision.datasets.SVHN(root='/SVHN', split='test', download=True, transform=torchvision.transforms.ToTensor())
+    train_dataset = torchvision.datasets.SVHN(root='/SVHN', split='train', download=True,
+                                              transform=torchvision.transforms.ToTensor())
+    test_dataset = torchvision.datasets.SVHN(root='/SVHN', split='test', download=True,
+                                             transform=torchvision.transforms.ToTensor())
     train_load = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_load = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     return train_load, test_load
+
+
+def length_of_data(length, batch_size):
+    x = len(length) / batch_size
+    # y = x
+    # delete_amount = (y - int(x)) * batch_size
+    return int(x)
 
 
 # This is from Fully Convolutional Neural Network Structure

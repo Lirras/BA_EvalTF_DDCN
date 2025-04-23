@@ -16,28 +16,8 @@
         einen Sache vorlernt, um eine andere Sache besser zu 
         bearbeiten.
     \chapter{Klassifikation}
-    Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu 
-    eindeutigen Klassen zuordnen soll.
-    Ausführung auf GPU klappt zurzeit nicht. Warum?
-    Wieso ist nach dem ersten Linearlayer die Accuracy über 8000\%?
-    Scheinbar kann man nicht damit anfangen.
-    Wie kann ich es machen, dass es schneller geht bei mehreren Epochen 
-    und einem großen Netz? -> Auf GPU geht ja nicht.
-    Abspeichern zwischen den einzelnen Layern, damit die Trainingsphase 
-    schneller wird, muss mit Tensoren passieren, die nicht in einer Liste 
-    stehen. 
-    Target Layer muss 3-Dimensional sein, wenn die Batch-Size größer als 1 
-    ist und auch wenn ein multi-Class-Loss wie Negative Log-Likelihood-Loss 
-    genutzt wird. Wie bekommt man das hin?
-    Mit einem Reshape der Daten, da es nur mit dem passendem Format klappt. 
-    Aber NLLLoss ist schlecht im Verhältnis zu CrossEntropyLoss, weil 
-    CrossEntropyLoss NLLLoss und noch etwas weiteres gemeinsam macht.
-    Es ist bisher die sinnvollste Loss function.
-    Damit irgendetwas für den MNIST-Datensatz funktioniert ist ein 
-    Reshape notwendig. Spätestens kurz vor Schluss.
-    Mache lieber eine Batch_Size, die auf die Daten aufgeht. Sonst verändert 
-    sich der Shape der Tensoren nach dem letzten Durchlauf der Epoche und ist 
-    ein anderer Input für das nächste Layer.
+    \input{Klassifkation}
+    
     \chapter{Regression}
     Bei einer Regression kommt es dazu, dass das NN sich mithilfe 
     der Daten der korrekten Funktion annähert.
