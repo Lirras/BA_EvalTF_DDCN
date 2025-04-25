@@ -14,6 +14,15 @@ import torchvision
 import numpy
 
 
+# todo: With TF is here an error
+    # todo: The Datasets are 40000, 10000, 73257, 26032 -> Batch_size=100 -> Size change at last iteration of Epoch
+# A Linear Layer has only Sense as One Layer and
+    # with few epochs. Kinda 1-5
+# todo: make the correct Shape of outputs at here with reshaping for output: 1, size with label: 1-Dim
+# todo: This causes Error at first layer. (at Reshape) -> I need b, c, h, w with 100 1 28 28 not 100 3 32 32
+# todo: Why is Conv so much worse than Linear?
+
+
 def main():
     # Use a breakpoint in the code line below to debug your script.
     # Press Strg+F8 to toggle the breakpoint.
@@ -24,58 +33,18 @@ def main():
     print(device)
     device = 'cpu'
 
-    epoch = 1
+    epoch = 5
     # Length of Time is Acceptable
 
     # Load the MNIST Dataset
     test_data, valid_data = mnist_data_loader(True, 100)
-
-    # Start of Cascade Network
-    model.add_layer(torch.nn.Identity())  # Identity is needed for changes at the Input shapes, due to the different
-    # Datasets
-    model.add_layer((-1, 784), 'reshape')
-    model.add_layer(torch.nn.Linear(784, 784, device=device))
-    workflow(model, epoch, device, test_data, valid_data)
-
-    # todo: With TF is here an error
-    # todo: The Datasets are 40000, 10000, 73257, 26032 -> Batch_size=100 -> Size change at last iteration of Epoch
-    model.add_layer((100, 1, 28, 28), 'reshape')  # Size 44688
-
-    # todo: Why is Conv so much worse than Linear?
-    model.add_layer(torch.nn.Conv2d(1, 1, 3, stride=1, padding=1, padding_mode='zeros', device=device), 'relu')
-    # model.add_layer(1, 'max_pooling')
-    model.add_layer((-1, 784), 'reshape')
-    workflow(model, epoch, device, test_data, valid_data)
-
-    model.add_layer(torch.nn.Linear(784, 10, device=device))  # A Linear Layer has only Sense as One Layer and
-    # with few epochs. Kinda 1-5
-    workflow(model, epoch, device, test_data, valid_data)
-
-    # todo: make the correct Shape of outputs at here with reshaping for output: 1, size with label: 1-Dim
-
-    # Begin of TF:
+    # Load the SVHN Dataset
     new_test_data, new_valid_data = svhn_data_loader(100)  # Maybe Cut the Last Data?
 
     # for x, y in new_test_data:  # 128, 1, 28, 28 <- Vorher 1 Channel, weil Schwarz-Weiß
     #     print(f"x: {x.shape}")  # 128, 3, 32, 32/ B, C, H, W 3 Channel, weil RGB-Farben
     # todo Es braucht ein Conv(1, 3, 5), damit aus 32x32 ein 28x28 wird. Dies vor dem Reshape -> Batch_size
     #  Möglichkeit überprüfen
-
-    # This is the Downscaling for in, out, kernel
-    model.list_of_layers[0] = [torch.nn.Conv2d(3, 1, 5, stride=1, padding=0, padding_mode='zeros',
-                                               device=device), 'relu']
-    for i in model.list_of_layers[0][0].parameters():
-        if hasattr(i, 'grad_fn'):
-            i.requires_grad = True
-    # model.list_of_layers[0] = [(-1, (784, 10)), 'reshape']  # todo: Downscaling
-    # todo: Wenn ich dafür mehr als 1 Layer brauche, kann ich Identities vorher hinzufügen. -> Kostet Performance
-    # model.add_layer(torch.nn.Linear(10, 10).to(device))
-    workflow(model, epoch, device, new_test_data, new_valid_data)
-    # todo: This causes Error at first layer. (at Reshape) -> I need b, c, h, w with 100 1 28 28 not 100 3 32 32
-
-    # sv_data = save_output(model, sv_data)
-
-    # todo: Transfer-learning Wechsel zu dem nächsten Netzwerk, welches ein Cascade ist.
 
 
 def workflow(model, epoch, device, train, valid):
@@ -135,10 +104,6 @@ def train_epoch(dataset, model, device, crit, optimizer):
     counter = 1
     print(len(dataset))
     for data, label in dataset:
-        # todo: this does exactly what i want, but it isnt enough!
-        if counter == len(dataset):
-            print(data.shape)
-            break
         optimizer.zero_grad()
         # Data through the whole Network
         output = model(data.to(device))
@@ -146,6 +111,10 @@ def train_epoch(dataset, model, device, crit, optimizer):
         loss.backward()
         optimizer.step()
         counter += 1
+        # todo: this does exactly what i want, but it isnt enough!
+        if counter == len(dataset):
+            print(data.shape)
+            break
     print(counter)
 
 
@@ -156,17 +125,18 @@ def test_new_layer(test_dataset, model, device, loss_fn):
     num_batches = len(test_dataset)
     # From here the half is from me
     model.eval()
-    counter = 0
+    counter = 1
     test_loss, correct = 0, 0
     with torch.no_grad():
         for data, label in test_dataset:
-            if counter == len(test_dataset):
-                break
             output = model(data.to(device))
             # The rest of the function is from pytorch.org
             test_loss += loss_fn(output, label).item()
             correct += (output.argmax(1) == label).type(torch.float).sum().item()
             counter += 1
+            # This is from me; Needed due Datasets for TF.
+            if counter == len(test_dataset):
+                break
     test_loss /= num_batches
     correct /= size
     print(f"Test Error: \n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")

@@ -53,3 +53,105 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     signifikant besser, sondern höchstens Minimal mit 2 Prozent maximal. 
     Es kann sogar passieren, dass es dadurch schlechter wird.
     
+\section{Inversive Cascade TF Network}
+
+    Der erste Versuch ist nur, um zu schauen, ob es überhaupt funktioniert. 
+    Das Ergebnis ist allerdings Negative TF, da die Accuracy schlechter wude. 
+    Das Netz wurde mit PyTorch, stochastic Gradient Descent, Optimizer und 
+    Backpropagation with Freezing Weights programmiert. 
+
+    Genutzte Datensätze waren MNIST und SVHN. Trainiert wurde wie bei einem 
+    Cascade Network üblich Layer für Layer mit jeweils einer Epoche.
+
+    Da es bei den Reshape-Layern ein Problem damit gibt, wenn die Batch Size kein Teiler 
+    von der Länge der Datensätze ist, werden in den Epochen alle Daten die im letzten Batch 
+    sind, nicht beachtet. Die Größen der Tensoren muss passend sein und genau die wird 
+    dadurch verändert, wenn es nicht aufgeht.
+
+    Die Layer waren wie folgt: 
+    \begin{enumerate}
+        \item Identity -\> Conv2D 2 (3, 1, 5)
+        \item Reshape 1 (-1, 784)
+        \item Linearlayer 1 (784, 784)
+        \item Reshape 2 (100, 1, 28, 28)
+        \item Conv2D 1 (1, 1, 3)
+        \item Reshape 3 (-1, 784)
+        \item Linearlayer 2 (784, 10)
+    \end{enumerate}
+
+    Das Identity-Layer wird deshalb gebraucht, da die Datensätze nicht 
+    dieselben Größen haben und dieses durch ein Faltungslayer ausgetauscht 
+    werden muss.
+
+    Reshape 1 ist dafür da, die Daten für den Input des Linearlayers vorzubereiten. 
+    Die Daten liegen in einem 4D-Tensor vor und müssen aber ein 2D-Tensor sein. 
+
+    Linearlayer 1 ist die erste Berechnung mit sich aktualisierenden Gewichten. 
+    Während dem Training hat das erste Layer bereits eine recht hohe Accuracy. 
+    Dabei hat dieses Layer genauso viele Input-Kanäle wie Output-Kanäle. 
+    Es würde sonst zuviel Information verloren gehen, die die späteren Layer benötigen.
+
+    Reshape 2 bereitet die Daten auf das Convolutionlayer vor, da dieses die Daten 
+    in einem 4D-Tensor benötigt.
+
+    Convolutionlayer 1 hat einen input- und einen output-Kanal und einen 3x3-Kern 
+    mit einem zero-Padding von 1, damit sich der Shape der Tensoren nicht verändert. 
+
+    Reshape 3 macht aus dem 4D-Tensor wieder ein 2D-Tensor.
+
+    Linearlayer 2 hat nur so viele Output-Kanäle, wie es Klassen gibt, denn es 
+    ist das letzte Layer. 
+
+    Dies ist alles noch ohne TF.
+    Convolutionlayer 2 fügt das vorne im Netz hinzu, da es benötigt wird, die 
+    Daten von SVHN von 32x32 auf 28x28 herunterzubrechen. Dafür wird das Identity-Layer 
+    entfernt. Nach einer Trainingsepoche ist die Accuracy sehr schlecht.
+
+    Das Netz mit dem Convolutionlayer 2 und den anderen Daten ist also deutlich schlechter 
+    als auf dem Source-Datensatz, aber es ist besser als wenn ein Convolutionlayer ohne Vorarbeit 
+    auf die Daten angewendet wird.
+
+    Wenn mehr Epochen genutzt werden, wird die Performanz nach dem TF manchmal 
+    noch schlechter. Damit sich hier noch etwas ändert muss das Erste Layer noch 
+    einmal mit den neuen Daten allein trainiert werden.
+
+    Die Idee einem fertigen Kaskadennetzwerk das erste Layer zu ersetzen um TF zu machen, also 
+    dem Netz für TF vorne Layer hinzuzufügen, führt zu einer Verschlechterung und sollte 
+    unterlassen werden.
+
+    Hier ein Beispiel der Werte des Netzes:
+
+    \begin{table}[h!]
+        \begin{tabular}{l|l|l|l}
+            Layer & Epochen & Accuracy & Loss \\
+            \hline
+            Linear 1 & 1 & 82.6 & 0.98 \\
+            & 2 & 85.0 & 0.68 \\
+            & 3 & 86.2 & 0.58 \\
+            & 4 & 86.6 & 0.52 \\
+            & 5 & 87.2 & 0.49\\
+            Conv 1 & 1 & 87.2 & 0.40 \\
+            & 2 & 87.1 & 0.40 \\
+            & 3 & 87.1 & 0.40 \\
+            & 4 & 87.1 & 0.40 \\
+            & 5 & 87.2 & 0.40 \\
+            Linear 2 & 1 & 86.8 & 0.45 \\
+            & 2 & 87.7 & 0.40 \\
+            & 3 & 88.0 & 0.39 \\
+            & 4 & 87.6 & 0.39 \\
+            & 5 & 88.0 & 0.37 \\
+            Conv 2 & 1 & 10.8 & 2.75 \\
+            & 2 & 9.6 & 2.77 \\
+            & 3 & 9.6 & 2.96 \\
+            & 4 & 9.4 & 2.94 \\
+            & 5 & 9.4 & 3.02 \\
+            & 6 & 9.5 & 3.12 \\
+        \end{tabular}
+    \end{table}
+
+    Die Idee das Conv 2 vorne anzufügen, führt dazu, dass sich das Netz verschlechtert. 
+    Bei mehreren Epochen wird es ebenfalls erst einmal schlechter.
+
+    % Wieso bringen einfache Conv Layer nichts?
+
+    % Warum ist es overall so schlecht?
