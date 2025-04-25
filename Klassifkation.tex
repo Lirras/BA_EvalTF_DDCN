@@ -66,7 +66,8 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     Da es bei den Reshape-Layern ein Problem damit gibt, wenn die Batch Size kein Teiler 
     von der Länge der Datensätze ist, werden in den Epochen alle Daten die im letzten Batch 
     sind, nicht beachtet. Die Größen der Tensoren muss passend sein und genau die wird 
-    dadurch verändert, wenn es nicht aufgeht.
+    dadurch verändert, wenn es nicht aufgeht. Dies liegt aber daran, dass Flatten-Layer 
+    erst später gemacht werden.
 
     Die Layer waren wie folgt: 
     \begin{enumerate}
@@ -154,4 +155,14 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
 
     % Wieso bringen einfache Conv Layer nichts?
 
+    Convolutionlayer sind hier aber deshalb so schlecht, weil sie alle nur einen Output-
+    Channel haben und sie pro Output-Channel nur ein Feature lernen können.
+    Also werden mehrere verwendet werden müssen und diese dann weiter verarbeitet. 
+    Da es hier kein Pooling oder Flatten-Layer gibt, werden hier viele Informationen 
+    einfach verloren.
+
     % Warum ist es overall so schlecht?
+
+    Das dürfte daran liegen, dass Convolutionlayer aktuell noch sehr schlecht generell sind. 
+    Aber auch daran, dass die Gewichte hinten im Netz genauer sein müssen und diese nicht 
+    geupdatet werden. 

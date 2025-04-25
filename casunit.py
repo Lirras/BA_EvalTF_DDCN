@@ -10,7 +10,10 @@ class CascadeNetwork(torch.nn.Module):
         self.list_of_layers = []
 
     def forward(self, x):
+        counter = 1
         for layer in self.list_of_layers:
+            print(counter)
+            counter += 1
             # todo: Das geht nur mit Dingen, die keine Parameter haben
             # todo: Baue das als Switch-Case um
             if layer[1] == 'relu':
@@ -23,6 +26,8 @@ class CascadeNetwork(torch.nn.Module):
                 x = x.unsqueeze(layer[0])
             elif layer[1] == 'max_pooling':
                 x = torch.nn.functional.max_pool2d(x, kernel_size=layer[0])
+            elif layer[1] == 'flatten':
+                x = torch.flatten(x)
             else:
                 x = layer[0](x)
         return x

@@ -11,11 +11,12 @@ from main import test_new_layer
 
 
 def inversive_cascade_tf():
-    model = CascadeNetwork()
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
     device = 'cpu'
+
+    model = CascadeNetwork().to(device)
 
     epoch = 5
     # Length of Time is Acceptable
@@ -32,6 +33,8 @@ def inversive_cascade_tf():
 
     model.add_layer((100, 1, 28, 28), 'reshape')
     model.add_layer(torch.nn.Conv2d(1, 1, 3, stride=1, padding=1, padding_mode='zeros', device=device), 'relu')
+    # stride niedrig: local Features
+    # stride hoch: global Features + weniger Overfitting, bessere Effizienz
 
     model.add_layer((-1, 784), 'reshape')
     workflow(model, epoch, device, test_data, valid_data)
