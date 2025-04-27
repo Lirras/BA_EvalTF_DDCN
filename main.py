@@ -43,7 +43,12 @@ def main():
         print(f"data: {data.shape}")
         break
 
-    model.add_layer(torch.nn.Conv2d(1, 4, 7, stride=1, padding=2, padding_mode='zeros', device=device), 'relu')
+    # model.add_layer(torch.nn.Conv2d(1, 1, 3, stride=1, padding=1, padding_mode='zeros', device=device), 'relu')
+    model.add_layer((-1, 784), 'reshape')
+    model.add_layer(torch.nn.Linear(784, 10))
+    workflow(model, epoch, device, svhn_train, svhn_val)
+
+    '''model.add_layer(torch.nn.Conv2d(1, 4, 7, stride=1, padding=2, padding_mode='zeros', device=device), 'relu')
     model.add_layer(2, 'max_pooling')
     model.add_layer(0, 'flatten')  # 67600
     # workflow(model, epoch, device, mnist_train, mnist_val)
@@ -67,7 +72,7 @@ def main():
 
     model.add_layer(torch.nn.Linear(400, 100))
     workflow(model, epoch, device, mnist_train, mnist_val)
-    # workflow(model, epoch, device, svhn_train, svhn_val)
+    workflow(model, epoch, device, svhn_train, svhn_val)'''
 
     # for x, y in new_test_data:  # 128, 1, 28, 28 <- Vorher 1 Channel, weil Schwarz-Weiß
     #     print(f"x: {x.shape}")  # 128, 3, 32, 32/ B, C, H, W 3 Channel, weil RGB-Farben
@@ -182,14 +187,22 @@ def mnist_data_loader(train, batch_size):
 
 def svhn_data_loader(batch_size):
     # 2nd Dataloader for Target Dataset at Classification Domain TF
+    # torchvision.transforms.Compose is from https://discuss.pytorch.org/t/change-3-channel-to-1-channel/46619/2
     train_dataset = torchvision.datasets.SVHN(root='/SVHN', split='train', download=True,
-                                              transform=torchvision.transforms.ToTensor())  # Grayscale(num_output_channels=1)) # .ToTensor())
-    # train_dataset = torchvision.transforms.Grayscale(num_output_channels=1)
+                                              transform=torchvision.transforms.Compose([
+                                                  torchvision.transforms.Grayscale(num_output_channels=1),
+                                                  torchvision.transforms.Resize((28, 28)),
+                                                  torchvision.transforms.CenterCrop((28, 28)),
+                                                  torchvision.transforms.ToTensor(),
+                                                  torchvision.transforms.Normalize(mean=0.485, std=0.229)]))
     test_dataset = torchvision.datasets.SVHN(root='/SVHN', split='test', download=True,
-                                             transform=torchvision.transforms.ToTensor())  # Grayscale(num_output_channels=1))
+                                             transform=torchvision.transforms.Compose([
+                                                  torchvision.transforms.Grayscale(num_output_channels=1),
+                                                  torchvision.transforms.Resize((28, 28)),
+                                                  torchvision.transforms.CenterCrop((28, 28)),
+                                                  torchvision.transforms.ToTensor(),
+                                                  torchvision.transforms.Normalize(mean=0.485, std=0.229)]))
     train_load = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    # train_load = torchvision.transforms.ToPILImage(train_load)
-    # train_load = torchvision.transforms.v2.pil_to_tensor(train_load)
     test_load = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     return train_load, test_load
 

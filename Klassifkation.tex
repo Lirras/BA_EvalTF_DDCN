@@ -71,7 +71,7 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
 
     Die Layer waren wie folgt: 
     \begin{enumerate}
-        \item Identity -\> Conv2D 2 (3, 1, 5)
+        \item Identity $\rightarrow$ Conv2D 2 (3, 1, 5)
         \item Reshape 1 (-1, 784)
         \item Linearlayer 1 (784, 784)
         \item Reshape 2 (100, 1, 28, 28)
@@ -166,3 +166,33 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     Das dürfte daran liegen, dass Convolutionlayer aktuell noch sehr schlecht generell sind. 
     Aber auch daran, dass die Gewichte hinten im Netz genauer sein müssen und diese nicht 
     geupdatet werden. 
+
+\section{Lin4Conv1 Compose Database Network}
+    Datensatzwechsel von MNIST zu SVHN mit Reshape und Database-Compose von SVHN. 
+    Es ist alles ähnlich zu dem vorherigen, bis auf: 
+    Das erste Layer wird nicht ausgetauscht. Am Ende wird ein Linearlayer hinzugefügt. 
+    Die Daten des SVHN-Datensatzes liegen in RGB vor und haben normalerweise 3 Channels. 
+    Diese werden zusammengefasst und zu einem Channel verändert.
+
+    Das Ergebnis ist, dass das Netz vor dem TF eine Accuracy von 87.6\% hatte. Nach 
+    dem TF allerdings eine von 21.1\%. Das ist sehr viel schlechter, aber es ist besser als 
+    wenn ein einfaches Conv2D-Layer ohne weitere Verarbeitung genutzt wird. Das landet 
+    nämlich bei circa 3\%. Da bei diesem Netz ein solches Conv2D-Layer im ersten Teil 
+    genutzt wird, liegt es wahrscheinlich an jenem Layer, jedoch ist es mit TF schon 
+    deutlich besser als ohne. Allerdings kann dies genauso gut an dem vorhergegangenen 
+    Linearlayer liegen, dass es doch so gut ist. Ein weiterer Grund weshalb es recht schlecht 
+    sein könnte ist der Fall, dass der letzte Linearlayer nur noch 10 Input-Features hat.
+
+    Wenn das Conv2D-Layer rausgenommen wird, passiert folgendes: 
+    Vor dem TF eine Accuracy von 87.9\% und danach eine von: 19.5\%. Also hat das Entfernen des 
+    Conv2D-Layers nichts verändert. Dies liegt daran, dass es zu wenige Features als Input 
+    für das letzte Linearlayer gibt und dieses deshalb pro Epoche immer schlechter wird. 
+    Dieses Verhalten gibt es auch ohne TF. 
+
+    Die Features für die Linearlayer mehr machen ergibt: 
+    Vorher: 87.9\%, Nachher: 10.7\%. Das Netz hat vermutlich Overfitting, weil das 
+    letzte Layer zu mächtig ist und zu viele Veränderungen durchführen kann. 
+
+    Vergleichswert: SVHN ohne TF mit einem Linearlayer hat Accuracy von: 22.7\%.
+    Daraus folgt, dass das erste Netz tatsächlich bereits ein recht gutes TF vollbracht hat. 
+    Wieso ist aber dieser Datensatz so schlecht mit einem Linearlayer zu lösen?

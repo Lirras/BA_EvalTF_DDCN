@@ -12,8 +12,8 @@ class CascadeNetwork(torch.nn.Module):
     def forward(self, x):
         counter = 1
         for layer in self.list_of_layers:
-            print(counter)
-            counter += 1
+            # print(counter)
+            # counter += 1
             # todo: Das geht nur mit Dingen, die keine Parameter haben
             # todo: Baue das als Switch-Case um
             if layer[1] == 'relu':

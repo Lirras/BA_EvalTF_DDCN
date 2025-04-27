@@ -11,6 +11,7 @@ from main import test_new_layer
 
 
 def inversive_cascade_tf():
+    better_svhn_dataset = True
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
@@ -44,22 +45,27 @@ def inversive_cascade_tf():
 
     new_test_data, new_valid_data = svhn_data_loader(100)
 
-    # This is the Downscaling for in, out, kernel
-    model.list_of_layers[0] = [torch.nn.Conv2d(3, 1, 5, stride=1, padding=0, padding_mode='zeros',
-                                               device=device), 'relu']
-    # Layer Preparation of first Layer
-    for i in model.list_of_layers[0][0].parameters():
-        if hasattr(i, 'grad_fn'):
-            i.requires_grad = True
+    if better_svhn_dataset:
+        model.add_layer(torch.nn.Linear(784, 10, device=device))
+        workflow(model, epoch, device, new_test_data, new_valid_data)
+    else:
+        # This is without compose of svhn-Dataset
+        # This is the Downscaling for in, out, kernel
+        model.list_of_layers[0] = [torch.nn.Conv2d(3, 1, 5, stride=1, padding=0, padding_mode='zeros',
+                                                   device=device), 'relu']
+        # Layer Preparation of first Layer
+        for i in model.list_of_layers[0][0].parameters():
+            if hasattr(i, 'grad_fn'):
+                i.requires_grad = True
 
-    # Training and Testing for the Whole Network with only first Layer Changes enabled
-    # epochs(model, epoch, device, new_test_data, new_valid_data)
-    own_epochs(model, epoch, new_test_data, new_valid_data, device)
+        # Training and Testing for the Whole Network with only first Layer Changes enabled
+        # epochs(model, epoch, device, new_test_data, new_valid_data)
+        own_epochs(model, epoch, new_test_data, new_valid_data, device)
 
-    # Freezing of first Layer
-    for i in model.list_of_layers[0][0].parameters():
-        if hasattr(i, 'grad_fn'):
-            i.requires_grad = False
+        # Freezing of first Layer
+        for i in model.list_of_layers[0][0].parameters():
+            if hasattr(i, 'grad_fn'):
+                i.requires_grad = False
 
 
 def own_epochs(model, epochs, dataset, valid, device):
