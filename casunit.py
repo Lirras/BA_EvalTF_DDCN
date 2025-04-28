@@ -16,28 +16,30 @@ class CascadeNetwork(torch.nn.Module):
             # counter += 1
             # todo: Das geht nur mit Dingen, die keine Parameter haben
             # todo: Baue das als Switch-Case um
-            if layer[1] == 'relu':
-                x = torch.nn.functional.relu(layer[0](x))
-            elif layer[1] == 'reshape':
-                x = x.reshape(layer[0])
-            elif layer[1] == 'squeeze':
-                x = x.squeeze(layer[0])
-            elif layer[1] == 'unsqueeze':
-                x = x.unsqueeze(layer[0])
-            elif layer[1] == 'max_pooling':
-                x = torch.nn.functional.max_pool2d(x, kernel_size=layer[0])
-            elif layer[1] == 'flatten':
-                x = torch.flatten(x, layer[0])
-            else:
-                x = layer[0](x)
+            match layer[1]:
+                case 'relu':
+                    x = torch.nn.functional.relu(layer[0](x))
+                case 'reshape':
+                    x = x.reshape(layer[0])
+                case 'squeeze':
+                    x = x.squeeze(layer[0])
+                case 'unsqueeze':
+                    x = x.unsqueeze(layer[0])
+                case 'max_pooling':
+                    x = torch.nn.functional.max_pool2d(x, kernel_size=layer[0])
+                case 'flatten':
+                    x = torch.flatten(x, layer[0])
+                case 'unflatten':
+                    x = torch.unflatten(x, layer[0], layer[2])
+                case 'batch_norm':
+                    x = torch.nn.BatchNorm2d(x, affine=True)
+                case _:
+                    x = layer[0](x)
         return x
 
-    def add_layer(self, neural_node, activation=None):
-        seclis = [neural_node, activation]
+    def add_layer(self, neural_node, activation=None, secondary=None):
+        seclis = [neural_node, activation, secondary]
         self.list_of_layers.append(seclis)
-        # This is for reshape at Ending
-        # self.list_of_layers[-1] = seclis
-        # self.list_of_layers.append(old_node_list)
 
 
 # todo: wird nicht genutzt, da es gerade nicht funktioniert

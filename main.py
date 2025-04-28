@@ -6,16 +6,18 @@ import math
 # Title: Bachelor-Arbeit: Evaluierung von Transferlernen mit Deep Direct Cascade Networks
 # Author: Simon Tarras
 # Date: 28.04.2025
-# Version: 0.0.006
+# Version: 0.0.007
 
 from casunit import CascadeNetwork
 import data_loader
 import workflow as wf
 import torch
+# import torch_geometric
+# import scipy
 # import torchvision
-import numpy
-import matplotlib.pyplot as plt
-import PIL.Image
+# import numpy
+# import matplotlib.pyplot as plt
+# import PIL.Image
 
 
 # A Linear Layer has only Sense as One Layer and
@@ -31,32 +33,41 @@ def main():
 
     model = CascadeNetwork()
 
+    # scipy.datasets.download_all()
+
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     print(device)
     device = 'cpu'
 
-    epoch = 5
+    epoch = 1
     # Length of Time is Acceptable
 
     # Load the MNIST Dataset
-    mnist_train, mnist_val = data_loader.mnist_data_loader(True, 1)
+    mnist_train, mnist_val = data_loader.mnist_data_loader(True, 100)
+    for data, label in mnist_train:
+        for item in label:
+            if item == 10:
+                print('Zehn!')
+        break
     # Load the SVHN Dataset
-    svhn_train, svhn_val = data_loader.svhn_data_loader(1)  # Maybe Cut the Last Data?
-    for data, label in svhn_train:
+    svhn_train, svhn_val = data_loader.svhn_data_loader(100)  # with Last Data cutted.
+    for data, label in svhn_val:
         # todo: Something like that to display the Images of the Dataset.
+        for item in label:
+            if item == 10:
+                print('problem!')
         # x = data.squeeze()
         # numpy_array = x.numpy()
         # PIL.Image.open(plt.imshow(numpy_array))
         # plt.show()
+        # print(f"label: {label.shape}")
         print(f"data: {data.shape}")
         break
 
-    # model.add_layer(torch.nn.Conv2d(1, 1, 3, stride=1, padding=1, padding_mode='zeros', device=device), 'relu')
-    # model.add_layer((-1, 1024), 'reshape')
-    # model.add_layer(torch.nn.Linear(1024, 1024))
-    # wf.workflow(model, epoch, device, mnist_train, mnist_val)
-    # model.add_layer(torch.nn.Linear(1024, 1024))
-    # wf.workflow(model, epoch, device, svhn_train, svhn_val)
+    # todo: dropout + normalize Layer einfügen und verstehen, was letztere sind.
+    # todo: Approach über torch_geometric machen
+
+
 
 
 # This is from Fully Convolutional Neural Network Structure
