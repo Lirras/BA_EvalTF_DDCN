@@ -196,3 +196,10 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     Vergleichswert: SVHN ohne TF mit einem Linearlayer hat Accuracy von: 22.7\%.
     Daraus folgt, dass das erste Netz tatsächlich bereits ein recht gutes TF vollbracht hat. 
     Wieso ist aber dieser Datensatz so schlecht mit einem Linearlayer zu lösen?
+
+    Die Idee, dass es eventuell am Compose liegt stimmt nicht wirklich, aber es wird besser, 
+    wenn Source- und Target-Datensatz beide ein Compose haben.
+    Nachdem die Testfunktion repariert wurde, sind die Ergebnisse minimal besser. 
+
+    Das Resultat ist, dass dieses Netzwerk eine Accuracy von 30.2\% hat, was sehr viel 
+    besser ist als, wenn es kein TF gab.

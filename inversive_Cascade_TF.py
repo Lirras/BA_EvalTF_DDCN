@@ -3,11 +3,10 @@
 import torch
 
 from casunit import CascadeNetwork
-from main import mnist_data_loader
-from main import svhn_data_loader
-from main import workflow
+import data_loader as dl
+import workflow as wf
+import train_and_test as tnt
 # from main import epochs
-from main import test_new_layer
 
 
 def inversive_cascade_tf():
@@ -23,14 +22,14 @@ def inversive_cascade_tf():
     # Length of Time is Acceptable
 
     # Load the MNIST Dataset
-    test_data, valid_data = mnist_data_loader(True, 100)
+    test_data, valid_data = dl.mnist_data_loader(True, 100)
 
     # Start of Cascade Network
     model.add_layer(torch.nn.Identity())  # Identity is needed for changes at the Input shapes, due to the different
     # Datasets
     model.add_layer((-1, 784), 'reshape')
     model.add_layer(torch.nn.Linear(784, 784, device=device))
-    workflow(model, epoch, device, test_data, valid_data)
+    wf.workflow(model, epoch, device, test_data, valid_data)
 
     model.add_layer((100, 1, 28, 28), 'reshape')
     model.add_layer(torch.nn.Conv2d(1, 1, 3, stride=1, padding=1, padding_mode='zeros', device=device), 'relu')
@@ -38,16 +37,16 @@ def inversive_cascade_tf():
     # stride hoch: global Features + weniger Overfitting, bessere Effizienz
 
     model.add_layer((-1, 784), 'reshape')
-    workflow(model, epoch, device, test_data, valid_data)
+    wf.workflow(model, epoch, device, test_data, valid_data)
 
-    model.add_layer(torch.nn.Linear(784, 10, device=device))
-    workflow(model, epoch, device, test_data, valid_data)
+    model.add_layer(torch.nn.Linear(784, 784, device=device))
+    wf.workflow(model, epoch, device, test_data, valid_data)
 
-    new_test_data, new_valid_data = svhn_data_loader(100)
+    new_test_data, new_valid_data = dl.svhn_data_loader(100)
 
     if better_svhn_dataset:
         model.add_layer(torch.nn.Linear(784, 10, device=device))
-        workflow(model, epoch, device, new_test_data, new_valid_data)
+        wf.workflow(model, epoch, device, new_test_data, new_valid_data)
     else:
         # This is without compose of svhn-Dataset
         # This is the Downscaling for in, out, kernel
@@ -75,7 +74,7 @@ def own_epochs(model, epochs, dataset, valid, device):
     i = 0
     while i <= epochs:
         train(model, dataset, optimizer, crit, device)
-        test_new_layer(valid, model, device, crit)
+        tnt.test_new_layer(valid, model, device, crit)
         i += 1
 
 
