@@ -16,6 +16,7 @@ def train_epoch(dataset, model, device, crit, optimizer):
         # todo: this does exactly what i want, but it isnt enough!
         if counter == len(dataset):
             print(data.shape)
+            print(output.shape)
             break
     print(counter)
 

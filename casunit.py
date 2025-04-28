@@ -27,7 +27,7 @@ class CascadeNetwork(torch.nn.Module):
             elif layer[1] == 'max_pooling':
                 x = torch.nn.functional.max_pool2d(x, kernel_size=layer[0])
             elif layer[1] == 'flatten':
-                x = torch.flatten(x)
+                x = torch.flatten(x, layer[0])
             else:
                 x = layer[0](x)
         return x

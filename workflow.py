@@ -3,7 +3,7 @@ import torch
 
 
 def workflow(model, epoch, device, train, valid):
-
+    print("__________________________________Next Layer___________________________________")
     layer_preparation(model)
     epochs(model, epoch, device, train, valid)
     freezing(model)
@@ -11,16 +11,17 @@ def workflow(model, epoch, device, train, valid):
 
 def freezing(model):
     # This is functioning
-
+    # todo: Does have Reshape, Pooling etc. Params?
     last_layer = get_last_layer_params(model.list_of_layers)
     for i in model.list_of_layers[last_layer][0].parameters():
         i.requires_grad = False
-    model.list_of_layers[last_layer][0].eval()
+    # model.list_of_layers[last_layer][0].eval()
+    model.eval()
 
 
 def layer_preparation(model):
 
-    model.train()
+    model.train()  # todo: This is not, what i want
     for i in model.list_of_layers[get_last_layer_params(model.list_of_layers)][0].parameters():
         if hasattr(i, 'grad_fn'):
             i.requires_grad = True

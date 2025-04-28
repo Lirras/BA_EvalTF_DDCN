@@ -174,6 +174,16 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     Die Daten des SVHN-Datensatzes liegen in RGB vor und haben normalerweise 3 Channels. 
     Diese werden zusammengefasst und zu einem Channel verändert.
 
+    Die Layer sind wie folgt: 
+    \begin{enumerate}
+        \item Identity
+        \item Linearlayer 1 (784, 784)
+        \item Conv2D (1, 1, 3)
+        \item Linearlayer 2 (784, 784)
+        \item TF
+        \item Linearlayer 3 (784, 10)
+    \end{enumerate}
+
     Das Ergebnis ist, dass das Netz vor dem TF eine Accuracy von 87.6\% hatte. Nach 
     dem TF allerdings eine von 21.1\%. Das ist sehr viel schlechter, aber es ist besser als 
     wenn ein einfaches Conv2D-Layer ohne weitere Verarbeitung genutzt wird. Das landet 
@@ -203,3 +213,29 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
 
     Das Resultat ist, dass dieses Netzwerk eine Accuracy von 30.2\% hat, was sehr viel 
     besser ist als, wenn es kein TF gab.
+
+\section{2LayerLinear}
+    Ein Zwei-Layer Netz mit nur Linearlayern. Das erste trainiert mit MNIST, das zweite 
+    mit SVHN bei jeweils fünf Epochen. Ergebnis: Nach MNIST ACC: 90.4\%; Nach SVHN: ACC: 22.4\%. 
+    Es gibt hier nicht wirklich einen Unterschied, ob MNIST ein upscaling oder SVHN ein downscaling 
+    bekommt.
+
+\section{3Conv3Linear}
+    Convolutionlayer laufen jetzt und werden sehr schnell sehr viel besser je mehr hintereinander 
+    gesetzt werden, aber sobald auf Linearlayer gewechselt wird, wird es wieder etwas schlechter.
+
+    Aber dieses Netz hat das erste Mal tatsächlich positive TF. Das Netz mit dem ersten 
+    positiven TF hat die Layer und eine ACC bei einer Epoche: 
+    \begin{enumerate}
+        \item Conv2D (1, 4, 7); ACC: 5.8\%
+        \item Conv2D (4, 16, 5); ACC: 26.2\%
+        \item Conv2D (16, 64, 3); ACC: 32.4\%
+        \item Linear (64, 64); ACC: 22.5\%
+        \item Linear (64, 64); ACC: 9.3\%
+        \item Linear (64, 64); ACC: 10.6\%
+        \item TF
+        \item Linear (64, 64); ACC: 19.6\%
+    \end{enumerate}
+
+    Mit fünf Epochen ist die Accuracy vor TF bei 41.3\% und danach bei 20.2\%.
+

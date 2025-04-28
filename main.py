@@ -13,11 +13,11 @@ import data_loader
 import workflow as wf
 import torch
 # import torchvision
-# import numpy
+import numpy
+import matplotlib.pyplot as plt
+import PIL.Image
 
 
-# todo: With TF is here an error
-    # todo: The Datasets are 40000, 10000, 73257, 26032 -> Batch_size=100 -> Size change at last iteration of Epoch
 # A Linear Layer has only Sense as One Layer and
     # with few epochs. Kinda 1-5
 # todo: make the correct Shape of outputs at here with reshaping for output: 1, size with label: 1-Dim
@@ -35,47 +35,28 @@ def main():
     print(device)
     device = 'cpu'
 
-    epoch = 1
+    epoch = 5
     # Length of Time is Acceptable
 
     # Load the MNIST Dataset
-    mnist_train, mnist_val = data_loader.mnist_data_loader(True, 100)
+    mnist_train, mnist_val = data_loader.mnist_data_loader(True, 1)
     # Load the SVHN Dataset
-    svhn_train, svhn_val = data_loader.svhn_data_loader(100)  # Maybe Cut the Last Data?
+    svhn_train, svhn_val = data_loader.svhn_data_loader(1)  # Maybe Cut the Last Data?
     for data, label in svhn_train:
+        # todo: Something like that to display the Images of the Dataset.
+        # x = data.squeeze()
+        # numpy_array = x.numpy()
+        # PIL.Image.open(plt.imshow(numpy_array))
+        # plt.show()
         print(f"data: {data.shape}")
         break
 
     # model.add_layer(torch.nn.Conv2d(1, 1, 3, stride=1, padding=1, padding_mode='zeros', device=device), 'relu')
-    model.add_layer((-1, 784), 'reshape')
-    model.add_layer(torch.nn.Linear(784, 10))
-    wf.workflow(model, epoch, device, mnist_train, mnist_val)
-
-    '''model.add_layer(torch.nn.Conv2d(1, 4, 7, stride=1, padding=2, padding_mode='zeros', device=device), 'relu')
-    model.add_layer(2, 'max_pooling')
-    model.add_layer(0, 'flatten')  # 67600
-    # workflow(model, epoch, device, mnist_train, mnist_val)
-
-    model.list_of_layers[-1] = [torch.nn.Conv2d(4, 16, 5, stride=2, padding=1, padding_mode='zeros', device=device), 'relu']
-    model.add_layer(2, 'max_pooling')
-    model.add_layer(0, 'flatten')  # 14400
-    # workflow(model, epoch, device, mnist_train, mnist_val)
-
-    model.list_of_layers[-1] = [torch.nn.Conv2d(16, 64, 3, stride=1, padding=1, padding_mode='zeros', device=device), 'relu']
-    model.add_layer(2, 'max_pooling')
-
-    model.add_layer(0, 'flatten')  # 6400
-    # workflow(model, epoch, device, mnist_train, mnist_val)
-
-    model.add_layer(torch.nn.Linear(6400, 1600))
-    # workflow(model, epoch, device, mnist_train, mnist_val)
-
-    model.add_layer(torch.nn.Linear(1600, 400))
-    # workflow(model, epoch, device, mnist_train, mnist_val)
-
-    model.add_layer(torch.nn.Linear(400, 100))
-    workflow(model, epoch, device, mnist_train, mnist_val)
-    workflow(model, epoch, device, svhn_train, svhn_val)'''
+    # model.add_layer((-1, 1024), 'reshape')
+    # model.add_layer(torch.nn.Linear(1024, 1024))
+    # wf.workflow(model, epoch, device, mnist_train, mnist_val)
+    # model.add_layer(torch.nn.Linear(1024, 1024))
+    # wf.workflow(model, epoch, device, svhn_train, svhn_val)
 
 
 # This is from Fully Convolutional Neural Network Structure
