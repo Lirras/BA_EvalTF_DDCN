@@ -53,6 +53,14 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     signifikant besser, sondern höchstens Minimal mit 2 Prozent maximal. 
     Es kann sogar passieren, dass es dadurch schlechter wird.
 
+    Es gibt bei dem Ansatz über PyTorch und der größer werdenden forward-Methode 
+    das Problem, dass das Training im Gegensatz zur Erwartung nicht wirklich 
+    schnell ist. Dies liegt wahrscheinlich daran, dass die Daten durch das gesamte 
+    bisherige Netz durchgegeben werden und auch daran, dass Backpropagation 
+    benutzt wird und dadurch durch das gesamte Netz gegangen wird, obwohl es 
+    nichts mehr an den Weights der vorherigen Layern ändert, da diese gefreezt 
+    sind. 
+
 \section{Datasets}
 
     Es wird ein TF mit Domainwechsel durchgeführt mittels Veränderung des 
@@ -67,7 +75,7 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     Der erste Versuch ist nur, um zu schauen, ob es überhaupt funktioniert. 
     Das Ergebnis ist allerdings Negative TF, da die Accuracy schlechter wude. 
     Das Netz wurde mit PyTorch, stochastic Gradient Descent, Optimizer und 
-    Backpropagation with Freezing Weights programmiert. 
+    Backpropagation mit Freezing Weights programmiert. 
 
     Genutzte Datensätze waren MNIST und SVHN. Trainiert wurde wie bei einem 
     Cascade Network üblich Layer für Layer mit jeweils einer Epoche.
@@ -126,8 +134,11 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     einmal mit den neuen Daten allein trainiert werden.
 
     Die Idee einem fertigen Kaskadennetzwerk das erste Layer zu ersetzen um TF zu machen, also 
-    dem Netz für TF vorne Layer hinzuzufügen, führt zu einer Verschlechterung und sollte 
-    unterlassen werden.
+    dem Netz für TF vorne Layer hinzuzufügen, führt zu einer deutlichen Verschlechterung und sollte 
+    unterlassen werden. Da der Target-Datensatz generell eine recht schlechter Accuracy 
+    vorweist, ist ein Fall der Accuracy recht gewöhnlich. Hier geht es aber unter die 10\%-Marke, 
+    die mit jedem anderen Versuch überboten wurde. SVHN alleine hat eine Accuracy von circa 17\% und 
+    es sollte mindestens diese haben, damit das Ergebnis annehmbar ist.
 
     Hier ein Beispiel der Werte des Netzes:
 
@@ -222,6 +233,11 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
 
     Das Resultat ist, dass dieses Netzwerk eine Accuracy von 30.2\% hat, was sehr viel 
     besser ist als ohne TF.
+    Das ist ebenfalls besser als das Netz bei dem nur der SVHN-Datensatz verwendet wurde. 
+    Hier bekam der SVHN-Datensatz ein downscaling, trotz der Gefahr irgendwelche Features 
+    zu verlieren. Es scheint jedoch, dass es besser ist als das upscaling des im kleineren 
+    Format vorliegenden Datensatzes. Es hat eine bessere Accuracy und ist schneller, weil 
+    es weniger lernbare Features gibt.
 
 \section{2LayerLinear}
     Ein Zwei-Layer Netz mit nur Linearlayern. Das erste trainiert mit MNIST, das zweite 
@@ -246,7 +262,9 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
         \item Linear (64, 64); ACC: 19.6\%
     \end{enumerate}
 
-    Mit fünf Epochen ist die Accuracy vor TF bei 41.3\% und danach bei 20.2\%.
+    Mit fünf Epochen ist die Accuracy vor TF bei 41.3\% und danach bei 20.2\%. 
+    Das positive TF war also Zufall und dadurch bedingt, dass das Netz bei nur einer 
+    Epoche sehr schlecht war.
 
 \section{Conv2DMidTF}
     Vier Convolutionlayer und in der Mitte von ihnen TF.
@@ -265,12 +283,47 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     Auch hier ist es wieder so, dass das SVHN-Netz nicht besser wird mit TF.
 
 \section{CNN with SVHN Alone}
-    Notiz: Ich muss irgendetwas finden, was die Trainingszeit verkürzt! Interessanterweise 
-    ist dieses Netz nicht besser als alle bisherigen TF-Netze, obwohl es ohne TF allein 
-    trainiert wird. Es hat eine Accuracy von circa 17\%, obwohl es quasi aus dem Netz kopiert ist. Dieses Netz ist kein Direct Cascade, da Batch Normalization zwischen 
+    Der Aufbau dieses Netzes stammt von: https://www.kaggle.com/code/dimitriosroussis/svhn-classification-with-cnn-keras-96-acc
+    
+    Interessanterweise ist dieses Netz nicht besser als alle bisherigen TF-Netze, obwohl es ohne TF allein 
+    trainiert wird. Es hat eine Accuracy von circa 17\%, obwohl es quasi aus dem Netz kopiert ist. Dieses Netz ist 
+    kein Direct Cascade, da Batch Normalization zwischen 
     den Layern vorgenommen wird. Trainingszeit ist bereits unglaublich hoch bei nur 5 Epochen.
 
 \section{Schnelleres Training V1}
     Der Datensatz wird zwischengespeichert und das Netzwerk wird von dem Zeitpunkt 
     erst aufgerufen, ab dem es neue Layer hat. Der zwischengespeicherte Datensatz kommt 
-    von genau dem davorgehenden Zeitpunkt und dient als neuer Input. 
+    von genau dem davorgehenden Zeitpunkt und dient als neuer Input. Das funktioniert nicht, 
+    da der Datensatz nach einem Layer neu geschrieben werden muss. Dies ist bei einem 
+    einfachen Layer bereits circa 3 Sekunden langsamer als der normale Versuch. Zudem gibt 
+    es keine wirkliche Möglichkeit die weights zu speichern, sowie das Übertragen selbst 
+    geht nur als neuer Datensatz. Dies ist aber so umständlich, dass dies nicht versucht 
+    wurde. 
+
+\section{LinearNet with Dropout and ReLU}
+    Dieses Netz wird bei 20 Epochen trainiert. Da die Verschnellerung nicht geklappt hat, 
+    wird das recht lange dauern. Mit dem Dropout ist aber eine deutlich schlechtere Accuracy 
+    zu erwarten als ohne. Es wird hier wieder stochastic Gradient Descent verwendet. 
+    Das Netz sieht wie folgt aus mit ACC nach 20 Epochen: 
+    \begin{enumerate}
+        \item Linear (1024, 2048); ACC: 14.8\%; Best: 15.1\% nach 17 Epochen
+        \item Linear (2048, 1024); ACC: 21.0\%; Best: 21.0\% nach 18 Epochen
+        \item Linear (1024, 400); ACC: 15.8\%; Best: 16.7\% nach 17 Epochen
+        \item TF
+        \item Linear (400, 300); ACC: 16.8\%; Best: 17.5\% nach 14 Epochen
+        \item Linear (300, 200); ACC: 17.5\%; Best: 18.3\% nach 19 Epochen
+        \item Linear (200, 10); ACC: 17.1\%; Best: 17.5\% nach 19 Epochen
+    \end{enumerate}
+    Das Netz ist halt schlecht. Es liegt nicht einmal an Overfitting, da es in jeder Epoche 
+    konstant schlecht ist.
+    Aber dieses Netz wird nach dem TF tatsächlich besser, bzw. bleibt in etwa gleich. 
+    Es hat also kein negatives TF. Trotzdem ist es nicht gut. Mögliche Ursachen: 
+    Compose von dem MNIST-Datensatz, Erweiterung der Features im ersten Layer, Dropout. 
+    Aus Erfahrung bereits bekannt: Dropout kann zu einer um 20\% schlechteren Accuracy 
+    führen. 
+    Allerdings war meistens, wenn mit MNIST und SGD gearbeitet wurde, die Accuracy nach dem 
+    ersten Linearlayer bei um die 80-90\%. 
+    Am Ende ist wohl ein wenig Overfitting doch drin, weil es nicht mehr besser wurde durch 
+    das letzte Layer. Es kann nicht wirklich an der drastischen Reduktion der Features liegen, 
+    da dies bereits in Layer 2 gemacht wurde und es dadurch sehr viel besser wurde. Dazu kommt, 
+    dass die Performanz erst im Layer nach der Reduktion nachlässt.

@@ -3,7 +3,7 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
+# import pandas as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -54,8 +54,8 @@ for epoch in range(n_epochs):
         bar.set_description(f"Epoch {epoch}")
         for start in bar:
             # take a batch
-            X_batch = X_train[start:star t +batch_size]
-            y_batch = y_train[start:star t +batch_size]
+            X_batch = X_train[start:start+batch_size]
+            y_batch = y_train[start:start+batch_size]
             # forward pass
             y_pred = model(X_batch)
             loss = loss_fn(y_pred, y_batch)
@@ -74,11 +74,12 @@ for epoch in range(n_epochs):
     history.append(mse)
     if mse < best_mse:
         best_mse = mse
-        best_weights = copy.deepcopy(model.state_dict())
+        best_weights = model.state_dict()
+        # copy.deepcopy(model.state_dict())
 
 # restore model and return best accuracy
 model.load_state_dict(best_weights)
 print("MSE: %.2f" % best_mse)
 print("RMSE: %.2f" % np.sqrt(best_mse))
 plt.plot(history)
-plt.show()
+# plt.show()

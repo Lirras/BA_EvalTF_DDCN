@@ -39,7 +39,7 @@ def main():
     print(device)
     device = 'cpu'
 
-    epoch = 1
+    epoch = 20
     # Length of Time is Acceptable
 
     # Load the MNIST Dataset
@@ -49,8 +49,39 @@ def main():
 
     # todo: dropout + normalize Layer einfügen und verstehen, was letztere sind.
     # todo: Approach über torch_geometric machen -> Dataset apply
+    # todo: Maybe an Approach über Keras?
+    # todo: Digraph test
     
-    model.add_layer(1, 'batch_norm', [torch.zeros(32), torch.ones(32)])
+    # model.add_layer(1, 'batch_norm', [torch.zeros(32), torch.ones(32)])
+    model.add_layer(1, 'flatten')
+    model.add_layer(torch.nn.Linear(1024, 2048), 'relu')
+    model.add_layer(torch.nn.Dropout(0.3), 'dropout')
+    wf.workflow(model, epoch, device, mnist_train, mnist_val)
+
+    print("2nd Layer")
+    model.add_layer(torch.nn.Linear(2048, 1024), 'relu')
+    model.add_layer(torch.nn.Dropout(0.3), 'dropout')
+    wf.workflow(model, epoch, device, mnist_train, mnist_val)
+
+    print("3rd Layer")
+    model.add_layer(torch.nn.Linear(1024, 400), 'relu')
+    model.add_layer(torch.nn.Dropout(0.3), 'dropout')
+    wf.workflow(model, epoch, device, mnist_train, mnist_val)
+
+    print("TF")
+    model.add_layer(torch.nn.Linear(400, 300), 'relu')
+    model.add_layer(torch.nn.Dropout(0.4), 'dropout')
+    wf.workflow(model, epoch, device, svhn_train, svhn_val)
+
+    print("5th Layer")
+    model.add_layer(torch.nn.Linear(300, 200), 'relu')
+    model.add_layer(torch.nn.Dropout(0.3), 'dropout')
+    wf.workflow(model, epoch, device, svhn_train, svhn_val)
+
+    print("6th Layer")
+    model.add_layer(torch.nn.Linear(200, 10), 'relu')
+    model.add_layer(torch.nn.Dropout(0.4), 'dropout')
+    wf.workflow(model, epoch, device, svhn_train, svhn_val)
 
 
 # Press the green button in the gutter to run the script.

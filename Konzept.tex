@@ -15,6 +15,16 @@
         Transferlernen ist, wenn ein Neuronales Netzwerk von der 
         einen Sache vorlernt, um eine andere Sache besser zu 
         bearbeiten.
+        \section{Wieso keine Graphen}
+        Die Daten sind für Klassifikation Bilder und somit sehr einfach strukturiert. 
+        Ebenso sind die Daten auch bei der Regression als große Tabellen noch 
+        verhältnismäßig einfach zu verarbeiten. 
+        Ein Netzwerk mithilfe von Graphen kann sehr viel und ist auch überall anwendbar, 
+        doch es ist nicht so einfach damit zu arbeiten als mit PyTorch.
+        Da die Daten nicht so komplex vorliegen, dass Graphennetze zwingend benötigt 
+        werden, werden sie nicht genutzt. Zudem liegen einige Datensätze nicht in einer 
+        Variante vor, die von den Graphen genutzt werden können. Ein Beispiel hierfür ist 
+        der SVHN-Datensatz.
     \chapter{Klassifikation}
     \input{Klassifkation}
     
