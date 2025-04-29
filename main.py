@@ -5,13 +5,14 @@ import math
 
 # Title: Bachelor-Arbeit: Evaluierung von Transferlernen mit Deep Direct Cascade Networks
 # Author: Simon Tarras
-# Date: 28.04.2025
-# Version: 0.0.007
+# Date: 29.04.2025
+# Version: 0.0.008
 
 from casunit import CascadeNetwork
 import data_loader
 import workflow as wf
 import torch
+import train_of_Layers as tol
 # import torch_geometric
 # import scipy
 # import torchvision
@@ -44,72 +45,55 @@ def main():
 
     # Load the MNIST Dataset
     mnist_train, mnist_val = data_loader.mnist_data_loader(True, 100)
-    # for data, label in mnist_train:
-        # for item in label:
-        #     if item == 10:
-        #         print('Zehn!')
-        # break
     # Load the SVHN Dataset
     svhn_train, svhn_val = data_loader.svhn_data_loader(100)  # with Last Data cutted.
     some_data = None
     for data, label in svhn_train:
-        # todo: Something like that to display the Images of the Dataset.
-        # for item in label:
-        #     if item == 10:
-        #         print('problem!')
-        # x = data.squeeze()
-        # numpy_array = x.numpy()
-        # PIL.Image.open(plt.imshow(numpy_array))
-        # plt.show()
         some_data = data
-        print(f"label: {label.shape}")
-        print(f"data: {data.shape}")
         break
+
+    # Idee, das mit laufenden Daten zu machen, anstatt über eine Forward Method.
 
     # todo: dropout + normalize Layer einfügen und verstehen, was letztere sind.
     # todo: Approach über torch_geometric machen
 
-    model.add_layer(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros'), 'relu')
-    model.add_layer(9, 'batch_norm', [torch.zeros(32), torch.ones(32)])
-    model.forward(some_data)
-    print(model.list_of_layers[-1][0])  # That is a Tensor!
-    model.add_layer(1, 'flatten')
-    running_dataset = wf.workflow(model, epoch, device, svhn_train, svhn_val)
+    running_dataset = tol.conv2d(svhn_train, 1, 32, 3, 1, 1, 'zeros', 'relu')
+    # todo: Auf neuen Datensatz ACC berechnung machen
+    # ACC(running_dataset)
 
-    model.list_of_layers[-1] = [torch.nn.Conv2d(32, 32, 3, stride=1, padding=1, padding_mode='zeros'), 'relu']
-    model.add_layer(2, 'max_pooling')
-    model.add_layer(torch.nn.Dropout(0.3), 'dropout')
-    model.add_layer(1, 'flatten')
-    running_dataset = wf.workflow(model, epoch, device, running_dataset, svhn_val)
+    # dataset = []
+    # for data, label in svhn_train:
+    #    output = torch.nn.functional.relu(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros')(data))
+    #    dataset.append((output, label))
 
-    model.list_of_layers[-1] = [torch.nn.Conv2d(32, 64, 3, stride=1, padding=1, padding_mode='zeros'), 'relu']
-    model.add_layer(1, 'batch_norm', [torch.zeros(64), torch.ones(64)])
-    model.add_layer(1, 'flatten')
-    running_dataset = wf.workflow(model, epoch, device, running_dataset, svhn_val)
+    # running_dataset = []
+    # for data, label in dataset:
+    #    output = torch.nn.functional.batch_norm(data, torch.zeros(32), torch.ones(32))
+    #    running_dataset.append((output, label))
 
-    model.list_of_layers[-1] = [torch.nn.Conv2d(64, 64, 3, stride=1, padding=1, padding_mode='zeros'), 'relu']
-    model.add_layer(2, 'max_pooling')
-    model.add_layer(torch.nn.Dropout(0.3), 'dropout')
-    model.add_layer(1, 'flatten')
-    running_dataset = wf.workflow(model, epoch, device, running_dataset, svhn_val)
+    # model.add_layer(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros'), 'relu')
+    # Batch_norm is a Layer, not an activation
+    # model.add_layer(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros'), 'batch_norm', [torch.zeros(32), torch.ones(32)])
+    # model.add_layer(9, 'batch_norm', [torch.zeros(32), torch.ones(32)])
+    # model.forward(some_data)
+    # print(model.list_of_layers[-1][0])  # That is a Tensor!
+    # todo: Vergleich mit Label, loss berechnen, update weights
+    # model.add_layer(1, 'flatten')
+    #  running_dataset = wf.workflow(model, epoch, device, svhn_train, svhn_val)
 
-    model.list_of_layers[-1] = [torch.nn.Conv2d(64, 128, 3, stride=1, padding=1, padding_mode='zeros'), 'relu']
-    model.add_layer(1, 'batch_norm', [torch.zeros(128), torch.ones(128)])
-    model.add_layer(1, 'flatten')
-    running_dataset = wf.workflow(model, epoch, device, running_dataset, svhn_val)
 
-    model.list_of_layers[-1] = [torch.nn.Conv2d(128, 128, 3, stride=1, padding=1, padding_mode='zeros'), 'relu']
-    model.add_layer(2, 'max_pooling')
-    model.add_layer(torch.nn.Dropout(0.3), 'dropout')
-    model.add_layer(1, 'flatten')
-    running_dataset = wf.workflow(model, epoch, device, running_dataset, svhn_val)
-
-    model.add_layer(torch.nn.Linear(2048, 128), 'relu')
-    model.add_layer(torch.nn.Dropout(0.4), 'dropout')
-    running_dataset = wf.workflow(model, epoch, device, running_dataset, svhn_val)
-
-    model.add_layer(torch.nn.Linear(128, 10), 'softmax')
-    running_dataset = wf.workflow(model, epoch, device, running_dataset, svhn_val)
+def ACC(dataset):
+    length = len(dataset.dataset)
+    batches = len(dataset)
+    crit = torch.nn.CrossEntropyLoss()
+    correct, loss = 0, 0
+    with torch.no_grad():
+        for data, label in dataset:
+            loss += crit(data, label).item()
+            correct += (data.argmax(1) == label).type(torch.float).sum().item()
+    loss /= batches
+    correct /= length
+    print(f"Test Error: \n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {loss:>8f} \n")
 
 
 # Press the green button in the gutter to run the script.
