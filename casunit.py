@@ -10,6 +10,8 @@ class CascadeNetwork(torch.nn.Module):
         self.list_of_layers = []
 
     def forward(self, x):
+        # This will never be called, or?
+        print('forward')
         counter = 1
         for layer in self.list_of_layers:
             # print(counter)
@@ -20,7 +22,10 @@ class CascadeNetwork(torch.nn.Module):
                 case 'relu':
                     x = torch.nn.functional.relu(layer[0](x))
                 case 'reshape':
-                    x = x.reshape(layer[0])
+                    f = layer[0]
+                    layer[0] = x.reshape(f)
+                    x = layer[0]
+                    # x = x.reshape(layer[0])
                 case 'squeeze':
                     x = x.squeeze(layer[0])
                 case 'unsqueeze':
@@ -28,11 +33,29 @@ class CascadeNetwork(torch.nn.Module):
                 case 'max_pooling':
                     x = torch.nn.functional.max_pool2d(x, kernel_size=layer[0])
                 case 'flatten':
-                    x = torch.flatten(x, layer[0])
+                    if layer[0] == 1:
+                        f = layer[0]
+                        layer[0] = torch.flatten(x, f)
+                    x = layer[0]
+                    # x = torch.flatten(x, layer[0])
                 case 'unflatten':
                     x = torch.unflatten(x, layer[0], layer[2])
                 case 'batch_norm':
-                    x = torch.nn.BatchNorm2d(x, affine=True)
+                    y = layer[2][0]
+                    z = layer[2][1]
+                    print("We are in Batch_Norm at Forward")
+
+                    if layer[0] == 9:
+                        # todo: That must be the function, not the tensor, but exactly that is it now.
+                        layer[0] = torch.nn.BatchNorm2d(x)
+                        layer[0] = torch.nn.functional.batch_norm(x, y, z)
+                        print("Something here")
+                    x = layer[0]
+                    # x = torch.nn.functional.batch_norm(x, y, z)  # .BatchNorm1d(x, affine=True)
+                    # x = torch.nn.LayerNorm(x)  # This cant work
+                case 'softmax':
+                    # todo: Repair Softmax
+                    x = torch.nn.functional.softmax(x)
                 case _:
                     x = layer[0](x)
         return x
@@ -42,7 +65,7 @@ class CascadeNetwork(torch.nn.Module):
         self.list_of_layers.append(seclis)
 
 
-# todo: wird nicht genutzt, da es gerade nicht funktioniert
+# todo: Not Working
 class NodeNetwork(torch.nn.Module):
     def __init__(self):
         super().__init__()
