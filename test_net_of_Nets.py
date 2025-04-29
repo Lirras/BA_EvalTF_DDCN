@@ -67,3 +67,9 @@ def save_output(model, list_data, first=None):
             list_data[i] = model.list_of_layers[-1][0](data)
             i += 1
     return list_data
+
+# This is from Fully Convolutional Neural Network Structure
+# and Its Loss Function for Image Classification by QIUYU ZHU , (Member, IEEE), AND XUEWEN ZU
+# This is disfunctional:
+def softmax_loss(batch_size, output, label):
+    return (1/batch_size)*sum(-math.log(math.exp(label)/sum(math.exp(output))))

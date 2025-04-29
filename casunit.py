@@ -32,7 +32,9 @@ class CascadeNetwork(torch.nn.Module):
                 case 'unflatten':
                     x = torch.unflatten(x, layer[0], layer[2])
                 case 'batch_norm':
-                    x = torch.nn.BatchNorm2d(x, affine=True)
+                    y = layer[2][0]
+                    z = layer[2][1]
+                    x = torch.nn.functional.batch_norm(x, y, z)
                 case _:
                     x = layer[0](x)
         return x

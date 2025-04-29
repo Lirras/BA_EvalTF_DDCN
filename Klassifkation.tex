@@ -52,7 +52,16 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     Wert angleicht. Aber es wird mit einem neuen Layer insgesamt nicht 
     signifikant besser, sondern höchstens Minimal mit 2 Prozent maximal. 
     Es kann sogar passieren, dass es dadurch schlechter wird.
-    
+
+\section{Datasets}
+
+    Es wird ein TF mit Domainwechsel durchgeführt mittels Veränderung des 
+    Datensatzes. Der Source-Datensatz ist der Modified National Institute 
+    of Standards and Technology dataset (MNIST) und der Target-Datensatz 
+    der Streetview House Numbers (SVHN). Der MNIST liegt in 28x28 vor und 
+    erhält ein Resize auf 32x32, da SVHN in der letzteren Größe vorliegt. 
+    Es wird größer gemacht, da keine Features verloren gehen sollen.
+
 \section{Inversive Cascade TF Network}
 
     Der erste Versuch ist nur, um zu schauen, ob es überhaupt funktioniert. 
@@ -255,3 +264,13 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     \end{enumerate}
     Auch hier ist es wieder so, dass das SVHN-Netz nicht besser wird mit TF.
 
+\section{CNN with SVHN Alone}
+    Notiz: Ich muss irgendetwas finden, was die Trainingszeit verkürzt! Interessanterweise 
+    ist dieses Netz nicht besser als alle bisherigen TF-Netze, obwohl es ohne TF allein 
+    trainiert wird. Es hat eine Accuracy von circa 17\%, obwohl es quasi aus dem Netz kopiert ist. Dieses Netz ist kein Direct Cascade, da Batch Normalization zwischen 
+    den Layern vorgenommen wird. Trainingszeit ist bereits unglaublich hoch bei nur 5 Epochen.
+
+\section{Schnelleres Training V1}
+    Der Datensatz wird zwischengespeichert und das Netzwerk wird von dem Zeitpunkt 
+    erst aufgerufen, ab dem es neue Layer hat. Der zwischengespeicherte Datensatz kommt 
+    von genau dem davorgehenden Zeitpunkt und dient als neuer Input. 

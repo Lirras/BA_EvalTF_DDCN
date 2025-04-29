@@ -5,8 +5,8 @@ import math
 
 # Title: Bachelor-Arbeit: Evaluierung von Transferlernen mit Deep Direct Cascade Networks
 # Author: Simon Tarras
-# Date: 28.04.2025
-# Version: 0.0.007
+# Date: 29.04.2025
+# Version: 0.0.008
 
 from casunit import CascadeNetwork
 import data_loader
@@ -44,37 +44,13 @@ def main():
 
     # Load the MNIST Dataset
     mnist_train, mnist_val = data_loader.mnist_data_loader(True, 100)
-    for data, label in mnist_train:
-        for item in label:
-            if item == 10:
-                print('Zehn!')
-        break
     # Load the SVHN Dataset
     svhn_train, svhn_val = data_loader.svhn_data_loader(100)  # with Last Data cutted.
-    for data, label in svhn_val:
-        # todo: Something like that to display the Images of the Dataset.
-        for item in label:
-            if item == 10:
-                print('problem!')
-        # x = data.squeeze()
-        # numpy_array = x.numpy()
-        # PIL.Image.open(plt.imshow(numpy_array))
-        # plt.show()
-        # print(f"label: {label.shape}")
-        print(f"data: {data.shape}")
-        break
 
     # todo: dropout + normalize Layer einfügen und verstehen, was letztere sind.
-    # todo: Approach über torch_geometric machen
-
-
-
-
-# This is from Fully Convolutional Neural Network Structure
-# and Its Loss Function for Image Classification by QIUYU ZHU , (Member, IEEE), AND XUEWEN ZU
-# This is disfunctional:
-def softmax_loss(batch_size, output, label):
-    return (1/batch_size)*sum(-math.log(math.exp(label)/sum(math.exp(output))))
+    # todo: Approach über torch_geometric machen -> Dataset apply
+    
+    model.add_layer(1, 'batch_norm', [torch.zeros(32), torch.ones(32)])
 
 
 # Press the green button in the gutter to run the script.
