@@ -9,7 +9,7 @@ def train_epoch(dataset, model, device, crit, optimizer):
         optimizer.zero_grad()
         # Data through the whole Network
         output = model(data.to(device))
-        loss = crit(output, label)
+        loss = crit(output, label.to(device))
         loss.backward()
         optimizer.step()
         counter += 1
@@ -32,8 +32,8 @@ def test_new_layer(test_dataset, model, device, loss_fn):
     with torch.no_grad():
         for data, label in test_dataset:
             output = model(data.to(device))  # from me
-            test_loss += loss_fn(output, label).item()
-            correct += (output.argmax(1) == label).type(torch.float).sum().item()
+            test_loss += loss_fn(output, label.to(device)).item()
+            correct += (output.argmax(1) == label.to(device)).type(torch.float).sum().item()
             counter += 1  # from me
             if counter == len(test_dataset):  # from me
                 break  # from me

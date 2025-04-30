@@ -41,8 +41,10 @@ def get_last_layer_params(list_of_layers):
 
 def epochs(model, epoch, device, train_dataset, valid_dataset):
 
-    optimizer = torch.optim.SGD(model.list_of_layers[get_last_layer_params(
-        model.list_of_layers)][0].parameters(), lr=0.01)
+    # optimizer = torch.optim.SGD(model.list_of_layers[get_last_layer_params(
+    #    model.list_of_layers)][0].parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(model.list_of_layers[get_last_layer_params(model.list_of_layers)][0].parameters(),
+                                 lr=0.001)
     crit = torch.nn.CrossEntropyLoss()
     # There is a case, that this is logSoftmax followed by NLLLoss
 

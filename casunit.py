@@ -32,15 +32,15 @@ class CascadeNetwork(torch.nn.Module):
                 case 'unflatten':
                     x = torch.unflatten(x, layer[0], layer[2])
                 case 'batch_norm':
-                    y = layer[2][0]
-                    z = layer[2][1]
+                    y = layer[2][0].to(layer[3])
+                    z = layer[2][1].to(layer[3])
                     x = torch.nn.functional.batch_norm(x, y, z)
                 case _:
                     x = layer[0](x)
         return x
 
-    def add_layer(self, neural_node, activation=None, secondary=None):
-        seclis = [neural_node, activation, secondary]
+    def add_layer(self, neural_node, activation=None, secondary=None, dev=None):
+        seclis = [neural_node, activation, secondary, dev]
         self.list_of_layers.append(seclis)
 
 
