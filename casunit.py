@@ -55,3 +55,17 @@ class NodeNetwork(torch.nn.Module):
         x = torch.nn.functional.relu(self.conv1(x))
         # x = self.ident(x)
         return x
+
+
+class svhn_network(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x):
+        x = torch.flatten(x)
+        x = torch.nn.Linear(1024, 1024)(x)
+        x = torch.unflatten(x, 1, (32, 32))
+        x = torch.unsqueeze(x, 1)
+
+
+        return x

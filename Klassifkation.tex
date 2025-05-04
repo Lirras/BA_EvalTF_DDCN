@@ -327,3 +327,9 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     das letzte Layer. Es kann nicht wirklich an der drastischen Reduktion der Features liegen, 
     da dies bereits in Layer 2 gemacht wurde und es dadurch sehr viel besser wurde. Dazu kommt, 
     dass die Performanz erst im Layer nach der Reduktion nachlässt.
+
+    TF bringt von MNIST auf SVHN nur da etwas, dass es bei dem Startlayer des Netzes eine 
+    höhere Accuracy gibt, aber das Endergebnis ist bei jeder Variante gleich. Kann es sein, dass 
+    das Netz bei jedem Layer aktuell komplett neu berechnet wird mit allen Updates der Weights?
+    Bei einer Ausführung des kompletten Netzes mit Lernen hat es direkt nach einer Epoche eine 
+    höhere Accuracy als das Cascade-TF Netzwerk.

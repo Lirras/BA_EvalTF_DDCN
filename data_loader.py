@@ -35,5 +35,5 @@ def svhn_data_loader(batch_size):
                                                   torchvision.transforms.ToTensor(),
                                                   torchvision.transforms.Normalize(mean=0.485, std=0.229)]))
     train_load = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    test_load = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    test_load = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False)
     return train_load, test_load
