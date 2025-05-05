@@ -5,8 +5,8 @@ import math
 
 # Title: Bachelor-Arbeit: Evaluierung von Transferlernen mit Deep Direct Cascade Networks
 # Author: Simon Tarras
-# Date: 04.05.2025
-# Version: 0.0.009
+# Date: 05.05.2025
+# Version: 0.0.010
 
 from casunit import CascadeNetwork
 import data_loader
@@ -51,6 +51,11 @@ def main():
     # todo: Approach über torch_geometric machen -> Dataset apply
     # todo: Maybe an Approach über Keras?
     # todo: Digraph test
+
+    # model.add_layer(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros').to(device), 'relu')
+    model.add_layer(1, 'flatten')
+    model.add_layer(torch.nn.Linear(1024, 10).to(device))
+    wf.workflow(model, epoch, device, mnist_train, mnist_val)
     
     # model.add_layer(1, 'batch_norm', [torch.zeros(32), torch.ones(32)])
     '''model.add_layer(1, 'flatten')
@@ -74,7 +79,7 @@ def main():
 
     # Reihenfolge von https://github.com/pitsios-s/SVHN/blob/master/src/cnn.py
     # norm, conv1(relu), maxpool1, conv2(relu), maxpool2, conv3(relu), maxpool3, FC(relu), Dropout
-    model.add_layer(1, 'flatten')
+    '''model.add_layer(1, 'flatten')
     model.add_layer(torch.nn.Linear(1024, 1024).to(device))
     #wf.workflow(model, epoch, device, mnist_train, mnist_val)
     model.add_layer(1, 'unflatten', (32, 32))
@@ -91,17 +96,17 @@ def main():
     model.add_layer(1, 'flatten')
     #wf.workflow(model, epoch, device, mnist_train, mnist_val)
     # 10.0%/19.0%/6.7%/18.8%
-    '''model.list_of_layers[-1] = [torch.nn.Conv2d(64, 128, 3, stride=1, padding=1, padding_mode='zeros').to(device), 'relu']
+    model.list_of_layers[-1] = [torch.nn.Conv2d(64, 128, 3, stride=1, padding=1, padding_mode='zeros').to(device), 'relu']
     model.add_layer(2, 'max_pooling')
     model.add_layer(1, 'flatten')
-    wf.workflow(model, epoch, device, svhn_train, svhn_val)'''
+    wf.workflow(model, epoch, device, svhn_train, svhn_val)
     # 15.5%/9.6%/6.7%/9.0%
     model.add_layer(torch.nn.Linear(4096, 1024).to(device), 'relu')
     model.add_layer(torch.nn.Dropout(0.8).to(device), 'dropout')
     #wf.workflow(model, epoch, device, mnist_train, mnist_val)
     # 6.7%/6.7%/9.4%/8.6%
     model.add_layer(torch.nn.Linear(1024, 10).to(device))
-    wf.workflow(model, epoch, device, svhn_train, svhn_val)
+    wf.workflow(model, epoch, device, svhn_train, svhn_val)'''
     # 19.6%/19.6% egal, ob das dritte Convlayer dabei ist oder nicht. Aber kein Vergleich zu ohne TF.
     # 87.5/17.0/14.7/8.3/19.6 L1M,C1S,C2S,L2S,L3S, epochs=1
     # 2.7/5.3/11.1/19.7 C1S,C2S,L1S,L2S, epochs=1

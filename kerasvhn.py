@@ -23,47 +23,106 @@ def schedule():
 
     train_data, train_label, test_data, test_label = preparation()
 
-    model = test_model()
-    model.compile(optimizer=optimizer,
-                  loss=keras.losses.CategoricalCrossentropy(),
-                  # loss='categorical_crossentropy',
-                  metrics=['accuracy'])
-    history = model.fit(train_data, train_label, batch_size=batch_size, epochs=30, validation_data=(test_data, test_label), callbacks=[lr_schedule])
-
-
-    # label_data = np.array(svhn_train['y'])
-
-    # for freezing weights
-    '''for layer in model.layers[:5]:  # Bis Layer 5 gefreezt, rest ist normal berechnet.
-        layer.trainable = False
-    for layer in model.layers[5:]:
-        layer.trainable = True'''
-
-    # svhn_train = np.moveaxis(svhn_train.dataset, -1, 0)
-    # svhn_val = np.moveaxis(svhn_val.dataset, -1, 0)
-
-    '''batch_size = 128
-
-    model = keras.Sequential([])
-    svhn_train, svhn_val = data_loader.svhn_data_loader(batch_size)
-
-    lr_schedule, optimizer = lr_optim()
-
-    model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(1, 32, 32)))  # 32 32 1
-
-
-    # Configures the model for training
+    # model = test_model()
+    model = keras.Sequential()
     model.compile(optimizer=optimizer,
                   loss=keras.losses.CategoricalCrossentropy(),
                   # loss='categorical_crossentropy',
                   metrics=['accuracy'])
 
-    # for data, label in svhn_train:
-    history = model.fit(svhn_train, batch_size=None, epochs=1, validation_data=svhn_val, callbacks=[lr_schedule])'''
-    # Dataloader Object possible for model.fit as x; y should be empty then.
+    model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(32, 32, 3)))
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(10, activation='softmax'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=6, validation_data=(test_data, test_label), callbacks=[lr_schedule])
+    freezing(model, 0)
 
-    # todo: Build model for this
-    # model.add(keras.layers.BatchNormalization())
+    model.layers[1] = keras.layers.BatchNormalization()
+    model.layers[2] = keras.layers.Flatten()
+    model.add(keras.layers.Dense(10, activation='softmax'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=4, validation_data=(test_data, test_label), callbacks=[lr_schedule])
+    freezing(model, 1)
+    # keras.layers.RandomGrayscale(1.0, 'channels_first')
+
+    '''model.add(keras.layers.Conv2D(32, (3, 3), padding='same',
+                                activation='relu'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+
+    model.add(keras.layers.Dropout(0.3))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+
+    model.add(keras.layers.Conv2D(64, (3, 3), padding='same',
+                                activation='relu'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+
+    model.add(keras.layers.BatchNormalization())
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+
+    model.add(keras.layers.Conv2D(64, (3, 3), padding='same',
+                                activation='relu'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+    model.add(keras.layers.Dropout(0.3))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+    model.add(keras.layers.Conv2D(128, (3, 3), padding='same',
+                        activation='relu'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+    model.add(keras.layers.BatchNormalization())
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+
+    model.add(keras.layers.Conv2D(128, (3, 3), padding='same',
+                        activation='relu'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+    model.add(keras.layers.Dropout(0.3))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+    model.add(keras.layers.Flatten())
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+    model.add(keras.layers.Dense(128, activation='relu'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+    model.add(keras.layers.Dropout(0.4))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)
+    model.add(keras.layers.Dense(10, activation='softmax'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
+              callbacks=[lr_schedule])
+    freezing(model)'''
 
 
 def load():
@@ -97,8 +156,8 @@ def preparation():
     print(train_img.shape)  # 32 32 3 73257
     print(test_img.shape)  # 32 32 3 26032
 
-    train_img = np.moveaxis(train_img, -1, 0)
-    test_img = np.moveaxis(test_img, -1, 0)
+    train_img = np.moveaxis(train_img, -1, 0)  # B, H, W, C
+    test_img = np.moveaxis(test_img, -1, 0)  # B, H, W, C
 
     print(train_img.shape)
     print(test_img.shape)
@@ -107,13 +166,14 @@ def preparation():
 
     # train_img /= 255.0
     # test_img /= 255.0
+    # print(train_labels[1])
 
     lb = LabelBinarizer()
     train_labels = lb.fit_transform(train_labels)
     test_labels = lb.fit_transform(test_labels)
 
     X_train, X_val, y_train, y_val = train_test_split(train_img, train_labels, test_size=0.15, random_state=22)
-    print(y_val.shape)
+
     # plt.imshow(train_img[13529])
     # plt.show()
     # print('Label: ', train_labels[13529])
@@ -162,14 +222,35 @@ def test_model():
 
 
 def cascade_network():
-    # lb = LabelBinarizer()
+    lb = LabelBinarizer()
 
     clear()
-    mnist_train, mnist_val = data_loader.mnist_data_loader(True, 100)
-    svhn_train, svhn_val = data_loader.svhn_data_loader(128)
+    a, b, c, d, e, f, g, h = loader_crutch()  # Batch_size at data_loader is the size of the corresponded dataset
+    b = lb.fit_transform(b)
+    d = lb.fit_transform(d)
+    f = lb.fit_transform(f)
+    h = lb.fit_transform(h)
+    b = b.astype('int64')
+    d = d.astype('int64')
+    f = f.astype('int64')
+    h = h.astype('int64')
+    a = a.astype('float')
+    c = c.astype('float')
+    e = e.astype('float')
+    g = g.astype('float')
 
-    # mnist_train_data = torch.permute(mnist_train.dataset[0], (0, 2, 3, 1))
-    print(mnist_train.dataset[0][0].shape)  # Input
+    a = np.moveaxis(a, 1, 3)  # B, C, H, W -> B, H, W ,C
+    c = np.moveaxis(c, 1, 3)
+    e = np.moveaxis(e, 1, 3)
+    g = np.moveaxis(g, 1, 3)
+    print(a.shape)
+    print(c.shape)
+    print(e.shape)
+    print(g.shape)
+
+    # print(b.shape)
+
+    '''print(mnist_train.dataset[0][0].shape)  # Input
     print(mnist_train.dataset[0][1])  # Target
     print(mnist_train.dataset[0][0].numpy())  # To Numpy
 
@@ -192,9 +273,10 @@ def cascade_network():
     valid_data_target = np.array(valid_data_target)
     valid_data_input = np.array(valid_data_input)
 
-    # print(train_data_input)
-    # print(train_data_target)
-    # torch.permute(mnist_val.dataset['data'], (0, 2, 3, 1))
+    train_data_target = lb.fit_transform(train_data_target)
+    train_data_input = lb.fit_transform(train_data_input)
+    valid_data_input = lb.fit_transform(valid_data_input)
+    valid_data_target = lb.fit_transform(valid_data_target)'''
 
     '''mnist_train = lb.fit_transform(mnist_train)
     mnist_val = lb.fit_transform(mnist_val)
@@ -202,37 +284,58 @@ def cascade_network():
     svhn_val = lb.fit_transform(svhn_val)'''
 
     lr, optim = lr_optim()
-    model = keras.Sequential()
+    # model = keras.Sequential()
+    model = test_model()
     model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
 
-    model.add(keras.layers.Flatten())
-    model.add(keras.layers.Dense(100, activation='relu'))
-    model.fit(train_data_input, train_data_target, batch_size=None, epochs=10, validation_data=(valid_data_input, valid_data_target))
-
-    return
-    # predict(model, mnist_train, mnist_val)
-
-    model.add(keras.layers.Reshape((1, 32, 32)))
-
-    model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(32, 32, 1)))
-    predict(model, svhn_train, svhn_val)
-
-    model.add(keras.layers.BatchNormalization())
-    predict(model, svhn_train, svhn_val)
+    # model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(1, 32, 32)))
+    # model.add(keras.layers.Flatten())
+    # model.add(keras.layers.Dense(1024))
+    # model.add(keras.layers.Dense(10, activation='softmax'))
+    # a,b = mnist_train/ c,d = mnist_val/ e,f = svhn_train/ g,h = svhn_val as data, label
+    # model.fit(a, b, epochs=10, batch_size=128, validation_data=(c, d), callbacks=[lr])  # Why at 10%?
+    # freezing(model, 0)
+    # freezing(model, 1)
+    # model.layers[-1] = keras.layers.Reshape((32, 32))
+    # model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'))
+    # model.add(keras.layers.Flatten())
+    # model.add(keras.layers.Dense(10, activation='softmax'))
+    model.fit(e, f, epochs=10, batch_size=128, validation_data=(g, h), callbacks=[lr])  # Not Grayscaled: 15% -> The Dataformat is a problem! Not the Grayscaling
+    # todo: There is something wrong with the data!
+    # model.fit(e, f, epochs=10, batch_size=128, validation_data=(g, h), callbacks=[lr])  # Why at 18%? -> Well, this is normal
+    # with old data at 90%; with new data at 19.5%
+    # model.fit_generator(mnist_train, mnist_val)
 
 
 def clear():
     keras.backend.clear_session()
 
 
-def freezing(model):
-    for layer in model.layers:
-        layer.trainable = False
+def freezing(model, layer):
+    model.layers[layer].trainable = False
+    # for layer in model.layers:
+    #     layer.trainable = False
 
 
 def predict(model, train, val):
     model.fit(train, batch_size=None, epochs=10, validation_data=val)
-    freezing(model)
+    freezing(model, 0)
+
+
+def loader_crutch():
+    mnist_tr, mnist_va = data_loader.mnist_data_loader(True, 1)
+    svhn_tr, svhn_va = data_loader.svhn_data_loader(1)
+    mnist_tr_dat, mnist_tr_lb = loader_crutch_backend(mnist_tr)
+    mnist_va_dat, mnist_va_lb = loader_crutch_backend(mnist_va)
+    svhn_tr_dat, svhn_tr_lb = loader_crutch_backend(svhn_tr)
+    svhn_va_dat, svhn_va_lb = loader_crutch_backend(svhn_va)
+    return mnist_tr_dat, mnist_tr_lb, mnist_va_dat, mnist_va_lb, svhn_tr_dat, svhn_tr_lb, svhn_va_dat, svhn_va_lb
+
+
+def loader_crutch_backend(dataloader):
+    data = next(iter(dataloader))[0].numpy()
+    label = next(iter(dataloader))[1].numpy()
+    return data, label
 
 
 # schedule()

@@ -1,8 +1,30 @@
 Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu 
     eindeutigen Klassen zuordnen soll.
 
+\section{Quellen für Programmierung}
+keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org
+
 \section{Beschreibung der Tätigkeit}
     
+    Es soll TF mit Klassifikation durchgeführt werden. 
+    Genutzt wird hier ein Domainwechsel, da die Datensätze gewechselt werden. 
+    Die genutzten Datensätze sind MNIST und SVHN. 
+    Es gibt die Frameworks PyTorch und Keras, die ebenfalls miteinander 
+    verglichen werden. 
+    Der MNIST-Datensatz ist dabei die Source und der SVHN das Target. 
+    Um einen Vergleichswert zu haben wurden beide Netze auch allein gelöst. 
+    Es ist aufgefallen, dass die Daten, die keras bekommt, nicht stimmen können!
+    Keras ist generell schneller als PyTorch. 
+
+    Wenn die Daten allerdings stimmen, dann heißt es, dass SVHN deshalb so schlecht 
+    ist, weil es ein Grayscale erhalten hat und man es aber schaffen kann über TF 
+    eine bessere Performanz zu erzeugen als es möglich wäre mit dem Netz allein.
+
+    MNIST allein; Keras: 10\%; MNIST allein; PyTorch: 90\% 
+    SVHN allein; Keras: 19\%, Keras: 91\% (kerasloader; RGB); SVHN allein; PyTorch: 20\%
+    SVHN allein; Keras: 19\%(RGB)
+    Das Grayscaling ist nicht das Problem, sondern die Daten. 
+
     Ausführung auf GPU klappt zurzeit nicht. Warum? Wahrscheinlich, 
     weil das device in jedem Layer händisch bei deren Erstellung mitgegeben 
     werden muss.
@@ -333,3 +355,17 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     das Netz bei jedem Layer aktuell komplett neu berechnet wird mit allen Updates der Weights?
     Bei einer Ausführung des kompletten Netzes mit Lernen hat es direkt nach einer Epoche eine 
     höhere Accuracy als das Cascade-TF Netzwerk.
+
+    Das Ergebnis mit dem Keras-Framework ist deutlich besser. Dieses ist aber auch das komplette 
+    Netzwerk und kein Kaskadennetzwerk. Wahrscheinlich ist es deshalb so viel besser.
+    Beim Vergleich zwischen den beiden Frameworks PyTorch und keras kommt es dazu, dass 
+    PyTorch bei 20\% stehen bleibt, keras jedoch bei circa 75\% ist. 
+
+    PyTorch: Schlechte Performanz. Das liegt wahrscheinlich daran, dass es zwischen den 
+    Layern nichts gerlernt wird.
+    Keras: Dateninput von PyTorch-Dataloadern nicht möglich, da der Shape nicht korrekt 
+    übernommen wird. Daten als Numpy-Arrays laden möglich, aber das benötigte Grayscaling 
+    von SVHN noch nicht ausgetestet. Zudem dauert PyTorch viel länger.
+    SVHN hat deshalb eine so schlechte Performanz, weil es in ein Grayscale umgewandelt wurde 
+    und damit sehr viele Informationen verloren gegangen sind. Es ist egal, ob PyTorch oder 
+    Keras genutzt wird, es kommt nicht über 20\% hinaus, es sei denn es gibt positive TF. 
