@@ -22,14 +22,14 @@ def svhn_data_loader(batch_size):
     # torchvision.transforms.Compose is from https://discuss.pytorch.org/t/change-3-channel-to-1-channel/46619/2
     train_dataset = torchvision.datasets.SVHN(root='/SVHN', split='train', download=True,
                                               transform=torchvision.transforms.Compose([
-                                                  # torchvision.transforms.Grayscale(num_output_channels=1),
+                                                  torchvision.transforms.Grayscale(num_output_channels=1),
                                                   # torchvision.transforms.Resize((28, 28)),
                                                   torchvision.transforms.CenterCrop((32, 32)),
                                                   torchvision.transforms.ToTensor(),
                                                   torchvision.transforms.Normalize(mean=0.485, std=0.229)]))
     test_dataset = torchvision.datasets.SVHN(root='/SVHN', split='test', download=True,
                                              transform=torchvision.transforms.Compose([
-                                                  # torchvision.transforms.Grayscale(num_output_channels=1),
+                                                  torchvision.transforms.Grayscale(num_output_channels=1),
                                                   # torchvision.transforms.Resize((28, 28)),
                                                   torchvision.transforms.CenterCrop((32, 32)),
                                                   torchvision.transforms.ToTensor(),

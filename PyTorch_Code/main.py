@@ -5,19 +5,13 @@ import math
 
 # Title: Bachelor-Arbeit: Evaluierung von Transferlernen mit Deep Direct Cascade Networks
 # Author: Simon Tarras
-# Date: 05.05.2025
-# Version: 0.0.010
+# Date: 06.05.2025
+# Version: 0.0.011
 
 from casunit import CascadeNetwork
 import data_loader
 import workflow as wf
 import torch
-# import torch_geometric
-# import scipy
-# import torchvision
-# import numpy
-# import matplotlib.pyplot as plt
-# import PIL.Image
 
 
 # A Linear Layer has only Sense as One Layer and
@@ -48,8 +42,8 @@ def main():
     svhn_train, svhn_val = data_loader.svhn_data_loader(100)  # with Last Data cutted.
 
     # todo: dropout + normalize Layer einfügen und verstehen, was letztere sind.
-    # todo: Approach über torch_geometric machen -> Dataset apply
-    # todo: Maybe an Approach über Keras?
+    # todo: Approach über torch_geometric machen -> Dataset apply -> I dont do this
+    # todo: Maybe an Approach über Keras? -> Yes, of course!
     # todo: Digraph test
 
     # model.add_layer(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros').to(device), 'relu')
@@ -108,6 +102,7 @@ def main():
     model.add_layer(torch.nn.Linear(1024, 10).to(device))
     wf.workflow(model, epoch, device, svhn_train, svhn_val)'''
     # 19.6%/19.6% egal, ob das dritte Convlayer dabei ist oder nicht. Aber kein Vergleich zu ohne TF.
+    # --> 19.6% bei egal was -> Das liegt an den Daten, die vom Dataloader kommen, aber mnist ist schlechter mit keras!
     # 87.5/17.0/14.7/8.3/19.6 L1M,C1S,C2S,L2S,L3S, epochs=1
     # 2.7/5.3/11.1/19.7 C1S,C2S,L1S,L2S, epochs=1
     # 16.3/16.6/15.7/8.1/19.6 L1S,C1S,C2S,L2S,L3S, epochs=1  -> TF changes Nothing here!

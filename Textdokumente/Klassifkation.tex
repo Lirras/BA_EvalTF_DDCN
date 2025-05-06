@@ -2,7 +2,7 @@ Eine Klassifikation ist dann, wenn ein NN eingegebene Daten zu
     eindeutigen Klassen zuordnen soll.
 
 \section{Quellen für Programmierung}
-keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org
+keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
 
 \section{Beschreibung der Tätigkeit}
     
@@ -24,6 +24,8 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org
     SVHN allein; Keras: 19\%, Keras: 91\% (kerasloader; RGB); SVHN allein; PyTorch: 20\%
     SVHN allein; Keras: 19\%(RGB)
     Das Grayscaling ist nicht das Problem, sondern die Daten. 
+    Nach TF war nur das erste oder die ersten beiden Layer gut, danach wurde es 
+    schlechter.
 
     Ausführung auf GPU klappt zurzeit nicht. Warum? Wahrscheinlich, 
     weil das device in jedem Layer händisch bei deren Erstellung mitgegeben 
