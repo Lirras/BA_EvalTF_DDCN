@@ -23,6 +23,9 @@ def svhn_loader():
     train_img = np.dot(train_img[..., :3], [0.2989, 0.5870, 0.1140])
     test_img = np.dot(test_img[..., :3], [0.2989, 0.5870, 0.1140])
 
+    train_img = np.expand_dims(train_img, -1)
+    test_img = np.expand_dims(test_img, -1)
+
     print(train_img.shape)
     print(test_img.shape)
 

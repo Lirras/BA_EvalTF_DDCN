@@ -1,14 +1,13 @@
 
-import numpy as np
+# import numpy as np
 import tensorflow
 import keras
-import seaborn as sns
+# import seaborn as sns
 import keras_data_loader
 import copied_models
-from matplotlib import pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.metrics import confusion_matrix
+# from matplotlib import pyplot as plt
+# from sklearn.model_selection import train_test_split
+# from sklearn.metrics import confusion_matrix
 
 
 def schedule():
@@ -23,7 +22,6 @@ def schedule():
     model = keras.Sequential()
     model.compile(optimizer=optimizer,
                   loss=keras.losses.CategoricalCrossentropy(),
-                  # loss='categorical_crossentropy',
                   metrics=['accuracy'])
 
     model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(32, 32, 1)))
@@ -38,88 +36,6 @@ def schedule():
     model.fit(train_data, train_label, batch_size=batch_size, epochs=4, validation_data=(test_data, test_label), callbacks=[lr_schedule])
     freezing(model, 1)
     model.summary()
-    # keras.layers.RandomGrayscale(1.0, 'channels_first')
-
-    '''model.add(keras.layers.Conv2D(32, (3, 3), padding='same',
-                                activation='relu'))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-
-    model.add(keras.layers.MaxPooling2D((2, 2)))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-
-    model.add(keras.layers.Dropout(0.3))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-
-    model.add(keras.layers.Conv2D(64, (3, 3), padding='same',
-                                activation='relu'))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-
-    model.add(keras.layers.BatchNormalization())
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-
-    model.add(keras.layers.Conv2D(64, (3, 3), padding='same',
-                                activation='relu'))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-
-    model.add(keras.layers.MaxPooling2D((2, 2)))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-    model.add(keras.layers.Dropout(0.3))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-    model.add(keras.layers.Conv2D(128, (3, 3), padding='same',
-                        activation='relu'))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-    model.add(keras.layers.BatchNormalization())
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-
-    model.add(keras.layers.Conv2D(128, (3, 3), padding='same',
-                        activation='relu'))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-    model.add(keras.layers.MaxPooling2D((2, 2)))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-    model.add(keras.layers.Dropout(0.3))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-    model.add(keras.layers.Flatten())
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-    model.add(keras.layers.Dense(128, activation='relu'))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-    model.add(keras.layers.Dropout(0.4))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)
-    model.add(keras.layers.Dense(10, activation='softmax'))
-    model.fit(train_data, train_label, batch_size=batch_size, epochs=10, validation_data=(test_data, test_label),
-              callbacks=[lr_schedule])
-    freezing(model)'''
 
 
 def lr_optim():
@@ -130,20 +46,36 @@ def lr_optim():
 
 
 def cascade_network():
-    lb = LabelBinarizer()
 
     clear()
 
     a, b, c, d = keras_data_loader.mnist_loader()
+    e, f, g, h = keras_data_loader.svhn_loader()
 
     lr, optim = lr_optim()
-    # model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
-    model = copied_models.mnist_model()
+    model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
+    # model = copied_models.mnist_model()
     model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
 
-    model.fit(a, b, epochs=10, batch_size=128, validation_data=(c, d), callbacks=[lr])
+    model.add(keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"))
+    predict_train(model, a, b, c, d, lr, 0)
+
+    model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    predict_train(model, a, b, c, d, lr, 1)
+
+    model.add(keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"))
+    predict_train(model, a, b, c, d, lr, 2)
+
+    model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    predict_train(model, a, b, c, d, lr, 3)
+
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(10, 'softmax'))
+    model.fit(e, f, batch_size=128, epochs=4, validation_data=(g, h), callbacks=[lr])
+    # 1 epoch: ACC:20%; ValACC:50%
+    # 4 epoch: ACC:76%; ValACC:73%
+
     model.summary()
-    # model = test_model()
 
 
 def clear():
@@ -156,10 +88,16 @@ def freezing(model, layer):
     #     layer.trainable = False
 
 
-def predict(model, train, val):
-    model.fit(train, batch_size=None, epochs=10, validation_data=val)
-    freezing(model, 0)
+def predict_train(model, train_dat, train_lb, val_dat, val_lb, lr, freeze):
+
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(10, activation='softmax'))
+
+    model.fit(train_dat, train_lb, batch_size=128, epochs=1, validation_data=(val_dat, val_lb), callbacks=[lr])
+    freezing(model, freeze)
+    model.pop()
+    model.pop()
 
 
-schedule()
-# cascade_network()
+# schedule()
+cascade_network()
