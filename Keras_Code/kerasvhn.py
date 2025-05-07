@@ -16,13 +16,36 @@ def schedule():
     keras.backend.clear_session()
     lr_schedule, optimizer = lr_optim()
 
+    m_tr_dat, m_tr_lb, m_val_dat, m_val_lb = keras_data_loader.mnist_loader()
     train_data, train_label, test_data, test_label = keras_data_loader.svhn_loader()
 
     # model = test_model()
-    model = keras.Sequential()
+    model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
     model.compile(optimizer=optimizer,
                   loss=keras.losses.CategoricalCrossentropy(),
                   metrics=['accuracy'])
+
+    '''model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(1024, activation='relu'))
+    model.add(keras.layers.Dense(10, activation='softmax'))
+    model.fit(m_tr_dat, m_tr_lb, batch_size=batch_size, epochs=4, validation_data=(m_val_dat, m_val_lb))
+    model.pop()
+    freezing(model, 0)
+    freezing(model, 1)
+    model.add(keras.layers.Reshape((32, 32, 1)))
+    model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'))
+    predict_train(model, m_tr_dat, m_tr_lb, m_val_dat, m_val_lb, lr_schedule, 3)
+    freezing(model, 2)
+    model.add(keras.layers.BatchNormalization())
+    predict_train(model, train_data, train_label, test_data, test_label, lr_schedule, 4)
+    model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'))
+    predict_train(model, train_data, train_label, test_data, test_label, lr_schedule, 5)
+
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    predict_train(model, train_data, train_label, test_data, test_label, lr_schedule, 6)
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(10, activation='softmax'))
+    model.fit(train_data, train_label, batch_size=batch_size, epochs=4, validation_data=(test_data, test_label))'''
 
     model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(32, 32, 1)))
     model.add(keras.layers.Flatten())
@@ -30,11 +53,11 @@ def schedule():
     model.fit(train_data, train_label, batch_size=batch_size, epochs=6, validation_data=(test_data, test_label), callbacks=[lr_schedule])
     freezing(model, 0)
 
-    model.layers[1] = keras.layers.BatchNormalization()
+    '''model.layers[1] = keras.layers.BatchNormalization()
     model.layers[2] = keras.layers.Flatten()
     model.add(keras.layers.Dense(10, activation='softmax'))
     model.fit(train_data, train_label, batch_size=batch_size, epochs=4, validation_data=(test_data, test_label), callbacks=[lr_schedule])
-    freezing(model, 1)
+    freezing(model, 1)'''
     model.summary()
 
 
@@ -99,5 +122,5 @@ def predict_train(model, train_dat, train_lb, val_dat, val_lb, lr, freeze):
     model.pop()
 
 
-# schedule()
-cascade_network()
+schedule()
+# cascade_network()

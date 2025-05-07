@@ -46,10 +46,13 @@ def main():
     # todo: Maybe an Approach über Keras? -> Yes, of course!
     # todo: Digraph test
 
-    # model.add_layer(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros').to(device), 'relu')
+    model.add_layer(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros').to(device), 'relu')
     model.add_layer(1, 'flatten')
-    model.add_layer(torch.nn.Linear(1024, 10).to(device))
-    wf.workflow(model, epoch, device, mnist_train, mnist_val)
+    model.add_layer(torch.nn.Linear(32768, 8192).to(device))
+    wf.workflow(model, epoch, device, svhn_train, svhn_val)
+
+    model.add_layer(torch.nn.Linear(8192, 10).to(device))
+    wf.workflow(model, epoch, device, svhn_train, svhn_val)
     
     # model.add_layer(1, 'batch_norm', [torch.zeros(32), torch.ones(32)])
     '''model.add_layer(1, 'flatten')

@@ -1,16 +1,24 @@
 \documentclass[ngerman]{report}
 
+\usepackage[
+        bibencoding=utf8, 
+        style=alphabetic
+    ]{biblatex}
+
+\bibliography{bibliography}
+
 \title{Evaluierung von Transferlernen mit Deep Direct Cascade Networks}
 
 \author{Simon Tarras}
 
 \begin{document}
     \maketitle
+    \tableofcontents
     \chapter{Einführung}
         \section{Cascade Networks}
         Kaskadennetzwerke sind so aufgebaut, dass sie während sie 
         im Training sind wachsen und nur die neu hinzugekommenen 
-        Sachen traininert werden.
+        Sachen traininert werden. \cite{cascor}
         \section{Transferlernen}
         Transferlernen ist, wenn ein Neuronales Netzwerk von der 
         einen Sache vorlernt, um eine andere Sache besser zu 
@@ -31,4 +39,7 @@
     \chapter{Regression}
     Bei einer Regression kommt es dazu, dass das NN sich mithilfe 
     der Daten der korrekten Funktion annähert.
+
+    \chapter{Fazit}
+    \printbibliography
 \end{document}

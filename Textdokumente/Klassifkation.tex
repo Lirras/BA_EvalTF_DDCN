@@ -8,366 +8,181 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     
     Es soll TF mit Klassifikation durchgeführt werden. 
     Genutzt wird hier ein Domainwechsel, da die Datensätze gewechselt werden. 
-    Die genutzten Datensätze sind MNIST und SVHN. 
+    Die dafür vorgesehenen Datensätze sind Modified National Institute of 
+    Standards and Technology(MNIST) und Streetview House Numbers(SVHN). 
     Es gibt die Frameworks PyTorch und Keras, die ebenfalls miteinander 
     verglichen werden. 
     Der MNIST-Datensatz ist dabei die Source und der SVHN das Target. 
-    Um einen Vergleichswert zu haben wurden beide Netze auch allein gelöst. 
-    Es ist aufgefallen, dass die Daten, die keras bekommt, nicht stimmen können!
-    Keras ist generell schneller als PyTorch. 
-
-    Wenn die Daten allerdings stimmen, dann heißt es, dass SVHN deshalb so schlecht 
-    ist, weil es ein Grayscale erhalten hat und man es aber schaffen kann über TF 
-    eine bessere Performanz zu erzeugen als es möglich wäre mit dem Netz allein.
-
-    MNIST allein; Keras: 10\%; MNIST allein; PyTorch: 90\% 
-    SVHN allein; Keras: 19\%, Keras: 91\% (kerasloader; RGB); SVHN allein; PyTorch: 20\%
-    SVHN allein; Keras: 19\%(RGB)
-    Das Grayscaling ist nicht das Problem, sondern die Daten. 
-    Nach TF war nur das erste oder die ersten beiden Layer gut, danach wurde es 
-    schlechter.
-
-    Ausführung auf GPU klappt zurzeit nicht. Warum? Wahrscheinlich, 
-    weil das device in jedem Layer händisch bei deren Erstellung mitgegeben 
-    werden muss.
-    Wieso ist nach dem ersten Linearlayer die Accuracy über 8000\%?
-    Es fehlt das Reshape, damit es einen vernünftigen Vergleich 
-    zwischen dem Output und den Labeln geben kann.
+    Um einen Vergleichswert zu haben, wurden beide Netze auch allein gelöst. 
     
-    Wie kann ich es machen, dass es schneller geht bei mehreren Epochen 
-    und einem großen Netz? -> Auf GPU geht ja nicht.
-    Nicht Layerwise den Output berechnen, sondern bzgl. des gesamten Netzes.
+\section{Ergebnisse PyTorch}
+    MNIST ist sehr leicht zu lösen. Es reicht ein einzelnes Linearlayer bei keiner expliziten
+    Aktivierungsfunktion. Softmax wird automatisch von PyTorch hinzugefügt. 
+    Dies hat bei bereits einer Epoche eine Accuracy von etwa 80\% und kann bis auf 
+    90\% hoch gehen. 
+    Der MNIST-Datensatz wird verändert und bekommt ein Resize von 28x28 auf 32x32 Pixel, 
+    sowie ein CenterCrop Layer und eine Normalization in dem Pre-Processing. 
+    Dies ist deshalb notwendig, da beide Datensätze in derselben Form vorliegen müssen. 
+    Sonst müsste sich die Anzahl der Weights des bisherigen Netzes, die zu dem 
+    Zeitpunkt bereits gefreezt sind, bei dem TF ändern.
+    Es ist hier deshalb ein Upscaling der Daten, damit der andere Datensatz keine 
+    Informationen unnötig verliert.
 
-    Abspeichern zwischen den einzelnen Layern, damit die Trainingsphase 
-    schneller wird, muss mit Tensoren passieren, die nicht in einer Liste 
-    stehen. Dies geht aber nicht, da diese nicht gut ausgelesen werden können. 
-    Sprich: In der nächsten Iteration gar nicht, bzw. sie sind dann nicht 
-    mehr die benötigten Tensoren.
+    SVHN hat als beste Accuracy nur knapp 40\%, aber das Training dazu dauert 
+    sehr lang (2LayerNetwork: 1 Epoche: ca. 30min, also ca. 3std.). 
+    %Die einzige Möglichkeit ein 
+    %besseres Ergebnis zu erreichen, ist positive TF. 
+    Der Datensatz bekommt als Pre-Processing ein GrayScaling, CenterCrop und Normalization. 
+    Die Vermutung, dass dieser Datensatz deshalb so schlecht funktioniert, weil es 
+    ein GrayScaling gab, ist falsch gewesen. Das hat keine Auswirkungen. 
+    
+    Ohne Normalization ist das Ergebnis sogar etwas schlechter. 
 
-    Target Layer muss 3-Dimensional sein, wenn die Batch-Size größer als 1 
-    ist und auch wenn ein multi-Class-Loss wie Negative Log-Likelihood-Loss 
-    genutzt wird. Wie bekommt man das hin?
-    Mit einem Reshape der Daten, da es nur mit dem passendem Format klappt. 
+    Auffällig bei PyTorch ist, dass die Berechnungszeit sehr lange dauert.
+    Ebenso ist es so, dass der Shape aller Tensoren passend auf den gesetzt wird, der 
+    als letztes in einer Epoche betrachtet wird, was zur Folge hat, dass sie ungewollt 
+    kleiner werden, wenn die Batchsize kein Teiler der Anzahl der Datansamples ist. 
 
-    Aber NLLLoss ist schlecht im Verhältnis zu CrossEntropyLoss, weil 
-    CrossEntropyLoss in einem Fall NLLLoss und logSoftmax gemeinsam macht.
-    Es ist bisher die sinnvollste Loss function.
+    Die PyTorch Netze werden auf der GPU ausgeführt. Dem Modell kann nicht direkt 
+    Layer hinzugefügt werden, sondern es muss über eine Iterable-Variable gehen, 
+    die in der Forward-Methode durchgegangen wird. Hier ist dies eine Liste. 
+    Da nicht jedes Layer direkt in die Liste hinzugefügt werden kann, ergibt sich, 
+    dass diese nicht gefreezt werden können. Dies betrifft allerdings nur Layer, die 
+    keine Weights haben. 
 
-    Mache lieber eine Batch Size, die auf die Daten aufgeht. Sonst verändert 
-    sich der Shape der Tensoren nach dem letzten Durchlauf der Epoche und ist 
-    ein anderer Input für das nächste Layer.
+    Die Update Regeln sind Stochastic Gradient Descent oder Adam mit ein Layer 
+    Backpropagation und freezing weights.
 
-    TF mit Domainwechsel ist nur dadurch möglich, dass am Anfang ein 
-    Identity-Layer genutzt wird, welches durch ein Conv ersetzt wird, 
-    damit die Shapes der Inputs der verschiedenen Datasets zu dem 
-    Netzwerk passen.
-
-    Hier wird aber noch einer Möglichkeit gesucht, die Größe der 
-    Datensätze so umzubauen, dass es mit der Batch Size glatt aufgeht.
-
-    Freezing wird benötigt, was aber sehr leicht umsetzbar ist, indem 
-    der required grad auf False gesetzt wird. Dies sorgt dafür, dass 
-    es für die Gradientenberechnung für die neuen Weights die Lernrate 
-    auf Null gesetzt ist, sodass es kein Update mehr gibt.
-
-    Direct Cascade funktioniert bereits. Auffällig dabei ist, dass 
-    die Performanz des Netzes am Anfang des Trainings des neuen Layers 
-    deutlich schlechter wird, dann aber sehr schnell sich dem vorherigen 
-    Wert angleicht. Aber es wird mit einem neuen Layer insgesamt nicht 
-    signifikant besser, sondern höchstens Minimal mit 2 Prozent maximal. 
-    Es kann sogar passieren, dass es dadurch schlechter wird.
-
-    Es gibt bei dem Ansatz über PyTorch und der größer werdenden forward-Methode 
-    das Problem, dass das Training im Gegensatz zur Erwartung nicht wirklich 
-    schnell ist. Dies liegt wahrscheinlich daran, dass die Daten durch das gesamte 
-    bisherige Netz durchgegeben werden und auch daran, dass Backpropagation 
-    benutzt wird und dadurch durch das gesamte Netz gegangen wird, obwohl es 
-    nichts mehr an den Weights der vorherigen Layern ändert, da diese gefreezt 
-    sind. 
-
-\section{Datasets}
-
-    Es wird ein TF mit Domainwechsel durchgeführt mittels Veränderung des 
-    Datensatzes. Der Source-Datensatz ist der Modified National Institute 
-    of Standards and Technology dataset (MNIST) und der Target-Datensatz 
-    der Streetview House Numbers (SVHN). Der MNIST liegt in 28x28 vor und 
-    erhält ein Resize auf 32x32, da SVHN in der letzteren Größe vorliegt. 
-    Es wird größer gemacht, da keine Features verloren gehen sollen.
-
-\section{Inversive Cascade TF Network}
-
-    Der erste Versuch ist nur, um zu schauen, ob es überhaupt funktioniert. 
-    Das Ergebnis ist allerdings Negative TF, da die Accuracy schlechter wude. 
-    Das Netz wurde mit PyTorch, stochastic Gradient Descent, Optimizer und 
-    Backpropagation mit Freezing Weights programmiert. 
-
-    Genutzte Datensätze waren MNIST und SVHN. Trainiert wurde wie bei einem 
-    Cascade Network üblich Layer für Layer mit jeweils einer Epoche.
-
-    Da es bei den Reshape-Layern ein Problem damit gibt, wenn die Batch Size kein Teiler 
-    von der Länge der Datensätze ist, werden in den Epochen alle Daten die im letzten Batch 
-    sind, nicht beachtet. Die Größen der Tensoren muss passend sein und genau die wird 
-    dadurch verändert, wenn es nicht aufgeht. Dies liegt aber daran, dass Flatten-Layer 
-    erst später gemacht werden.
-
-    Die Layer waren wie folgt: 
+\subsection{Inverses Cascade TF}
+    Dieses Netz hat eine Accuracy nach TF, die bei 9.5\% liegt und ist damit das 
+    Schlechteste Ergebnis überhaupt. MNIST liegt in (1, 28, 28) vor, während 
+    SVHN in (3, 32, 32) vorliegt. Der Gedanke war, zuerst MNIST zu lernen und dann 
+    vorne ein Pre-Processing Layer einbauen, welches SVHN auf den passenden Shape 
+    umbaut. 
+    Es ist wie folgt aufgebaut: 
     \begin{enumerate}
         \item Identity $\rightarrow$ Conv2D 2 (3, 1, 5)
-        \item Reshape 1 (-1, 784)
+        \item Reshape 1
         \item Linearlayer 1 (784, 784)
-        \item Reshape 2 (100, 1, 28, 28)
+        \item Reshape 2
         \item Conv2D 1 (1, 1, 3)
-        \item Reshape 3 (-1, 784)
+        \item Reshape 3
         \item Linearlayer 2 (784, 10)
     \end{enumerate}
+    Das TF ist hier also das hinzufügen von Conv2D 2. Davor besitzt dieses Netz eine 
+    Accuracy von 88.0\% und stürzt dann auf 10\% in der ersten Epoche ab und wird pro 
+    Epoche noch schlechter. Bei diesem Netz ist es auch so, dass es nach TF nur im 
+    Conv2D-Layer weight-updates gibt. Hier liegt Negative Transfer vor. 
+    Dieses Ergbenis hat mehrere Gründe. Erstens sind die Datensätze nicht
+    aufeinander abgestimmt und es wird mithilfe eines Convolutionlayer versucht die 
+    3-Kanäligen RGB-Daten zu 1-Kanäligen Daten zu machen, was das genaue Gegenteil ist, 
+    was Convolutionlayer tun sollten, nämlich mehr Kanäle hinzufügen. Zweitens wird 
+    zuerst auf MNIST gelernt und die Weights, die am Output des Netzes anliegen, die 
+    dann gefreezt sind und auf MNIST laufen, sodass diese die SVHN-Daten nicht gut 
+    verarbeiten können. Dadurch ist auf MNIST Overfitting passiert. Und dann hat 
+    das Lernen der Gewichte im ersten Layer nur geringe Auswirkungen auf die Performanz 
+    des Netzes.
 
-    Das Identity-Layer wird deshalb gebraucht, da die Datensätze nicht 
-    dieselben Größen haben und dieses durch ein Faltungslayer ausgetauscht 
-    werden muss.
+\subsection{Größe des TargetNets}
+    Wenn es unbekannt ist, wie das Target gelernt werden kann, dann sollte das 
+    Netz nach dem TF sehr klein sein, denn sonst verliert sich der Einfluss der Source
+    und die Performanz gleicht sich dem an, die ohne TF gewesen wäre.
 
-    Reshape 1 ist dafür da, die Daten für den Input des Linearlayers vorzubereiten. 
-    Die Daten liegen in einem 4D-Tensor vor und müssen aber ein 2D-Tensor sein. 
-
-    Linearlayer 1 ist die erste Berechnung mit sich aktualisierenden Gewichten. 
-    Während dem Training hat das erste Layer bereits eine recht hohe Accuracy. 
-    Dabei hat dieses Layer genauso viele Input-Kanäle wie Output-Kanäle. 
-    Es würde sonst zuviel Information verloren gehen, die die späteren Layer benötigen.
-
-    Reshape 2 bereitet die Daten auf das Convolutionlayer vor, da dieses die Daten 
-    in einem 4D-Tensor benötigt.
-
-    Convolutionlayer 1 hat einen input- und einen output-Kanal und einen 3x3-Kern 
-    mit einem zero-Padding von 1, damit sich der Shape der Tensoren nicht verändert. 
-
-    Reshape 3 macht aus dem 4D-Tensor wieder ein 2D-Tensor.
-
-    Linearlayer 2 hat nur so viele Output-Kanäle, wie es Klassen gibt, denn es 
-    ist das letzte Layer. 
-
-    Dies ist alles noch ohne TF.
-    Convolutionlayer 2 fügt das vorne im Netz hinzu, da es benötigt wird, die 
-    Daten von SVHN von 32x32 auf 28x28 herunterzubrechen. Dafür wird das Identity-Layer 
-    entfernt. Nach einer Trainingsepoche ist die Accuracy sehr schlecht.
-
-    Das Netz mit dem Convolutionlayer 2 und den anderen Daten ist also deutlich schlechter 
-    als auf dem Source-Datensatz, aber es ist besser als wenn ein Convolutionlayer ohne Vorarbeit 
-    auf die Daten angewendet wird.
-
-    Wenn mehr Epochen genutzt werden, wird die Performanz nach dem TF manchmal 
-    noch schlechter. Damit sich hier noch etwas ändert muss das Erste Layer noch 
-    einmal mit den neuen Daten allein trainiert werden.
-
-    Die Idee einem fertigen Kaskadennetzwerk das erste Layer zu ersetzen um TF zu machen, also 
-    dem Netz für TF vorne Layer hinzuzufügen, führt zu einer deutlichen Verschlechterung und sollte 
-    unterlassen werden. Da der Target-Datensatz generell eine recht schlechter Accuracy 
-    vorweist, ist ein Fall der Accuracy recht gewöhnlich. Hier geht es aber unter die 10\%-Marke, 
-    die mit jedem anderen Versuch überboten wurde. SVHN alleine hat eine Accuracy von circa 17\% und 
-    es sollte mindestens diese haben, damit das Ergebnis annehmbar ist.
-
-    Hier ein Beispiel der Werte des Netzes:
-
-    \begin{table}[h!]
-        \begin{tabular}{l|l|l|l}
-            Layer & Epochen & Accuracy & Loss \\
-            \hline
-            Linear 1 & 1 & 82.6 & 0.98 \\
-            & 2 & 85.0 & 0.68 \\
-            & 3 & 86.2 & 0.58 \\
-            & 4 & 86.6 & 0.52 \\
-            & 5 & 87.2 & 0.49\\
-            Conv 1 & 1 & 87.2 & 0.40 \\
-            & 2 & 87.1 & 0.40 \\
-            & 3 & 87.1 & 0.40 \\
-            & 4 & 87.1 & 0.40 \\
-            & 5 & 87.2 & 0.40 \\
-            Linear 2 & 1 & 86.8 & 0.45 \\
-            & 2 & 87.7 & 0.40 \\
-            & 3 & 88.0 & 0.39 \\
-            & 4 & 87.6 & 0.39 \\
-            & 5 & 88.0 & 0.37 \\
-            Conv 2 & 1 & 10.8 & 2.75 \\
-            & 2 & 9.6 & 2.77 \\
-            & 3 & 9.6 & 2.96 \\
-            & 4 & 9.4 & 2.94 \\
-            & 5 & 9.4 & 3.02 \\
-            & 6 & 9.5 & 3.12 \\
-        \end{tabular}
-    \end{table}
-
-    Die Idee das Conv 2 vorne anzufügen, führt dazu, dass sich das Netz verschlechtert. 
-    Bei mehreren Epochen wird es ebenfalls erst einmal schlechter.
-
-    % Wieso bringen einfache Conv Layer nichts?
-
-    Convolutionlayer sind hier aber deshalb so schlecht, weil sie alle nur einen Output-
-    Channel haben und sie pro Output-Channel nur ein Feature lernen können.
-    Also werden mehrere verwendet werden müssen und diese dann weiter verarbeitet. 
-    Da es hier kein Pooling oder Flatten-Layer gibt, werden hier viele Informationen 
-    einfach verloren.
-
-    % Warum ist es overall so schlecht?
-
-    Das dürfte daran liegen, dass Convolutionlayer aktuell noch sehr schlecht generell sind. 
-    Aber auch daran, dass die Gewichte hinten im Netz genauer sein müssen und diese nicht 
-    geupdatet werden. 
-
-\section{Lin4Conv1 Compose Database Network}
-    Datensatzwechsel von MNIST zu SVHN mit Reshape und Database-Compose von SVHN. 
-    Es ist alles ähnlich zu dem vorherigen, bis auf: 
-    Das erste Layer wird nicht ausgetauscht. Am Ende wird ein Linearlayer hinzugefügt. 
-    Die Daten des SVHN-Datensatzes liegen in RGB vor und haben normalerweise 3 Channels. 
-    Diese werden zusammengefasst und zu einem Channel verändert.
-
-    Die Layer sind wie folgt: 
+\subsection{Stabilität des SourceNets}
+    Das SourceNet kann bereits eine Stabilität aufweisen, wenn es größer als unbedingt 
+    benötigt wird, ist, was zur Folge hat, dass die Accuracy vom TargetNet den Wert nach dem 
+    ersten Layer nach dem TF nicht mehr unterschreitet.
+    Aber, wenn das SourceNet zu groß ist, kommt es zu Overfitting. Dadurch wird nach 
+    dem TF das TargetNet nicht mehr besser, sondern bleibt nahezu konstant.
+    
+\subsection{Weitere Beispiele}
+    Das Lin4Conv1 Compose Database Network ist ähnlich zu dem Inversen, aber das 
+    erste Layer bleibt ein Identity-Layer. Also so: 
     \begin{enumerate}
         \item Identity
         \item Linearlayer 1 (784, 784)
         \item Conv2D (1, 1, 3)
         \item Linearlayer 2 (784, 784)
-        \item TF
         \item Linearlayer 3 (784, 10)
     \end{enumerate}
+    Hier werden die Daten bereits während 
+    ihres Ladens bereits so verarbeitet, dass sie zueinander passen. Der SVHN-Datensatz 
+    erhält ein downscaling auf die Shape des MNIST-Datensatzes. Zudem wird aus den 
+    RGB-Daten von SVHN Grayscale-Daten gemacht. Dieses Netz hat aufgrund des Convolutionlayer 
+    eine recht hohe Stabilität. TF wird hier zwischen Linearlayer 2 und 3 durchgeführt. 
+    Vor dem TF hat dieses Netz eine ACC von 87.6\% und danach eine von 21.2\%. Dies ist sehr 
+    schlecht, aber immer noch besser als ein solches Conv2D-Layer wie hier alleine mit SVHN. 
+    Dieses hat nur 3\%. Aber SVHN mit nur einem Linearlayer allein hat bereits einen Wert 
+    von 22.7\%. Diesen gilt es zu übertreffen.
+    Ohne das Conv2D-Layer hat das Netz 19.6\%, was nur Geschwindigkeit bringt. 
+    Wenn das Linearlayer mehr Outputfeatures erhält, wird dieses Netz noch schlechter. 
+    Das dieses Netz so schlecht ist, liegt daran, dass ein Convolutionlayer normalerweise 
+    Channels hinzufügt, was hier nicht passiert und somit die Daten nur reduziert werden.
 
-    Das Ergebnis ist, dass das Netz vor dem TF eine Accuracy von 87.6\% hatte. Nach 
-    dem TF allerdings eine von 21.1\%. Das ist sehr viel schlechter, aber es ist besser als 
-    wenn ein einfaches Conv2D-Layer ohne weitere Verarbeitung genutzt wird. Das landet 
-    nämlich bei circa 3\%. Da bei diesem Netz ein solches Conv2D-Layer im ersten Teil 
-    genutzt wird, liegt es wahrscheinlich an jenem Layer, jedoch ist es mit TF schon 
-    deutlich besser als ohne. Allerdings kann dies genauso gut an dem vorhergegangenen 
-    Linearlayer liegen, dass es doch so gut ist. Ein weiterer Grund weshalb es recht schlecht 
-    sein könnte ist der Fall, dass der letzte Linearlayer nur noch 10 Input-Features hat.
+    Das 2LayerLinear ist ein zwei-Layer Netz mit nur Linearlayern. Das erste trainiert 
+    mit MNIST, das zweite mit SVHN bei jeweils fünf Epochen. Die Accuracy vor TF ist: 
+    90.4\%, während die nach TF: 22.4\% ist. Hier wurde MNIST geupscaled, anstatt die Scale 
+    von SVHN zu verändern. Daraus folgt, dass es nur einen minimalen Unterschied gibt.
 
-    Wenn das Conv2D-Layer rausgenommen wird, passiert folgendes: 
-    Vor dem TF eine Accuracy von 87.9\% und danach eine von: 19.5\%. Also hat das Entfernen des 
-    Conv2D-Layers nichts verändert. Dies liegt daran, dass es zu wenige Features als Input 
-    für das letzte Linearlayer gibt und dieses deshalb pro Epoche immer schlechter wird. 
-    Dieses Verhalten gibt es auch ohne TF. 
-
-    Die Features für die Linearlayer mehr machen ergibt: 
-    Vorher: 87.9\%, Nachher: 10.7\%. Das Netz hat vermutlich Overfitting, weil das 
-    letzte Layer zu mächtig ist und zu viele Veränderungen durchführen kann. 
-
-    Vergleichswert: SVHN ohne TF mit einem Linearlayer hat Accuracy von: 22.7\%.
-    Daraus folgt, dass das erste Netz tatsächlich bereits ein recht gutes TF vollbracht hat. 
-    Wieso ist aber dieser Datensatz so schlecht mit einem Linearlayer zu lösen?
-
-    Die Idee, dass es eventuell am Compose liegt stimmt nicht wirklich, aber es wird besser, 
-    wenn Source- und Target-Datensatz beide ein Compose haben.
-    Nachdem die Testfunktion repariert wurde, sind die Ergebnisse minimal besser. 
-
-    Das Resultat ist, dass dieses Netzwerk eine Accuracy von 30.2\% hat, was sehr viel 
-    besser ist als ohne TF.
-    Das ist ebenfalls besser als das Netz bei dem nur der SVHN-Datensatz verwendet wurde. 
-    Hier bekam der SVHN-Datensatz ein downscaling, trotz der Gefahr irgendwelche Features 
-    zu verlieren. Es scheint jedoch, dass es besser ist als das upscaling des im kleineren 
-    Format vorliegenden Datensatzes. Es hat eine bessere Accuracy und ist schneller, weil 
-    es weniger lernbare Features gibt.
-
-\section{2LayerLinear}
-    Ein Zwei-Layer Netz mit nur Linearlayern. Das erste trainiert mit MNIST, das zweite 
-    mit SVHN bei jeweils fünf Epochen. Ergebnis: Nach MNIST ACC: 90.4\%; Nach SVHN: ACC: 22.4\%. 
-    Es gibt hier nicht wirklich einen Unterschied, ob MNIST ein upscaling oder SVHN ein downscaling 
-    bekommt.
-
-\section{3Conv3Linear}
-    Convolutionlayer laufen jetzt und werden sehr schnell sehr viel besser je mehr hintereinander 
-    gesetzt werden, aber sobald auf Linearlayer gewechselt wird, wird es wieder etwas schlechter.
-
-    Aber dieses Netz hat das erste Mal tatsächlich positive TF. Das Netz mit dem ersten 
-    positiven TF hat die Layer und eine ACC bei einer Epoche: 
+    Das 3Conv3Linear ist das erste Netzwerk mit korrekten Convolutionlayern mit Max-Pooling 
+    nach jedem Convolutionlayer. Die Prozentwerte dahinter sind die Accuracy-Zahlen 
+    nach einer Epoche. Es ist wie folgt aufgebaut: 
     \begin{enumerate}
-        \item Conv2D (1, 4, 7); ACC: 5.8\%
-        \item Conv2D (4, 16, 5); ACC: 26.2\%
-        \item Conv2D (16, 64, 3); ACC: 32.4\%
-        \item Linear (64, 64); ACC: 22.5\%
-        \item Linear (64, 64); ACC: 9.3\%
-        \item Linear (64, 64); ACC: 10.6\%
+        \item Conv2D 1 (1, 4, 7); 5.8\%
+        \item Conv2D 2 (4, 16, 5); 26.2\%
+        \item Conv2D 3 (16, 64, 3); 32.4\%
+        \item Linear 1 (64, 64); 22.5\%
+        \item Linear 2 (64, 64); 9.3\%
+        \item Linear 3 (64, 64); 10.6\%
         \item TF
-        \item Linear (64, 64); ACC: 19.6\%
+        \item Linear 4 (64, 10); 19.6\%
     \end{enumerate}
+    Wenn fünf Epochen genutzt werden, dann ist die Accuracy vor TF bei 41.3\% und danach bei 
+    20.2\%. Bei einer Epoche gibt es zwar positive TF, aber das ist Zufall gewesen, da 
+    das Netz vorher so schlecht war. 
 
-    Mit fünf Epochen ist die Accuracy vor TF bei 41.3\% und danach bei 20.2\%. 
-    Das positive TF war also Zufall und dadurch bedingt, dass das Netz bei nur einer 
-    Epoche sehr schlecht war.
-
-\section{Conv2DMidTF}
-    Vier Convolutionlayer und in der Mitte von ihnen TF.
-    Aufbau mit ACC nach 5 Epochen: 
-    \begin{enumerate}
-        \item Linear (1024, 1024); ACC: 89.8\%
-        \item Conv2D (1, 8, 5); ACC: 27.4\%
-        \item Conv2D (8, 32, 5); ACC: 39.7\%
-        \item TF
-        \item Conv2D (32, 64, 3); ACC: 18.0\%
-        \item Conv2D (64, 100, 3); ACC: 19.8\%
-        \item Linear (100, 100); ACC: 19.6\%
-        \item Linear (100, 100); ACC: 19.6\%
-        \item Linear (100, 100); ACC: 19.5\%
-    \end{enumerate}
-    Auch hier ist es wieder so, dass das SVHN-Netz nicht besser wird mit TF.
-
-\section{CNN with SVHN Alone}
-    Der Aufbau dieses Netzes stammt von: https://www.kaggle.com/code/dimitriosroussis/svhn-classification-with-cnn-keras-96-acc
+    Das Conv2DMidTF-Netzwerk ist dazu da zu überprüfen, ob ein TF im Convolution-Block sinnvoll ist, 
+    was nicht der Fall ist, da MNIST nicht gut mit Convolutionlayern ist. Das Ergebnis sind 
+    auch hier 19.5\%. Dies dürfte aber hauptsächlich daran liegen, dass die Convolutionlayer im 
+    Verhältnis sehr wenige Channels aufmachen, so wie bei allen Netzen bei denen das vorkam. 
     
-    Interessanterweise ist dieses Netz nicht besser als alle bisherigen TF-Netze, obwohl es ohne TF allein 
-    trainiert wird. Es hat eine Accuracy von circa 17\%, obwohl es quasi aus dem Netz kopiert ist. Dieses Netz ist 
-    kein Direct Cascade, da Batch Normalization zwischen 
-    den Layern vorgenommen wird. Trainingszeit ist bereits unglaublich hoch bei nur 5 Epochen.
+    Das LinNet with Dropout and ReLU ist auf PyTorch extrem schlecht. Es kommt nicht über 20\% hinaus, 
+    wenn man es als komplettes Netzwerk lernt. Das liegt daran, dass die Features im ersten 
+    Layer erweitert werden und es Dropout gibt. Dropout kann die Accuracy um 20\% verringern. 
+    Dieses Netz ist das Erste, welches mit dem Keras-Framework verglichen wurde und Keras hat 
+    eine erheblich höhere Accuracy bei deutlich schnellerer Trainingszeit. In diesem Fall hat 
+    Keras um die 75\%, was aber an der Art des Ladens der Datensätze liegt.
 
-\section{Schnelleres Training V1}
-    Der Datensatz wird zwischengespeichert und das Netzwerk wird von dem Zeitpunkt 
+\subsection{Schnelleres Training}
+    Obwohl es definitiv Cascade Networks sind und nur die Gewichte, der neuen Layer gelernt 
+    werden, ist PyTorch sehr langsam in der Berechnung und es sollte irgendeine Möglichkeit 
+    geben, diese zu Erhöhen.
+    Die Idee ist, den verarbeiteten Datensatz zwischenzuspeichern und das Netzwerk wird von dem Zeitpunkt 
     erst aufgerufen, ab dem es neue Layer hat. Der zwischengespeicherte Datensatz kommt 
     von genau dem davorgehenden Zeitpunkt und dient als neuer Input. Das funktioniert nicht, 
     da der Datensatz nach einem Layer neu geschrieben werden muss. Dies ist bei einem 
     einfachen Layer bereits circa 3 Sekunden langsamer als der normale Versuch. Zudem gibt 
     es keine wirkliche Möglichkeit die weights zu speichern, sowie das Übertragen selbst 
-    geht nur als neuer Datensatz. Dies ist aber so umständlich, dass dies nicht versucht 
-    wurde. 
+    geht nur als neuer Datensatz. Dies ist aber so umständlich und wurde nur über Numpy-Arrays versucht. 
+    Die Rechenzeiten der Transformationen, die dafür benötigten werden ist jedoch so lang, dass es 
+    sinnlos ist, dies zu versuchen.
 
-\section{LinearNet with Dropout and ReLU}
-    Dieses Netz wird bei 20 Epochen trainiert. Da die Verschnellerung nicht geklappt hat, 
-    wird das recht lange dauern. Mit dem Dropout ist aber eine deutlich schlechtere Accuracy 
-    zu erwarten als ohne. Es wird hier wieder stochastic Gradient Descent verwendet. 
-    Das Netz sieht wie folgt aus mit ACC nach 20 Epochen: 
-    \begin{enumerate}
-        \item Linear (1024, 2048); ACC: 14.8\%; Best: 15.1\% nach 17 Epochen
-        \item Linear (2048, 1024); ACC: 21.0\%; Best: 21.0\% nach 18 Epochen
-        \item Linear (1024, 400); ACC: 15.8\%; Best: 16.7\% nach 17 Epochen
-        \item TF
-        \item Linear (400, 300); ACC: 16.8\%; Best: 17.5\% nach 14 Epochen
-        \item Linear (300, 200); ACC: 17.5\%; Best: 18.3\% nach 19 Epochen
-        \item Linear (200, 10); ACC: 17.1\%; Best: 17.5\% nach 19 Epochen
-    \end{enumerate}
-    Das Netz ist halt schlecht. Es liegt nicht einmal an Overfitting, da es in jeder Epoche 
-    konstant schlecht ist.
-    Aber dieses Netz wird nach dem TF tatsächlich besser, bzw. bleibt in etwa gleich. 
-    Es hat also kein negatives TF. Trotzdem ist es nicht gut. Mögliche Ursachen: 
-    Compose von dem MNIST-Datensatz, Erweiterung der Features im ersten Layer, Dropout. 
-    Aus Erfahrung bereits bekannt: Dropout kann zu einer um 20\% schlechteren Accuracy 
-    führen. 
-    Allerdings war meistens, wenn mit MNIST und SGD gearbeitet wurde, die Accuracy nach dem 
-    ersten Linearlayer bei um die 80-90\%. 
-    Am Ende ist wohl ein wenig Overfitting doch drin, weil es nicht mehr besser wurde durch 
-    das letzte Layer. Es kann nicht wirklich an der drastischen Reduktion der Features liegen, 
-    da dies bereits in Layer 2 gemacht wurde und es dadurch sehr viel besser wurde. Dazu kommt, 
-    dass die Performanz erst im Layer nach der Reduktion nachlässt.
 
-    TF bringt von MNIST auf SVHN nur da etwas, dass es bei dem Startlayer des Netzes eine 
-    höhere Accuracy gibt, aber das Endergebnis ist bei jeder Variante gleich. Kann es sein, dass 
-    das Netz bei jedem Layer aktuell komplett neu berechnet wird mit allen Updates der Weights?
-    Bei einer Ausführung des kompletten Netzes mit Lernen hat es direkt nach einer Epoche eine 
-    höhere Accuracy als das Cascade-TF Netzwerk.
+\section{Ergebnisse Keras}
+    Keras wird deshalb genutzt, weil es sowohl schneller als auch besser ist als PyTorch. 
+    Dieses Framework nutzt als Backend Tensorflow.
+    Es gibt zwar die Aussage, dass die PyTorch Dataloader Objekte als Input für ein 
+    Keras Modell genutzt werden kann, doch dies ist nicht möglich, da die für die Labels 
+    erwartete Shape bei den Dataloader Objekten nicht vorhanden ist. Es gibt eine leere 
+    Dimension die aber mit der Anzahl der Klassen gefüllt werden muss. 
+    Dies liegt auch daran, dass das Output-Layer bei Keras mit im Modell enthalten ist. 
 
-    Das Ergebnis mit dem Keras-Framework ist deutlich besser. Dieses ist aber auch das komplette 
-    Netzwerk und kein Kaskadennetzwerk. Wahrscheinlich ist es deshalb so viel besser.
-    Beim Vergleich zwischen den beiden Frameworks PyTorch und keras kommt es dazu, dass 
-    PyTorch bei 20\% stehen bleibt, keras jedoch bei circa 75\% ist. 
-
-    PyTorch: Schlechte Performanz. Das liegt wahrscheinlich daran, dass es zwischen den 
-    Layern nichts gerlernt wird.
-    Keras: Dateninput von PyTorch-Dataloadern nicht möglich, da der Shape nicht korrekt 
-    übernommen wird. Daten als Numpy-Arrays laden möglich, aber das benötigte Grayscaling 
-    von SVHN noch nicht ausgetestet. Zudem dauert PyTorch viel länger.
-    SVHN hat deshalb eine so schlechte Performanz, weil es in ein Grayscale umgewandelt wurde 
-    und damit sehr viele Informationen verloren gegangen sind. Es ist egal, ob PyTorch oder 
-    Keras genutzt wird, es kommt nicht über 20\% hinaus, es sei denn es gibt positive TF. 
+    Die Daten der Dataloader Objekte können aber so umgebaut werden, dass sie als Input 
+    für Keras funktionieren, aber es läuft nicht so gut. Dann gibt es folgende Werte für die Netze: 
+    MNIST allein hat nur 10\%, SVHN allein hat nur 19\%, SVHN in RGB hat auch nur 19\%. 
+    Das ist schlechter als PyTorch, aber es gibt noch die zu Keras gehörende Möglichkeit die 
+    Daten zu laden. Dies geht dann über numpy-Arrays, die zuerst ein wenig umgebaut werden. 
+    Die Channels müssen hinten stehen, die Bilder müssen auf 32x32 ein upscaling bekommen und 
+    die RGB-Daten müssen zu GrayScale. Wenn dies alles aber gemacht wurde, hat Keras folgende Werte: 
+    MNIST allein: 98\% \cite{MNIST_Network} und SVHN allein: 91\% \cite{SVHN_Network}. 
+    Zusätzlich ist Keras deutlich schneller. 
