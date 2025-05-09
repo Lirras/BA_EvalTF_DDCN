@@ -186,3 +186,92 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     die RGB-Daten müssen zu GrayScale. Wenn dies alles aber gemacht wurde, hat Keras folgende Werte: 
     MNIST allein: 98\% \cite{MNIST_Network} und SVHN allein: 91\% \cite{SVHN_Network}. 
     Zusätzlich ist Keras deutlich schneller. 
+
+    Bei allen Keras-Netzen wird das Outputlayer selbst mit ins Netz hinzugefügt. Daraus 
+    resultiert, dass dieses Layer ständig in das Netz hinzu kommt und im nächsten Schritt 
+    wieder entfernt. Es handelt sich hierbei um ein Linearlayer mit Softmax-Aktivierungsfunktion. 
+
+\subsection{Keras Netzwerke}
+    \begin{enumerate}
+        \item Dense 1 (1024 Nodes)
+        \item Conv2D 1 (1, 32, 3)
+        \item Batch Normalization und TF
+        \item Conv2D 2 (32, 32, 3)
+        \item Dense 2 (10 Nodes, Outputlayer)
+    \end{enumerate}
+    Dieses Netz hat eine Accuracy von 48.5\%. Da es vor dem TF bei 98.2\% war und direkt danach 
+    bei 22.6\%, scheint es zu Negative TF gekommen zu sein, was nicht der Fall war. 
+    Es ist allerdings deshalb so gut, weil es sehr viele 
+    Channels durch die Convolutionlayer gibt. Mit Keras geht das, weil es schneller berechnet 
+    wird. Ein PyTorch-Netz mit so vielen Channels benötigt pro Epoche in etwa eine halbe Stunde, 
+    während es bei Keras wenige Sekunden sind.
+    Dieses Netz wurde zudem nur mit ein bis vier Epochen trainiert, was nur deshalb funktioniert, 
+    weil es als Kaskadennetzwerk trainiert wurde. Des Weiteren ist es das Netz, was eigentlich 
+    MNIST löst.
+    Es hat in etwa 4 Millionen Parameter.
+    Bei TF in einem beliebigen Layer passiert folgendes: 
+
+    \begin{table}[h!]
+        \begin{center}
+            \caption{ACC Vergleich}
+            \label{tab1:Table}
+            \begin{tabular}{l|l|l|l}
+                TF Layer & ACC Ende & ACC vorher & ACC nachher \\
+                Ohne (Dense 1) & 41.4\% & Kein Wert & 24.3\% \\
+                Conv2D 1 & 50.3\% & 97.9\% & 23.3\% \\
+                Batch Norm & 45.7\% & 98.2\% & 21.8\% \\
+                Conv2D 2 & 47.5\% & 98.3\% & 23.1\% \\
+                MaxPool & 44.2\% & 98.2\% & 22.2\% \\
+                Dense 2 & 39.3\% & 98.3\% & 25.4\% \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    Da dieses Netz auf SVHN ohne TF nur bei 41.4\% ist, ist alles mit einer höheren Accuracy 
+    positive TF, was bei allen bis auf Batch Norm und Dense 2 vorkommt. Dies liegt bei Dense 2 
+    wahrscheinlich daran, dass es auf MNIST Overfitting ist und es zu wenig auf SVHN trainiert wird. 
+    Alle Features, die Layer übergreifend gelernt werden, können hier in der Mangelung von Layern 
+    nicht gelernt werden. Dies leigt daran, dass das Netz direkt nach dem TF immer sehr schlecht ist 
+    und dann erst besser wird. Diese Verbesserung ist allerdings schneller als ohne TF. Zudem 
+    sind die Werte leicht unterschiedlich zwischen den einzelnen Durchführungen, weil der 
+    Datensatz gemischt wird. 
+    In diesem Fall sollte nachdem mit MNIST bereits nach einem Layer eine Accuracy von über 90\% 
+    erreicht wurde, direkt TF gemacht werden, damit das Netz die Features davon lernt und keinen 
+    großen Fokus auf die Source legt. 
+
+
+    \begin{enumerate}
+        \item Conv2D (1, 32, 3)
+        \item MaxPool (2, 2)
+        \item Conv2D (32, 64, 3)
+        \item MaxPool (2, 2)
+        \item Dense (10 Nodes, Outputlayer) und TF
+    \end{enumerate}
+    Dieses Netz läuft deutlich besser. Es hat eine Accuracy von 72.2\%, wenn mit 4 Epochen im 
+    letzten Layer gelernt wird. Wenn mit nur einer Epoche gelernt wird, hat es einen Wert von 
+    50\%. 
+    Dieses Netz hat vor dem TF eine Accuracy von 95.1\%. Es ist das Beste TF-Netz, obwohl es 
+    immer noch deutlich schlechter auf SVHN ist als ohne TF. Die Vermutung ist, dass auf MNIST 
+    zu viel trainiert wurde und dort Overfitting entstanden ist. 
+
+    \begin{table}[h!]
+        \begin{center}
+            \caption{ACC Vergleich}
+            \label{tab2:Table}
+            \begin{tabular}{l|l|l|l}
+                TF Layer & ACC Ende & ACC vorher & ACC nachher \\
+                ohne (Conv2D 1) & 78.2\% & Kein Wert & 61.2\% \\
+                MaxPool & 55.7\% & 91.4\% & 41.6\% \\
+                Conv2D 2 & 66.8\% & 93.4\% & 53.1\% \\
+                MaxPool 2 & 76.5\% & 93.7\% & 55.2\% \\
+                Dense & 70.2\% & 94.5\% & 51.0\% \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    Dieses Netz wird nur im letzten Layer für 4 Epochen trainiert, sonst immer nur mit einer. 
+    Hier ist es auffällig, dass die Performanz des Netzes genau dann mehr wird, je später im Netz 
+    TF gemacht wird, während es im vorherigen genau anders herum war. 
+
+    Es könnte daran liegen, dass das erste Netz MNIST viel besser und genauer löst, sodass dadurch 
+    die Generalisierung verloren geht, wodurch das Netz, je länger es auf MNIST trainiert, immer 
+    schlechter wird. Das zweite Netz löst MNIST bei weitem nicht so genau, wodurch der Teil der auf 
+    SVHN trainiert wird, besser ist. 
