@@ -1,61 +1,10 @@
-import numpy
-# import numpy as np
-import tensorflow
+
 import keras
-import seaborn as sns
 import keras_data_loader
 import keras_cascade_lib as kcl
-import copied_models
-from matplotlib import pyplot as plt
-# from sklearn.model_selection import train_test_split
-# from sklearn.metrics import confusion_matrix
 
 
-def schedule():
-    batch_size = 128
-    # sns.set_theme()
-    keras.backend.clear_session()
-    lr_schedule, optimizer = kcl.lr_optim()
-
-    m_tr_dat, m_tr_lb, m_val_dat, m_val_lb = keras_data_loader.mnist_loader()
-    train_data, train_label, test_data, test_label = keras_data_loader.svhn_loader()
-
-    '''tips = sns.load_dataset('tips')
-    sns.relplot(
-        data=tips,
-        x="total_bill", y="tip", col="time",
-        hue="smoker", style="smoker", size="size",
-    )'''
-    # plt.show()  # todo: Need another version of matplotlib!
-
-    model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
-    # model = copied_models.svhn_model()
-    model.compile(optimizer=optimizer,
-                  loss=keras.losses.CategoricalCrossentropy(),
-                  metrics=['accuracy'])
-    # model.fit(train_data, train_label, batch_size=128, epochs=30, validation_data=(test_data, test_label), callbacks=[lr_schedule])
-
-    model.add(keras.layers.Flatten())
-    model.add(keras.layers.Dense(1024, activation='relu'))
-    model.add(keras.layers.Dense(10, activation='softmax'))
-    model.fit(m_tr_dat, m_tr_lb, batch_size=128, epochs=1, validation_data=(m_val_dat, m_val_lb), callbacks=[lr_schedule])
-    kcl.freezing(model, 0)
-    kcl.freezing(model, 1)
-    model.pop()
-    model.add(keras.layers.Reshape((32, 32, 1)))
-    model.add(keras.layers.RNN())
-    kcl.predict_train(model, train_data, train_label, test_data, test_label, lr_schedule, 2, 1)
-    kcl.freezing(model, 3)
-
-    model.add(keras.layers.Dense(1024, activation='relu'))
-    model.add(keras.layers.Dense(10, activation='softmax'))
-    model.fit(train_data, train_label, batch_size=128, epochs=10, validation_data=(test_data, test_label), callbacks=[lr_schedule])
-
-    model.summary()
-
-
-def cascade_network():
-
+def Conv8Epochs():
     kcl.clear()
 
     a, b, c, d = keras_data_loader.mnist_loader()
@@ -102,8 +51,4 @@ def cascade_network():
     model.summary()
     # TF: 75.8%
     # ohne: 78.7%
-    # -> Sind die Datensätze zu weit voneinander entfernt? Es scheint so.
-
-
-schedule()
-# cascade_network()
+    # -> It seems, that the datasets are to far away from each other.
