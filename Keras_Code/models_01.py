@@ -16,24 +16,32 @@ def cascade_network():
 
     lr, optim = lr_optim()
     model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
-    # model = copied_models.mnist_model()
     model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
 
+    '''model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'))
+        predict_train(model, a, b, c, d, lr, 0)
+        model.add(keras.layers.AvgPool2D((2, 2)))
+        predict_train(model, a, b, c, d, lr, 1)
+        model.add(keras.layers.Flatten())'''
+
+    # avgPool2D: 92.4%/70.4%
+    # maxPool2D: 93%/71.9%
+
     model.add(keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"))
-    predict_train(model, e, f, g, h, lr, 0)
+    predict_train(model, a, b, c, d, lr, 0, 1)
 
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    predict_train(model, e, f, g, h, lr, 1)
+    predict_train(model, a, b, c, d, lr, 1, 1)
 
     model.add(keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"))
-    predict_train(model, e, f, g, h, lr, 2)
+    predict_train(model, a, b, c, d, lr, 2, 1)
 
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    predict_train(model, e, f, g, h, lr, 3)
+    predict_train(model, a, b, c, d, lr, 3, 2)
 
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(10, 'softmax'))
-    model.fit(e, f, batch_size=128, epochs=4, validation_data=(g, h), callbacks=[lr])
+    model.fit(e, f, batch_size=128, epochs=20, validation_data=(g, h), callbacks=[lr])
 
     model.summary()
 
@@ -62,15 +70,15 @@ def schedule():
     freezing(model, 1)
     model.add(keras.layers.Reshape((32, 32, 1)))
     model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'))
-    predict_train(model, m_tr_dat, m_tr_lb, m_val_dat, m_val_lb, lr_schedule, 3)
+    predict_train(model, m_tr_dat, m_tr_lb, m_val_dat, m_val_lb, lr_schedule, 3, 1)
     freezing(model, 2)
     model.add(keras.layers.BatchNormalization())
-    predict_train(model, m_tr_dat, m_tr_lb, m_val_dat, m_val_lb, lr_schedule, 4)
+    predict_train(model, m_tr_dat, m_tr_lb, m_val_dat, m_val_lb, lr_schedule, 4, 1)
     model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'))
-    predict_train(model, train_data, train_label, test_data, test_label, lr_schedule, 5)
+    predict_train(model, train_data, train_label, test_data, test_label, lr_schedule, 5, 1)
 
     model.add(keras.layers.MaxPooling2D((2, 2)))
-    predict_train(model, train_data, train_label, test_data, test_label, lr_schedule, 6)
+    predict_train(model, train_data, train_label, test_data, test_label, lr_schedule, 6, 1)
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(10, activation='softmax'))
     model.fit(train_data, train_label, batch_size=batch_size, epochs=4, validation_data=(test_data, test_label))

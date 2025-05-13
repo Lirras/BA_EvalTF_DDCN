@@ -19,6 +19,15 @@
         Kaskadennetzwerke sind so aufgebaut, dass sie während sie 
         im Training sind wachsen und nur die neu hinzugekommenen 
         Sachen traininert werden. \cite{cascor}
+        Diese Netze werden Layer für Layer traininert. Dadurch sind die 
+        einzelnen Lernepochen deutlich kürzer, da es weniger Parameter 
+        zum Lernen auf einmal gibt. Gleichzeitig kann die Epochenanzahl 
+        zwischen den Layern beliebig variiert werden. Zudem reicht pro 
+        Layer eine geringere Epochenanzahl als für das Training des 
+        gesamten Netzes, weil in jedem Layer mehrere Epochen nacheinander 
+        trainiert werden, wodurch die Gesamtepochenanzahl deutlich erhöht wird. 
+        Das Training ist trotzdem schneller. Ein solches Kaskadennetzwerk 
+        hat aber eine geringere Performanz als ein normales. 
         \section{Transferlernen}
         Transferlernen ist, wenn ein Neuronales Netzwerk von der 
         einen Sache vorlernt, um eine andere Sache besser zu 

@@ -1,7 +1,9 @@
 import numpy as np
 import keras
 from scipy.io import loadmat
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
+from sklearn.datasets import load_digits
 
 
 def svhn_loader():
@@ -35,12 +37,17 @@ def svhn_loader():
     train_labels = lb.fit_transform(train_labels)
     test_labels = lb.fit_transform(test_labels)
 
-    # X_train, X_val, y_train, y_val = train_test_split(train_img, train_labels, test_size=0.15, random_state=22)
+    X_train, X_val, y_train, y_val = train_test_split(train_img, train_labels, test_size=0.9, random_state=22)
+    print(X_train.shape)
+    print(y_train.shape)
 
-    train_img = train_img.astype('float64')
+    train_img = X_train.astype('float64')
+    train_labels = y_train.astype('int64')
+
+    # train_img = train_img.astype('float64')
     test_img = test_img.astype('float64')
 
-    train_labels = train_labels.astype('int64')
+    # train_labels = train_labels.astype('int64')
     test_labels = test_labels.astype('int64')
     return train_img, train_labels, test_img, test_labels
 
@@ -77,3 +84,15 @@ def load():
     train = loadmat("D:/SVHN/train_32x32.mat")
     test = loadmat("D:/SVHN/test_32x32.mat")
     return train, test
+
+
+def digit_loader():
+    # N, H*W, None -> 1797, 64 (16x Input Size -> 16zeros!)
+    digits = load_digits()
+    data = np.array(digits['data'])
+    label = np.array(digits['target'])
+    print(data.shape)
+    print(label.shape)
+
+
+# digit_loader()

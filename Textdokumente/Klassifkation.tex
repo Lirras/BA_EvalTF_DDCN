@@ -275,3 +275,136 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     die Generalisierung verloren geht, wodurch das Netz, je länger es auf MNIST trainiert, immer 
     schlechter wird. Das zweite Netz löst MNIST bei weitem nicht so genau, wodurch der Teil der auf 
     SVHN trainiert wird, besser ist. 
+    Dabei ist alles, was über 80\% hinaus geht, gut, da das Netz, welches SVHN auf 96\% löst, in 
+    der Kaskadenversion nur um diesen Wert ist. 
+    Von 60-70\% auf 70-80\% bei mehr Epochen. Allerdings irgendwann Overfitting, sodass 
+    dies wieder runter geht. Fazit zu höherer Epochenanzahl: Es lohnt sich nicht. 
+    Wirkliche Verbesserung nur bei bis zu 5 Epochen.
+    Das beste Netzwerk als Kaskadennetzwerk mit zehn Epochen hat eine Accuracy von 
+    78.6\% und bei einer Epoche von 80.1\%. Es lohnt sich also nicht. 
+
+\subsection{Epochentests bei 2 Linearlayern}
+    Die Überlegung ist bei welcher Epoche sind die jeweiligen Layer am Besten. 
+    Das Testnetz ist folgendes: 
+    \begin{enumerate}
+        \item Dense 1 (1024)
+        \item Dense 2 (1024)
+        \item Dense 3 (10, Outputlayer)
+    \end{enumerate}
+
+    Hier wird das zweite Layer mit 5 Epochen trainiert.
+    \begin{table}[h!]
+        \begin{center}
+            \caption{Epochenvergleich}
+            \label{tab3:Table}
+            \begin{tabular}{l|l|l|l}
+                Epoch L1 & ACC vorher & TF direkt & ACC Ende \\
+                1 & 92.3\% & 18.9\% & 43.7\% \\
+                2 & 94.1\% & 15.0\% & 42.4\% \\
+                3 & 95.4\% & 20.3\% & 41.0\% \\
+                4 & 96.2\% & 15.1\% & 43.9\% \\
+                5 & 96.7\% & 19.5\% & 48.8\% \\
+                6 & 97.3\% & 22.5\% & 42.4\% \\
+                7 & 97.5\% & 18.3\% & 47.5\% \\
+                8 & 97.5\% & 21.6\% & 46.1\% \\
+                9 & 97.7\% & 24.5\% & 42.1\% \\
+                10 & 98.1\% & 21.0\% & 44.9\% \\
+                11 & 97.7\% & 22.6\% & 49.9\% \\
+                12 & 97.8\% & 25.3\% & 46.4\% \\
+                13 & 97.6\% & 21.2\% & 46.5\% \\
+                14 & 97.3\% & 18.5\% & 43.0\% \\
+                15 & 97.7\% & 24.5\% & 44.7\% \\
+                16 & 97.5\% & 16.1\% & 30.9\% \\
+                17 & 97.4\% & 10.3\% & 22.4\% \\
+                18 & 96.8\% & 9.7\% & 21.9\% \\
+                19 & 96.9\% & 8.7\% & 20.8\% \\
+                20 & 96.8\% & 12.0\% & 18.4\% \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+
+    \begin{table}[h!]
+        \begin{center}
+            \caption{Epochenvergleich}
+            \label{tab4:Table}
+            \begin{tabular}{l|l|l|l|l}
+                Epoch L2 & TF 5 & ACC 5 & TF 11 & ACC 11 \\
+                1 & 20.0\% & 59.3\% & 19.9\% & 68.8\% \\
+                2 & 26.5\% & 60.6\% & 33.2\% & 69.7\% \\
+                3 & 39.5\% & 61.8\% & 36.6\% & 69.7\% \\
+                4 & 35.2\% & 56.7\% & 45.4\% & 70.2\% \\
+                5 & 46.1\% & 51.0\% & 48.7\% & 70.3\% \\
+                6 & 42.8\% & 56.5\% & 53.9\% & 70.4\% \\
+                7 & 37.5\% & 52.5\% & 45.8\% & 69.2\% \\
+                8 & 50.0\% & 60.5\% & 55.3\% & 70.9\% \\
+                9 & 40.3\% & 60.0\% & 50.8\% & 70.7\% \\
+                10 & 54.1\% & 62.2\% & 52.0\% & 71.0\% \\
+                11 & 51.4\% & 66.7\% & 44.9\% & 69.1\% \\
+                12 & 43.6\% & 69.4\% & 44.2\% & 70.6\% \\
+                13 & 52.9\% & 69.3\% & 52.5\% & 69.3\% \\
+                14 & 55.7\% & 66.2\% & 53.5\% & 69.0\% \\
+                15 & 55.2\% & 67.4\% & 53.0\% & 71.1\% \\
+                16 & 58.9\% & 64.3\% & 52.8\% & 63.8\% \\
+                17 & 57.5\% & 60.4\% & 62.5\% & 64.9\% \\
+                18 & 53.6\% & 52.4\% & 61.5\% & 58.7\% \\
+                19 & 60.9\% & 44.5\% & 61.6\% & 47.3\% \\
+                20 & 55.6\% & 34.9\% & 60.8\% & 44.1\% \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+
+    Im Endeffekt ist es ohne TF besser als mit.
+    Nach 17 Epochen im Layer 2 kommt es zur Overfitting, wenn 
+    es kein TF gibt. Mit TF bleibt es danach bei einer nahezu 
+    identsichen Accuracy. TF verringert also die Gefahr von 
+    Overfitting, da das Netz mehr verschiedene Daten gesehen 
+    hat und somit besser generalisiert, obwohl deren Bestwerte 
+    schlechter sind. 
+    Wenn aber auf den Source Datensatz zu genau trainiert und darauf 
+    Overfitting hat, dann bringt TF nichts mehr, da die Features 
+    des neuen Datensatzes nicht gelernt werden können. 
+
+\subsection{Traning mit weniger Target-daten}
+    Wenn die beiden kopierten Netze für MNIST und SVHN hintereinander 
+    als Kaskadennetzwerk gebaut werden, erhält man eine Accuracy von 
+    74.2\%.
+    Im Nachfolgenden wird der SVHN-Datensatz um 90\% verkleinert, da 
+    gesehen werden soll, ob sich TF auch bei wenig Targetdaten lohnt. 
+    Dasselbe Netz hat dann nur noch eine Accuracy von 56.6\%. Diese kann 
+    durch verschiedene Epochenanzahlen in den Layern auf 68.4\% erhöht werden, 
+    indem die Convolutionlayer mehr Epochen haben als die anderen Layer.
+    Zum Vergleich: 
+    Das Netz, welches SVHN löst ohne Kaskadierung hat 82.3\% und mit Kaskadierung 
+    72.9\%. Das heißt, dass TF auch in diesem Fall nichts für die Performanz 
+    der Netze bringt. 
+    Wenn dann aber die Trainaccuracy mit der Validationaccuracy vergleicht kommt 
+    dabei raus, dass beide Netze schlecht generalisieren. Dies liegt aber an den 
+    absichtlich wenigen Trainingsdaten. Mit TF ist der Unterschied zwischen den 
+    beiden Werten mit 21\% etwas geringer als ohne mit 26\%.
+    Die Vermutung ist, dass diese beiden Datensätze doch etwas zu weit 
+    auseinander liegen für TF.
+
+\subsection{Overfitting auf MNIST und SVHN}
+    Das Target-Dataset ist hier ebenfalls klein, also bei etwa 7000 Samples. 
+    Das Netz ist bereits vorgestellt worden im zweiten Teil von dem 
+    Abschnitt Keras Netzwerke. Hier wurden allerdings im zweiten MaxPool-Layer 
+    zwei Epochen trainiert und im Dense zwanzig. 
+    \begin{table}[h!]
+        \begin{center}
+            \caption{TF im Layer vorn bis hinten}
+            \label{tab5:Table}
+            \begin{tabular}{l|l|l}
+                Bestes & Epoche & Endergebnis \\
+                70.7\% & 14 & 58.1\% \\
+                63.7\% & 13 & 62.1\% \\
+                69.9\% & 14 & 61.3\% \\
+                63.9\% & 14 & 54.1\% \\
+                63.2\% & 16 & 57.2\% \\
+            \end{tabular}
+        \end{center}
+    \end{table}
+    Der erste Eintrag hier ist ohne TF. Es hat zwar die beste Performanz in der Spitze, 
+    aber es wird danach deutlich schlechter. Es kam zu Overfitting auf den SVHN-Datensatz. 
+    TF verringert dieses Problem auf dem Targetdatensatz, wenn es auf 
+    den Sourcedaten nicht zu Overfitting kommt. Damit dies nicht passiert, ist es sinnvoll das 
+    SourceNet möglichst klein zu halten. 
