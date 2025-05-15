@@ -5,8 +5,8 @@ import math
 
 # Title: Bachelor-Arbeit: Evaluierung von Transferlernen mit Deep Direct Cascade Networks
 # Author: Simon Tarras
-# Date: 06.05.2025
-# Version: 0.0.011
+# Date: 15.05.2025
+# Version: 0.0.012
 
 from casunit import CascadeNetwork
 import data_loader

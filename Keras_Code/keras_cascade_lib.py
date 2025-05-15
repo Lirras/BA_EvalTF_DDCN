@@ -1,4 +1,7 @@
 import keras
+import pandas
+import seaborn as sns
+from matplotlib import pyplot as plt
 
 
 def lr_optim():
@@ -23,14 +26,44 @@ def predict_train(model, train_dat, train_lb, val_dat, val_lb, lr, freeze, epoch
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(10, activation='softmax'))
 
-    model.fit(train_dat, train_lb, batch_size=128, epochs=epochs, validation_data=(val_dat, val_lb), callbacks=[lr])
+    history = model.fit(train_dat, train_lb, batch_size=128, epochs=epochs, validation_data=(val_dat, val_lb), callbacks=[lr])
     freezing(model, freeze)
     model.pop()
     model.pop()
+    return pandas.DataFrame.from_dict(history.history)
 
 
 def post_flatten(model, a, b, c, d, lr, freeze):
     model.add(keras.layers.Dense(10, activation='softmax'))
-    model.fit(a, b, batch_size=128, epochs=2, validation_data=(c, d), callbacks=[lr])
+    history = model.fit(a, b, batch_size=128, epochs=2, validation_data=(c, d), callbacks=[lr])
     freezing(model, freeze)
     model.pop()
+    return pandas.DataFrame.from_dict(history.history)
+
+
+def add_epoch_counter_to_df(df):
+    sort_list = []
+    i = 0
+    while i < len(df):
+        sort_list.append(i)
+        i += 1
+    df['epochs'] = sort_list
+    return df
+
+
+def plotting_all(df):
+    # If model begins with Conv:
+    sns.relplot(df, x='epochs', y='Accuracy', kind='line')  # 'scatter'
+    sns.relplot(df, x='epochs', y='val_Accuracy', kind='line')
+    sns.relplot(df, x='epochs', y='loss', kind='line')
+    sns.relplot(df, x='epochs', y='val_loss', kind='line')
+    plt.show()
+
+
+def plotting_all_sm(df):
+    # If model begins with Dense:
+    sns.relplot(df, x='epochs', y='accuracy', kind='line')  # 'scatter'
+    sns.relplot(df, x='epochs', y='val_accuracy', kind='line')
+    sns.relplot(df, x='epochs', y='loss', kind='line')
+    sns.relplot(df, x='epochs', y='val_loss', kind='line')
+    plt.show()
