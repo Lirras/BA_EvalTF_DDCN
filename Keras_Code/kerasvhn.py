@@ -13,6 +13,7 @@ from matplotlib import pyplot as plt
 
 
 def schedule():
+    # todo: MNIST_corrupted test
     batch_size = 128
     sns.set_theme()
     keras.backend.clear_session()

@@ -37,17 +37,17 @@ def svhn_loader():
     train_labels = lb.fit_transform(train_labels)
     test_labels = lb.fit_transform(test_labels)
 
-    # X_train, X_val, y_train, y_val = train_test_split(train_img, train_labels, test_size=0.9, random_state=22)
+    X_train, X_val, y_train, y_val = train_test_split(train_img, train_labels, test_size=0.99, random_state=22)
     # print(X_train.shape)
     # print(y_train.shape)
 
-    # train_img = X_train.astype('float64')
-    # train_labels = y_train.astype('int64')
+    train_img = X_train.astype('float64')
+    train_labels = y_train.astype('int64')
 
-    train_img = train_img.astype('float64')
+    # train_img = train_img.astype('float64')
     test_img = test_img.astype('float64')
 
-    train_labels = train_labels.astype('int64')
+    # train_labels = train_labels.astype('int64')
     test_labels = test_labels.astype('int64')
     return train_img, train_labels, test_img, test_labels
 
@@ -86,6 +86,44 @@ def load():
     return train, test
 
 
+def boston_loader():
+    (x_train, x_test), (y_train, y_test) = keras.datasets.boston_housing.load_data(
+        path="boston_housing.npz", test_split=0.2, seed=113
+    )
+    print(x_train.shape)  # 404 13
+
+    # --> CRIM per capita crime rate by town
+    # --> ZN proportion of residential land zoned for lots over 25, 000 sq.ft.
+    # --> INDUS proportion of non - retail business acres per town
+    # --> CHAS Charles River dummy variable( = 1 if tract bounds river; 0 otherwise)
+    # --> NOX nitric oxides concentration(parts per 10 million)
+    # RM average number of rooms per dwelling - AveRooms
+    # AGE proportion of owner - occupied units built prior to 1940 - HouseAge
+    # --> DIS weighted distances to five Boston employment centres
+    # --> RAD index of accessibility to radial highways
+    # --> TAX full - value property - tax rate per $10, 000
+    # --> PTRATIO pupil - teacher ratio by town
+    # --> B 1000(Bk - 0.63) ^ 2 where Bk is the proportion of blacks by town
+    # LSTAT % lower status of the population - MedInc
+    # --> MEDV Median value of owner - occupied homes in $1000's
+
+
+def california_loader():
+    (x_train, x_test), (y_train, y_test) = keras.datasets.california_housing.load_data(
+        version="large", path="california_housing.npz", test_split=0.2, seed=113
+    )
+    print(x_train.shape)  # 16512 8
+
+    # MedInc: median income in block group
+    # HouseAge: median house age in block group
+    # AveRooms: average number of rooms per household
+    # AveBedrms: average number of bedrooms per household
+    # Population: block group population
+    # AveOccup: average number of household members
+    # Latitude: block group latitude
+    # Longitude: block group longitude
+
+
 def digit_loader():
     # N, H*W, None -> 1797, 64 (16x Input Size -> 16zeros!)
     digits = load_digits()
@@ -93,6 +131,3 @@ def digit_loader():
     label = np.array(digits['target'])
     print(data.shape)
     print(label.shape)
-
-
-# digit_loader()

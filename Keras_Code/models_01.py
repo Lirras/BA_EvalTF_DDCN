@@ -26,16 +26,16 @@ def cascade_network():
     # maxPool2D: 93%/71.9%
 
     model.add(keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"))
-    df_1 = kcl.predict_train(model, a, b, c, d, lr, 0, 1)
+    df_1 = kcl.predict_train(model, e, f, g, h, lr, 0, 1)
 
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    df_2 = kcl.predict_train(model, a, b, c, d, lr, 1, 1)
+    df_2 = kcl.predict_train(model, e, f, g, h, lr, 1, 1)
 
     model.add(keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"))
-    df_3 = kcl.predict_train(model, a, b, c, d, lr, 2, 1)
+    df_3 = kcl.predict_train(model, e, f, g, h, lr, 2, 1)
 
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    df_4 = kcl.predict_train(model, a, b, c, d, lr, 3, 2)
+    df_4 = kcl.predict_train(model, e, f, g, h, lr, 3, 2)
 
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(10, 'softmax'))
@@ -89,3 +89,6 @@ def schedule():
     df_5 = pandas.DataFrame.from_dict(history.history)
     kcl.plotting_all_sm(kcl.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5])))
     model.summary()
+
+
+cascade_network()

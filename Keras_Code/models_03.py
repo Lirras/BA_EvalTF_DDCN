@@ -18,7 +18,7 @@ def Conv8Epochs():
     model.add(keras.layers.Conv2D(32, (3, 3), padding='same', activation='relu'))
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(10, activation='softmax'))
-    history = model.fit(a, b, batch_size=128, epochs=2, validation_data=(c, d), callbacks=[lr])
+    history = model.fit(e, f, batch_size=128, epochs=2, validation_data=(g, h), callbacks=[lr])
     df_0 = pandas.DataFrame.from_dict(history.history)
     model.pop()
     model.pop()
@@ -40,7 +40,7 @@ def Conv8Epochs():
     df_8 = kcl.predict_train(model, e, f, g, h, lr, 7, 1)
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(1024, activation='relu'))
-    df_9 = kcl.post_flatten(model, e, f, g, h, lr, 8)
+    df_9 = kcl.post_flatten(model, e, f, g, h, lr, 8, 2)
     kcl.freezing(model, 9)
 
     model.add(keras.layers.Dense(10, activation='softmax'))
@@ -57,4 +57,26 @@ def Conv8Epochs():
     # -> It seems, that the datasets are too far away from each other.
 
 
+def Lin2Layer():
+    kcl.clear()
+
+    a, b, c, d = keras_data_loader.mnist_loader()
+    e, f, g, h = keras_data_loader.svhn_loader()
+
+    lr, optim = kcl.lr_optim()
+    model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
+    model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(1024, activation='relu'))
+    df_0 = kcl.post_flatten(model, a, b, c, d, lr, 0, 11)
+    kcl.freezing(model, 1)
+    model.add(keras.layers.Dense(1024, activation='relu'))
+    model.add(keras.layers.Dense(10, activation='softmax'))
+    history = model.fit(e, f, batch_size=128, epochs=20, validation_data=(g, h), callbacks=[lr])
+    df_1 = pandas.DataFrame.from_dict(history.history)
+    kcl.plotting_all(kcl.add_epoch_counter_to_df(pandas.concat([df_0, df_1])))
+    model.summary()
+
+
+# Lin2Layer()
 Conv8Epochs()

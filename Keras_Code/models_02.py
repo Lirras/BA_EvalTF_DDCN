@@ -68,17 +68,17 @@ def mnist_svhn_net():
 
     # MNIST solver
     model.add(keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"))
-    df_0 = kcl.predict_train(model, a, b, c, d, lr, 0, 1)
+    df_0 = kcl.predict_train(model, e, f, g, h, lr, 0, 1)
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    df_1 = kcl.predict_train(model, a, b, c, d, lr, 1, 1)
+    df_1 = kcl.predict_train(model, e, f, g, h, lr, 1, 1)
     model.add(keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"))
-    df_2 = kcl.predict_train(model, a, b, c, d, lr, 2, 1)
+    df_2 = kcl.predict_train(model, e, f, g, h, lr, 2, 1)
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    df_3 = kcl.predict_train(model, a, b, c, d, lr, 3, 1)
+    df_3 = kcl.predict_train(model, e, f, g, h, lr, 3, 1)
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dropout(0.5))
     model.add(keras.layers.Dense(10, activation="softmax"))
-    history = model.fit(a, b, batch_size=128, epochs=1, validation_data=(c, d), callbacks=[lr])
+    history = model.fit(e, f, batch_size=128, epochs=1, validation_data=(g, h), callbacks=[lr])
     df_4 = pandas.DataFrame.from_dict(history.history)
     kcl.freezing(model, 4)
     kcl.freezing(model, 5)
@@ -201,3 +201,6 @@ def batch_norm_net():
                                                                 df_8, df_9, df_10, df_11, df_12, df_13, df_14, df_15,
                                                                 df_16, df_17])))
     model.summary()
+
+
+mnist_svhn_net()

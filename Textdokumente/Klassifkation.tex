@@ -41,7 +41,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     Auffällig bei PyTorch ist, dass die Berechnungszeit sehr lange dauert.
     Ebenso ist es so, dass der Shape aller Tensoren passend auf den gesetzt wird, der 
     als letztes in einer Epoche betrachtet wird, was zur Folge hat, dass sie ungewollt 
-    kleiner werden, wenn die Batchsize kein Teiler der Anzahl der Datansamples ist. 
+    kleiner werden, wenn die Batchsize kein Teiler der Anzahl der Datensamples ist. 
 
     Die PyTorch Netze werden auf der GPU ausgeführt. Dem Modell kann nicht direkt 
     Layer hinzugefügt werden, sondern es muss über eine Iterable-Variable gehen, 
@@ -191,7 +191,18 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     resultiert, dass dieses Layer ständig in das Netz hinzu kommt und im nächsten Schritt 
     wieder entfernt. Es handelt sich hierbei um ein Linearlayer mit Softmax-Aktivierungsfunktion. 
 
-\subsection{Keras Netzwerke}
+\subsection{Training mit weniger Target-Daten}
+    TF wird dann als Sinnvoll angesehen, wenn es auf dem Targetdatensatz bei weitem nicht ausreichend 
+    Einträge gibt, dass auf diesem ein annehmbares Ergebnis nach dem Training zu erwarten ist. Da SVHN 
+    als Targetdatensatz genutzt wird, muss dieser künstlich verkleinert werden, um eine solche Situation 
+    zu erzeugen, denn dieser hat um die 70-Tausend Einträge. Wenn von weniger Daten gesprochen wird, dann 
+    heißt das, dass SVHN nur um die 7-Tausend Einträge hat. Falls aber von viel weniger Daten gesprochen 
+    wird, heißt es, dass nur 7-Hundert Einträge betrachtet werden. Aber das künstliche Reduzieren wird 
+    nur auf dem Trainingsdaten gemacht. Die 25-Tausend Einträge des Validationsubsets bleiben unverändert. 
+
+
+\subsection{LinToConv mit TF Layer Vergleich}
+
     \begin{enumerate}
         \item Dense 1 (1024 Nodes)
         \item Conv2D 1 (1, 32, 3)
@@ -238,6 +249,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     erreicht wurde, direkt TF gemacht werden, damit das Netz die Features davon lernt und keinen 
     großen Fokus auf die Source legt. 
 
+\subsection{2ConvMaxPool}
 
     \begin{enumerate}
         \item Conv2D (1, 32, 3)
@@ -251,7 +263,25 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     50\%. 
     Dieses Netz hat vor dem TF eine Accuracy von 95.1\%. Es ist das Beste TF-Netz, obwohl es 
     immer noch deutlich schlechter auf SVHN ist als ohne TF. Die Vermutung ist, dass auf MNIST 
-    zu viel trainiert wurde und dort Overfitting entstanden ist. 
+    zu viel trainiert wurde und dort Overfitting entstanden ist. Dieses Netz wurde zudem darauf 
+    untersucht, was passiert, wenn es nur wenig Daten im TargetNet gibt und gleichzeitig wo TF am 
+    sinnvollsten ist. Es wird nur die Validation-Accuracy betrachtet: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/models01_Cas/LTF2val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models01_Cas/LTF3val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models01_Cas/LTF4vval_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models01_Cas/Lval_Accuracy.png}
+    \end{figure}
+
+    Deutlich zu sehen ist, dass sobald TF gemacht wird, die Accuracy deutlich schlechter wird. 
+    Wenn das Netz aber kein TF macht, sondern direkt auf dem Targetdatensatz lernt, ist die Validation-
+    Accuracy so: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/models01_Cas/wo_val_Accuracy.png}
+    \end{figure}
+    Trotz der wenigen Datensamples ist dies hier ohne TF in der Spitze immer noch besser als mit, 
+    aber es ist mit TF deutlich weniger anfällig für Overfitting und lässt somit weniger in seiner 
+    Performanz nach.
 
     \begin{table}[h!]
         \begin{center}
@@ -323,6 +353,14 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         \end{center}
     \end{table}
 
+    \begin{figure}[htpb]
+        Verlauf bei einer, fünf, zehnund Zwanzig Epochen im ersten Layer:
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/1val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/5val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/10val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/20val_Accuracy.png}
+    \end{figure}
+
     \begin{table}[h!]
         \begin{center}
             \caption{Epochenvergleich}
@@ -353,6 +391,17 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         \end{center}
     \end{table}
 
+    \begin{figure}[htpb]
+        Das beste Ergebnis war mit 11 Epochen im ersten Layer:
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/Bval_Accuracy.png}
+        Dasselbe bei wenig Daten (7k): 
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/Lval_Accuracy.png}
+        Ohne TF, aber mit wenigen Daten:
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/Lwo_val_Accuracy.png}
+        Ohne TF, mit komplettem Datensatz: 
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/wo_val_Accuracy.png}
+    \end{figure}
+
     Im Endeffekt ist es ohne TF besser als mit.
     Nach 17 Epochen im Layer 2 kommt es zur Overfitting, wenn 
     es kein TF gibt. Mit TF bleibt es danach bei einer nahezu 
@@ -364,13 +413,27 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     Overfitting hat, dann bringt TF nichts mehr, da die Features 
     des neuen Datensatzes nicht gelernt werden können. 
 
-\subsection{Traning mit weniger Target-daten}
+    Wenn der Datensatz unter Tausend Einträge hat, passiert folgendes, wenn ohne TF trainiert wird: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/VL_val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/LVval_loss.png}
+        Das ganze mit TF: 
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/LVTF_val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_L2L/VLTF_val_loss.png}
+    \end{figure}
+
+    Bei diesen sehr wenigen Zieldaten mit etwa 700 Stück ist es nur logisch, dass der loss sehr hoch 
+    ist und die Accuracy keinen vernünftigen Wert annimmt. TF hat hier eine höhere Accuracy, aber nur sehr 
+    gering. Es sind nur um die 2\%. 
+
+\subsection{MNIST und SVHN-Löser}
     Wenn die beiden kopierten Netze für MNIST und SVHN hintereinander 
     als Kaskadennetzwerk gebaut werden, erhält man eine Accuracy von 
-    74.2\%.
-    Im Nachfolgenden wird der SVHN-Datensatz um 90\% verkleinert, da 
-    gesehen werden soll, ob sich TF auch bei wenig Targetdaten lohnt. 
-    Dasselbe Netz hat dann nur noch eine Accuracy von 56.6\%. Diese kann 
+    74.2\%. Der Verlauf der Validation-Accuracy ist wie folgt: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/models_02_m2s/val_Accuracy.png}
+    \end{figure}
+    Bei weniger Daten hat dasselbe Netz dann nur noch eine Accuracy von 56.6\%. Diese kann 
     durch verschiedene Epochenanzahlen in den Layern auf 68.4\% erhöht werden, 
     indem die Convolutionlayer mehr Epochen haben als die anderen Layer.
     Zum Vergleich: 
@@ -381,6 +444,17 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     dabei raus, dass beide Netze schlecht generalisieren. Dies liegt aber an den 
     absichtlich wenigen Trainingsdaten. Mit TF ist der Unterschied zwischen den 
     beiden Werten mit 21\% etwas geringer als ohne mit 26\%.
+    Bei viel weniger Trainingsdaten sieht es noch schlimmer aus: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/models_02_m2s/VLAccuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_02_m2s/VLval_Accuracy.png}
+    \end{figure}
+    Der Unterschied ist bei etwa 40\%. Wenn kein TF gemacht wird, ist das Ergebnis folgendes: 
+    \begin{figure}
+        \includegraphics[height=5cm]{../Plots/models_02_m2s/VLwoAccuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_02_m2s/VLwoval_Accuracy.png}
+    \end{figure}
+    Daraus folgt, dass das Netz ohne TF immer noch besser ist als mit. 
     Die Vermutung ist, dass diese beiden Datensätze doch etwas zu weit 
     auseinander liegen für TF.
 
@@ -404,7 +478,45 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         \end{center}
     \end{table}
     Der erste Eintrag hier ist ohne TF. Es hat zwar die beste Performanz in der Spitze, 
-    aber es wird danach deutlich schlechter. Es kam zu Overfitting auf den SVHN-Datensatz. 
+    aber es wird danach deutlich schlechter. Es kam zu Overfitting auf dem SVHN-Datensatz. 
     TF verringert dieses Problem auf dem Targetdatensatz, wenn es auf 
     den Sourcedaten nicht zu Overfitting kommt. Damit dies nicht passiert, ist es sinnvoll das 
     SourceNet möglichst klein zu halten. 
+
+\subsection{Weitere Netze}
+    Es wurde noch Conv8Epochs, Dropout, BatchNorm und light svhn-solver durchgetestet. 
+    Bei allen war es das Gleiche, dass sie ohne TF besser sind als mit. Zum Vergleich, wie 
+    diese Netze einander gegenüber abschneiden, hier die Plots in der oben genannten Reihenfolge: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_02_DrO/val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_02_BtN/val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_01_Sce/val_Accuracy.png}
+    \end{figure}
+
+    Da das Conv8Epochs Netz das Beste ist, wird dieses noch eingehender betrachtet. 
+    Dieses Netz hat folgende Werte mit dem komplettem Datensatz: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/val_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/loss.png}
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/val_loss.png}
+    \end{figure}
+
+    Das mit viel weniger Daten hat die Werte: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/VLAccuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/VLval_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/VLloss.png}
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/VLval_loss.png}
+    \end{figure}
+
+    Zum Vergleich den ganzen Kram ohne TF: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/VLwoAccuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/VLwoval_Accuracy.png}
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/VLwoloss.png}
+        \includegraphics[height=5cm]{../Plots/models_03_C8E/VLwoval_loss.png}
+    \end{figure}
+    Auch hier bleibt es gleich, dass TF keinen Unterschied macht zwischen vielen oder wenigen 
+    Target-Daten. 

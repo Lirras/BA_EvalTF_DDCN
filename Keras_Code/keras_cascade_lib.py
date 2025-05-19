@@ -33,9 +33,9 @@ def predict_train(model, train_dat, train_lb, val_dat, val_lb, lr, freeze, epoch
     return pandas.DataFrame.from_dict(history.history)
 
 
-def post_flatten(model, a, b, c, d, lr, freeze):
+def post_flatten(model, a, b, c, d, lr, freeze, epochs):
     model.add(keras.layers.Dense(10, activation='softmax'))
-    history = model.fit(a, b, batch_size=128, epochs=2, validation_data=(c, d), callbacks=[lr])
+    history = model.fit(a, b, batch_size=128, epochs=epochs, validation_data=(c, d), callbacks=[lr])
     freezing(model, freeze)
     model.pop()
     return pandas.DataFrame.from_dict(history.history)
