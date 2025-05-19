@@ -1,0 +1,23 @@
+Bei einer Regression kommt es dazu, dass das NN sich mithilfe 
+der Daten der korrekten Funktion annähert.
+
+\section{Datensätze}
+    Die genutzten Datensätze sollen zunächst Boston Housing und California Housing sein, da 
+    beide dasselbe Ziel mit der Annäherung an den Preis des Hauses haben. 
+    Boston Housing hat ein ethnisches Problem, da es eine Spalte gibt, die den Preis in 
+    Abhängigkeit zur Anzahl der in der Nähe lebenden Schwarzen setzt. Diese wird hier entfernt. 
+    Ebenso entfernt werden die Spalten, die kein vernünftiges Gegenüber im California Datensatz 
+    haben. Dadurch reduziert sich die Spaltenanzahl auf 3. Bei Boston bleiben RM, AGE und LSTAT 
+    über, die im Vergleich halbwegs zu den Spalten AveRoom, HouseAge und MedInc vom California 
+    Datensatz passen. 
+    RM ist dabei die durchschnittliche Anzahl der Räume pro Wohnung, während AveRoom die 
+    durchschnittliche Anzahl pro Haushalt ist. 
+    AGE ist dabei der Anteil der Wohnungen, die vor 1940 erbaut worden sind. HouseAge ist 
+    hingegen das Durchschnittsalter der Häuser eines Wohnblocks. Diese Spalten müssen 
+    aneinander angepasst werden.
+    LSTAT ist der prozentuale Anteil der niedrigeren Bevölkerung und MedInc ist das mittlere 
+    Einkommen des Wohnblocks. Hier müssen ebenfalls leichte Anpassungen durchgeführt werden. 
+    Alle anderen Spalten beider Datensätze sind nicht ähnlich genug, dass zwischen ihnen 
+    gelernt werden sollte. Die Erwartung ist, dass alle TF-Netze schlechter abschneiden als die 
+    normalen schon allein deshalb, weil durch die Spaltenreduktion sehr viele Daten nicht 
+    betrachtet werden. Des Weiteren ist genau das bei der Klassifikation ebenfalls passiert.
