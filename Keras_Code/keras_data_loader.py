@@ -90,7 +90,45 @@ def boston_loader():
     (x_train, x_test), (y_train, y_test) = keras.datasets.boston_housing.load_data(
         path="boston_housing.npz", test_split=0.2, seed=113
     )
-    print(x_train.shape)  # 404 13
+
+    x_train = boston_delete_columns(x_train)
+    x_train = boston_change_house_age(x_train)
+    y_train = boston_delete_columns(y_train)
+    y_train = boston_change_house_age(y_train)
+
+    '''print('Boston Dataset:')
+    print(x_train[1], x_test[1])
+    print(x_train[5], x_test[5])
+    print(x_train[68], x_test[68])
+    print(x_train[239], x_test[239])
+    print(x_train[395], x_test[395])'''
+
+    x_train = np.expand_dims(x_train, axis=1)
+    y_train = np.expand_dims(y_train, axis=1)
+
+    return x_train, x_test, y_train, y_test
+
+
+def boston_delete_columns(x_train):
+    i = 11
+    while i >= 0:
+        if i != 5 and i != 6:
+            x_train = np.delete(x_train, i, 1)
+        i -= 1
+    return x_train
+
+
+def boston_change_house_age(x_train):
+    x_train = x_train[:, [1, 0, 2]]  # Change Columns
+    # Only 85% of House Age. Reason: Houses prior to 1940 are 85 years old or older.
+    # Maximum of Houses are 100
+    c = 0
+    while c < len(x_train):
+        x_train[c, 0] = (x_train[c, 0] * 85)/100
+        # Make from anti-proportional to proportional
+        x_train[c, 2] = 40 - x_train[c, 2]
+        c += 1
+    return x_train
 
     # --> CRIM per capita crime rate by town
     # --> ZN proportion of residential land zoned for lots over 25, 000 sq.ft.
@@ -105,14 +143,65 @@ def boston_loader():
     # --> PTRATIO pupil - teacher ratio by town
     # --> B 1000(Bk - 0.63) ^ 2 where Bk is the proportion of blacks by town
     # LSTAT % lower status of the population - MedInc
-    # --> MEDV Median value of owner - occupied homes in $1000's
+    # --> MEDV Median value of owner - occupied homes in $1000's This one is the actual price
 
 
 def california_loader():
     (x_train, x_test), (y_train, y_test) = keras.datasets.california_housing.load_data(
         version="large", path="california_housing.npz", test_split=0.2, seed=113
     )
-    print(x_train.shape)  # 16512 8
+
+    x_train = california_delete_columns(x_train)
+    x_test = california_change_prices(x_test)
+    y_train = california_delete_columns(y_train)
+    y_test = california_change_prices(y_test)
+
+    # longitude, latitude, age, totalRooms, Bedrooms, pop, households, median income
+
+    # Used columns: HouseAge, AveRoomsPerDwelling, MedInc
+    '''print('California Dataset')
+    print(x_train[1], x_test[1])
+    print(x_train[4], x_test[4])
+    print(x_train[200], x_test[200])
+    print(x_train[1000], x_test[1000])
+    print(x_train[8943], x_test[8943])
+    print(x_train[5032], x_test[5032])
+    print(x_train[12000], x_test[12000])
+    print(x_train[14532], x_test[14532])
+    print(x_train[3902], x_test[3902])
+    print(x_train[6241], x_test[6241])'''
+
+    x_train = np.expand_dims(x_train, axis=1)
+    y_train = np.expand_dims(y_train, axis=1)
+
+    return x_train, x_test, y_train, y_test
+
+
+def california_delete_columns(x_train):
+
+    # total rooms/households = Rooms per Dwelling
+    c = 0
+    while c < len(x_train):
+        x_train[c, 3] = x_train[c, 3] / x_train[c, 6]
+        c += 1
+
+    # Delete unused columns:
+    i = 6
+    while i >= 0:
+        if i != 2 and i != 3:
+            x_train = np.delete(x_train, i, 1)
+        i -= 1
+
+    return x_train
+
+
+def california_change_prices(x_test):
+
+    c = 0
+    while c < len(x_test):
+        x_test[c] = x_test[c]/1000
+        c += 1
+    return x_test
 
     # MedInc: median income in block group
     # HouseAge: median house age in block group
