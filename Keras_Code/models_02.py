@@ -2,6 +2,7 @@ import keras
 import pandas
 import keras_data_loader
 import keras_cascade_lib as kcl
+import plotting as plot
 
 
 def dropout_model():
@@ -52,7 +53,7 @@ def dropout_model():
     hist = model.fit(train_data, train_label, batch_size=128, epochs=5, validation_data=(test_data, test_label), callbacks=[lr_schedule])
     df_9 = pandas.DataFrame.from_dict(hist.history)
     print(df_9)
-    kcl.plotting_all_sm(kcl.add_epoch_counter_to_df(pandas.concat([df_x, df_0, df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9])))
+    plot.class_all_sm(plot.add_epoch_counter_to_df(pandas.concat([df_x, df_0, df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8, df_9])))
     model.summary()
 
 
@@ -141,7 +142,7 @@ def mnist_svhn_net():
     history = model.fit(e, f, batch_size=128, epochs=8, validation_data=(g, h), callbacks=[lr])
     df_23 = pandas.DataFrame.from_dict(history.history)
     print(df_23)
-    kcl.plotting_all(kcl.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8,
+    plot.class_all(plot.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5, df_6, df_7, df_8,
                                                                 df_9, df_10, df_11, df_12, df_13, df_14, df_15, df_16,
                                                                 df_17, df_18, df_19, df_20, df_21, df_22, df_23])))
     model.summary()
@@ -197,7 +198,7 @@ def batch_norm_net():
     model.add(keras.layers.Dense(10, activation='softmax'))
     history = model.fit(e, f, batch_size=128, epochs=1, validation_data=(g, h), callbacks=[lr])
     df_17 = pandas.DataFrame.from_dict(history.history)
-    kcl.plotting_all(kcl.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5, df_6, df_7,
+    plot.class_all(plot.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5, df_6, df_7,
                                                                 df_8, df_9, df_10, df_11, df_12, df_13, df_14, df_15,
                                                                 df_16, df_17])))
     model.summary()

@@ -3,6 +3,7 @@ import pandas
 import keras
 import keras_data_loader
 import keras_cascade_lib as kcl
+import plotting as plot
 
 
 def Conv8Epochs():
@@ -46,7 +47,7 @@ def Conv8Epochs():
     model.add(keras.layers.Dense(10, activation='softmax'))
     history = model.fit(e, f, batch_size=128, epochs=1, validation_data=(g, h), callbacks=[lr])
     df_10 = pandas.DataFrame.from_dict(history.history)
-    kcl.plotting_all(kcl.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5, df_6, df_7,
+    plot.class_all(plot.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5, df_6, df_7,
                                                                 df_8, df_9, df_10])))
     # 93.7 TF 11.7 -> 64.4
     # Conv8epochs: 92.7 TF 11.0 -> 68.5
@@ -74,7 +75,7 @@ def Lin2Layer():
     model.add(keras.layers.Dense(10, activation='softmax'))
     history = model.fit(e, f, batch_size=128, epochs=20, validation_data=(g, h), callbacks=[lr])
     df_1 = pandas.DataFrame.from_dict(history.history)
-    kcl.plotting_all(kcl.add_epoch_counter_to_df(pandas.concat([df_0, df_1])))
+    plot.class_all(plot.add_epoch_counter_to_df(pandas.concat([df_0, df_1])))
     model.summary()
 
 

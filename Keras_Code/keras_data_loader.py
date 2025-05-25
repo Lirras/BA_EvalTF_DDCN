@@ -96,15 +96,20 @@ def boston_loader():
     y_train = boston_delete_columns(y_train)
     y_train = boston_change_house_age(y_train)
 
+    # Normalize Data:
+    '''mean = x_train.mean(axis=0)
+    x_train -= mean
+    std = x_train.std(axis=0)
+    x_train /= std
+    x_test -= mean
+    x_train /= std'''
+
     '''print('Boston Dataset:')
     print(x_train[1], x_test[1])
     print(x_train[5], x_test[5])
     print(x_train[68], x_test[68])
     print(x_train[239], x_test[239])
     print(x_train[395], x_test[395])'''
-
-    x_train = np.expand_dims(x_train, axis=1)
-    y_train = np.expand_dims(y_train, axis=1)
 
     return x_train, x_test, y_train, y_test
 
@@ -170,9 +175,6 @@ def california_loader():
     print(x_train[14532], x_test[14532])
     print(x_train[3902], x_test[3902])
     print(x_train[6241], x_test[6241])'''
-
-    x_train = np.expand_dims(x_train, axis=1)
-    y_train = np.expand_dims(y_train, axis=1)
 
     return x_train, x_test, y_train, y_test
 

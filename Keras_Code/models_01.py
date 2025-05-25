@@ -3,6 +3,7 @@ import pandas
 import keras
 import keras_data_loader
 import keras_cascade_lib as kcl
+import plotting as plot
 
 
 def cascade_network():
@@ -43,8 +44,8 @@ def cascade_network():
     df_5 = pandas.DataFrame.from_dict(history.history)
 
     df = pandas.concat([df_1, df_2, df_3, df_4, df_5])
-    df = kcl.add_epoch_counter_to_df(df)
-    kcl.plotting_all(df)
+    df = plot.add_epoch_counter_to_df(df)
+    plot.class_all(df)
 
     model.summary()
 
@@ -87,7 +88,7 @@ def schedule():
     model.add(keras.layers.Dense(10, activation='softmax'))
     history = model.fit(train_data, train_label, batch_size=batch_size, epochs=4, validation_data=(test_data, test_label))
     df_5 = pandas.DataFrame.from_dict(history.history)
-    kcl.plotting_all_sm(kcl.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5])))
+    plot.class_all_sm(plot.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5])))
     model.summary()
 
 

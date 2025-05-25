@@ -1,7 +1,5 @@
 import keras
 import pandas
-import seaborn as sns
-from matplotlib import pyplot as plt
 
 
 def lr_optim():
@@ -39,31 +37,3 @@ def post_flatten(model, a, b, c, d, lr, freeze, epochs):
     freezing(model, freeze)
     model.pop()
     return pandas.DataFrame.from_dict(history.history)
-
-
-def add_epoch_counter_to_df(df):
-    sort_list = []
-    i = 0
-    while i < len(df):
-        sort_list.append(i)
-        i += 1
-    df['epochs'] = sort_list
-    return df
-
-
-def plotting_all(df):
-    # If model begins with Conv:
-    sns.relplot(df, x='epochs', y='Accuracy', kind='line')  # 'scatter'
-    sns.relplot(df, x='epochs', y='val_Accuracy', kind='line')
-    sns.relplot(df, x='epochs', y='loss', kind='line')
-    sns.relplot(df, x='epochs', y='val_loss', kind='line')
-    plt.show()
-
-
-def plotting_all_sm(df):
-    # If model begins with Dense:
-    sns.relplot(df, x='epochs', y='accuracy', kind='line')  # 'scatter'
-    sns.relplot(df, x='epochs', y='val_accuracy', kind='line')
-    sns.relplot(df, x='epochs', y='loss', kind='line')
-    sns.relplot(df, x='epochs', y='val_loss', kind='line')
-    plt.show()
