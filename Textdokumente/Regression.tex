@@ -21,3 +21,44 @@ der Daten der korrekten Funktion annähert.
     gelernt werden sollte. Die Erwartung ist, dass alle TF-Netze schlechter abschneiden als die 
     normalen schon allein deshalb, weil durch die Spaltenreduktion sehr viele Daten nicht 
     betrachtet werden. Des Weiteren ist genau das bei der Klassifikation ebenfalls passiert.
+
+\subsection{2LinLayer}
+    Ein sehr simples Netz, bestehend aus zwei Hidden Dense (Linear) Layern. 
+    Die Metrik, die hier betrachtet wird ist der Mean Absolute Error (MAE). 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/regression/2linlayer/AP_mae.png}
+        \includegraphics[height=5cm]{../Plots/regression/2linlayer/mae.png}
+    \end{figure}
+    Der erste Graph hat einen leicht höheren MAE, was am Preprocessing der Daten liegt. 
+    Der einzige Unterschied ist der, dass beim zweiten die Spalte LSTAT nicht verändert wird. 
+    Diese ist im Boston Housing grob Antiproportional zu dem tatsächlichen Preis. Da diese als 
+    Vor-Training für die Spalte Median Income von dem California Housing, die grob proportional 
+    zum Preis ist, gedacht ist, wurde aus der LSTAT-Spalte eine proportionale Spalte gemacht, 
+    damit es besser zu Median Income passt. Es wird dabei allerdings schlechter. 
+    Was aber daran liegt, dass die Learningrate bei diesem Test immer größer wird. Dies hat zur 
+    Folge, dass das spätere Layer dies noch umbauen kann, denn bei einem späteren Test mit 
+    einer immer kleiner werdenden Learningrate verbessert dieses Preprocessing das 
+    Ergebnis etwas. 
+    Das bereits bekannte Verhalten nach TF trifft auch hier wieder zu: Nach dem TF wird es 
+    erst sehr viel schlechter und fängt sich dann wieder. 
+    Der MAE wird auch deshalb sehr viel höher, weil der Zahlbereich des Preises des Hauses im 
+    zweiten Datensatz sehr viel größer ist.
+    Im Weiteren werden beide Layer jeweils mit hundert Epochen trainiert und die learningrate, 
+    sowie die Antiproportionalität der LSTAT-Spalte verändert. 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/regression/2linlayer/lr100_AP.png}
+        \includegraphics[height=5cm]{../Plots/regression/2linlayer/lr100NAP.png}
+        \includegraphics[height=5cm]{../Plots/regression/2linlayer/lr1000_AP.png}
+        \includegraphics[height=5cm]{../Plots/regression/2linlayer/lr1000_NAP.png}
+    \end{figure}
+    Wenn die Spalten besser zueinander passen, also beide proportional sind, dann gibt es nach TF 
+    einen nicht ganz so starken Anstieg des Errors, aber das Endergebnis ist etwas schlechter. 
+    Mit der aktuellen Learningrate-Funktion, die linear abnimmt, wird das Netz nach vielen Epochen 
+    sehr stabil, aber auch nicht mehr besser. 
+    Dies liegt daran, dass das Netz in ein lokales Minimum läuft und durch die immer kleiner 
+    werdende Learningrate dort nicht mehr heraus kommt. Am deutlichsten ist es hier zu sehen: 
+    \begin{figure}[htpb]
+        \includegraphics[height=5cm]{../Plots/regression/2linlayer/localMinimum.png}
+    \end{figure}
+    Dies ist ein Netz mit Vier Layern. Man sieht jedes mal, wenn ein neues Layer neu angefangen wird 
+    am Ausschlag des Graphen, doch es ändert sich nichts.

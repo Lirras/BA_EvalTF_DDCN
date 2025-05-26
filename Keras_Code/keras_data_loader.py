@@ -131,7 +131,7 @@ def boston_change_house_age(x_train):
     while c < len(x_train):
         x_train[c, 0] = (x_train[c, 0] * 85)/100
         # Make from anti-proportional to proportional
-        x_train[c, 2] = 40 - x_train[c, 2]
+        x_train[c, 2] = 40 - x_train[c, 2]  # Without is better
         c += 1
     return x_train
 

@@ -36,3 +36,13 @@ def regression_all(df):
     sns.relplot(df, x='epochs', y='val_loss', kind='line')
     sns.relplot(df, x='epochs', y='val_mae', kind='line')
     plt.show()
+
+
+def multiple_plots(df):
+    plt.plot(df['epochs'], df['mae'], 'y', label='Training MAE')
+    plt.plot(df['epochs'], df['val_mae'], 'r', label='Validation MAE')
+    plt.title('MAE')
+    plt.xlabel('Epochs')
+    plt.ylabel('MAE')
+    plt.legend()
+    plt.show()

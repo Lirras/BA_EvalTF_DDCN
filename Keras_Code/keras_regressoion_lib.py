@@ -4,7 +4,7 @@ import pandas
 
 def lr_optim_reg():
     lr_schedule = keras.callbacks.LearningRateScheduler(  # learning rate grows -> This is senseless.
-        lambda epoch: 1e-4 * 10 ** (epoch / 10))
+        lambda epoch: 1e-4 * 100 ** (10/(epoch + 10)))
     optimizer = keras.optimizers.RMSprop(learning_rate=1e-03)
     return lr_schedule, optimizer
 
