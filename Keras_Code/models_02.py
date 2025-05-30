@@ -68,10 +68,15 @@ def mnist_svhn_net():
     model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
 
     # MNIST solver
-    model.add(keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"))
-    df_0 = kcl.predict_train(model, e, f, g, h, lr, 0, 1)
-    model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    df_1 = kcl.predict_train(model, e, f, g, h, lr, 1, 1)
+    model.add(keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"))  # Netz 1
+    df_0 = kcl.predict_train(model, e, f, g, h, lr, 0, 1)  # Training
+    # Inferenz: Trainingsdatensatz mit prediction.
+    # Targets sind der Output + Inputall. (als weiteren Bias, channel)
+    # todo: model.predict(input) für Output vom Netz, output + input = input_next, dann iterieren
+    # todo: Ganze Netze trainieren und dann TF. Enhance Input.
+    # todo: Zeitmesser.
+    model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))  # Netz 2
+    df_1 = kcl.predict_train(model, e, f, g, h, lr, 1, 1)  # Training
     model.add(keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"))
     df_2 = kcl.predict_train(model, e, f, g, h, lr, 2, 1)
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))

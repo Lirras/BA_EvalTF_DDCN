@@ -1,0 +1,51 @@
+import time
+import pandas
+import plotting
+import keras
+import keras_data_loader
+import keras_cascade_lib as kcl
+import keras_regressoion_lib as krl
+
+
+def classification():
+    z1 = time.perf_counter()
+    kcl.clear()
+    a, b, c, d = keras_data_loader.mnist_loader()
+    e, f, g, h = keras_data_loader.svhn_loader()
+    lr, optim = kcl.lr_optim()
+    model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
+    model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
+    # todo: Write here the Network
+    model.add(keras.layers.Dense(units=10, activation='softmax'))
+    hist = model.fit(a, b, batch_size=128, epochs=1, validation_data=(c, d), callbacks=[lr])
+    df_one = pandas.DataFrame.from_dict(hist.history)
+    pred = model.predict(a)
+    # todo: Make pred as input for 2nd
+    # todo: Write here the 2nd Network
+    z2 = time.perf_counter()
+    print(f'time {z2-z1:0.2f} sec')
+    plotting.class_all(plotting.add_epoch_counter_to_df(pandas.concat([df_one])))
+
+
+def regression():
+    z1 = time.perf_counter()
+    krl.clear()
+    a, b, c, d = keras_data_loader.boston_loader()
+    e, f, g, h = keras_data_loader.california_loader()
+    lr, optim = krl.lr_optim_reg()
+    model = keras.Sequential([keras.Input(shape=(3,))])
+    model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
+    # todo: Write here the Network
+
+    model.add(keras.layers.Dense(units=1, activation='linear'))
+    hist = model.fit(a, b, batch_size=16, epochs=1, validation_data=(c, d), callbacks=[lr])
+    df_one = pandas.DataFrame.from_dict(hist.history)
+    pred = model.predict(a)
+    # todo: Make pred as input for 2nd
+    new_in = krl.build_2nd_in_same(a, pred)
+
+    # todo: Write here the 2nd Network
+
+    z2 = time.perf_counter()
+    print(f'time {z2 - z1:0.2f} sec')
+    plotting.multiple_plots(plotting.add_epoch_counter_to_df(pandas.concat([df_one])))

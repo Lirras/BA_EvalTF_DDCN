@@ -1,5 +1,7 @@
 import keras
 import pandas
+import numpy
+import time
 
 import keras_regressoion_lib as krl
 import plotting as plot
@@ -69,5 +71,39 @@ def regression_two():
     model.summary()
 
 
-regression_two()
+def direct_cascade_reg():
+    z1 = time.perf_counter()
+    krl.clear()
+    a, b, c, d = keras_data_loader.boston_loader()
+    # e, f, g, h, = keras_data_loader.california_loader()
+    lr, optim = krl.lr_optim_reg()
+    model = keras.Sequential([keras.Input(shape=(3,))])
+    model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
+    model.add(keras.layers.Dense(units=1024, activation='relu'))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.3))
+    model.add(keras.layers.Dense(units=1, activation='linear'))
+    hist = model.fit(a, b, batch_size=16, epochs=1, validation_data=(c, d), callbacks=[lr])
+    pred = model.predict(a)
+    pred_val = model.predict(c)
+    new_in = krl.build_2nd_in_same(a, pred)
+    new_val = krl.build_2nd_in_same(c, pred_val)
+    # todo: new_in is the new input for the next Network with the same data.
+
+    # krl.clear()
+    model_2 = keras.Sequential([keras.Input(shape=(4,))])
+    model_2.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
+    model_2.add(keras.layers.Dense(units=1024, activation='relu'))
+    model_2.add(keras.layers.Dense(units=1, activation='linear'))
+    hist_2 = model_2.fit(new_in, b, batch_size=16, epochs=1, validation_data=(new_val, d), callbacks=[lr])
+
+    z2 = time.perf_counter()
+    df_one = pandas.DataFrame.from_dict(hist.history)
+    df_two = pandas.DataFrame.from_dict(hist_2.history)
+    plot.multiple_plots(plot.add_epoch_counter_to_df(pandas.concat([df_one, df_two])))
+    print(f'time: {z2-z1:0.2f} sec')
+
+
+direct_cascade_reg()
+# regression_two()
 # regression_one()

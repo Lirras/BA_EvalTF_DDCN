@@ -1,5 +1,6 @@
 import keras
 import pandas
+import numpy
 
 
 def lr_optim_reg():
@@ -23,3 +24,13 @@ def clear():
 
 def freezing(model, layer):
     model.layers[layer].trainable = False
+
+
+def build_2nd_in_same(e, pred):
+    i = 0
+    ls = []
+    while i < len(e):
+        ls.append(numpy.concatenate((e[i], pred[i])))
+        i += 1
+    new_in = numpy.array(ls)
+    return new_in

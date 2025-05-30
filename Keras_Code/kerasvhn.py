@@ -1,5 +1,5 @@
 
-# import numpy as np
+import numpy as np
 import tensorflow
 import keras
 import pandas
@@ -77,13 +77,91 @@ def cascade_network():
 
     lr, optim = kcl.lr_optim()
     model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(10, activation='softmax'))
+
     model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
 
-    model.add(keras.layers.Dense(10, activation='softmax'))
-    model.fit(e, f, batch_size=128, epochs=1, validation_data=(g, h), callbacks=[lr])
+    model.fit(a, b, batch_size=128, epochs=1, validation_data=(c, d), callbacks=[lr])
 
     model.summary()
+    # todo: make pred as additional input for the 2nd Network!
+    pred = model.predict(a)
+    print(pred.shape)
+
+    # arr = new_channel(a, pred)
+    model_2 = multiple_inputs()
+    # model_2 = keras.Sequential([keras.Input(shape=((32, 32, 1), 10))])
+    # model_2.add(keras.layers.Flatten())
+    # todo: Da wird die erste Dimension abgehackt! - Das soll nicht sein. Geht so nicht. Wäre pred()+bias
+    # model_2.add(keras.layers.Dense(units=10, activation='softmax'))
+    model_2.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
+    model_2.fit((a, pred), b, batch_size=128, epochs=1, validation_data=(c, d), callbacks=[lr])
 
 
-schedule()
-# cascade_network()
+def multiple_inputs():
+    # define two sets of inputs
+    inputA = keras.Input(shape=(32, 32, 1))
+    inputB = keras.Input(shape=(10, ))
+    # the first branch operates on the first input
+    x = keras.layers.Flatten()(inputA)
+    x = keras.layers.Dense(1024, activation="relu")(x)
+    x = keras.layers.Dense(10, activation='relu')(x)
+    x = keras.Model(inputs=inputA, outputs=x)
+    # the second branch operates on the second input
+    y = keras.layers.Dense(10, activation="relu")(inputB)
+    y = keras.Model(inputs=inputB, outputs=y)
+    # combine the output of the two branches
+    combined = keras.layers.concatenate([x.output, y.output])
+    # apply a FC layer and then a regression prediction on the
+    # combined outputs
+    z = keras.layers.Dense(10, activation="relu")(combined)
+    # our model will accept the inputs of the two branches and
+    # then output a single value
+    model = keras.Model(inputs=[x.input, y.input], outputs=z)
+    return model
+
+
+def new_channel(f, pred):  # pred, a):
+    # a = a[:, [2, 0, 1]]  # N, 3, 32, 1
+    pred = np.expand_dims(pred, axis=0)
+    # pred are label predictions, not data
+    np.expand_dims(f, axis=0)
+    i = 0
+    counter = 0
+    while i < len(f):
+        counter += 1
+        i += 1
+    print(f.shape)
+    print(counter)
+    # b = np.concat((a, pred), axis=0)
+    # np.concatenate: Input Vectors must have the same dimensions. -> Write after each another
+    # np.append: complete Flatten, then append
+    # print(b.shape)
+    return pred
+
+    '''arr = []
+    i = 0
+    while i < len(pred):
+        arr.append(pred[i])
+        i += 1
+    arr = np.array(arr)
+    print(arr.shape)
+    return arr'''
+
+    '''x = np.array([[1, 2]])
+    y = np.expand_dims(x, axis=0)
+    print(x)
+    y[0][0] = 3
+    print(y)'''
+    '''a_with_pred = np.expand_dims(a, axis=2)
+    a_with_pred = a_with_pred[:, [2, 0, 1]]
+    i = 0
+    while i < len(a_with_pred):
+        a_with_pred[i][1] = pred[i]
+        i += 1
+    return a_with_pred'''
+
+
+# schedule()
+cascade_network()
