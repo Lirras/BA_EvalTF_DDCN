@@ -9,6 +9,14 @@ def lr_optim():
     return lr_schedule, optimizer
 
 
+def better_lr_optim():
+    lr_schedule = keras.callbacks.LearningRateScheduler(
+        lambda epoch: 1e-4 * 10 ** (10/(epoch + 10))
+    )
+    optimizer = keras.optimizers.Adam(learning_rate=1e-03, amsgrad=True)
+    return lr_schedule, optimizer
+
+
 def clear():
     keras.backend.clear_session()
 

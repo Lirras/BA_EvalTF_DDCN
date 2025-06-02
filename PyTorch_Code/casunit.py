@@ -67,5 +67,15 @@ class svhn_network(torch.nn.Module):
         x = torch.unflatten(x, 1, (32, 32))
         x = torch.unsqueeze(x, 1)
 
+        return x
 
+
+class mnist_net(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.lin1 = torch.nn.Linear(100 * 32 * 32, 100)
+
+    def forward(self, x):
+        x = torch.flatten(x)
+        x = torch.nn.functional.relu(self.lin1(x))
         return x

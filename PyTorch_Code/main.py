@@ -9,6 +9,8 @@ import math
 # Version: 0.0.012
 
 from casunit import CascadeNetwork
+from casunit import mnist_net
+import train_and_test as tnt
 import data_loader
 import workflow as wf
 import torch
@@ -25,7 +27,8 @@ def main():
     # Use a breakpoint in the code line below to debug your script.
     # Press Strg+F8 to toggle the breakpoint.
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model = CascadeNetwork().to(device)
+    # model = CascadeNetwork().to(device)
+    model = mnist_net().to(device)
 
     # scipy.datasets.download_all()
 
@@ -38,21 +41,34 @@ def main():
 
     # Load the MNIST Dataset
     mnist_train, mnist_val = data_loader.mnist_data_loader(True, 100)
+
+    model.train()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    crit = torch.nn.CrossEntropyLoss()
+
+    i = 0
+    while i < epoch:
+        tnt.train_epoch(mnist_train, model, device, crit, optimizer)
+        tnt.test_new_layer(mnist_val, model, device, crit)
+        i += 1
+    model.eval()
+    pred = model(mnist_train.data)
+
     # Load the SVHN Dataset
-    svhn_train, svhn_val = data_loader.svhn_data_loader(100)  # with Last Data cutted.
+    # svhn_train, svhn_val = data_loader.svhn_data_loader(100)  # with Last Data cutted.
 
     # todo: dropout + normalize Layer einfügen und verstehen, was letztere sind.
     # todo: Approach über torch_geometric machen -> Dataset apply -> I dont do this
     # todo: Maybe an Approach über Keras? -> Yes, of course!
     # todo: Digraph test
 
-    model.add_layer(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros').to(device), 'relu')
+    '''model.add_layer(torch.nn.Conv2d(1, 32, 3, stride=1, padding=1, padding_mode='zeros').to(device), 'relu')
     model.add_layer(1, 'flatten')
     model.add_layer(torch.nn.Linear(32768, 8192).to(device))
     wf.workflow(model, epoch, device, svhn_train, svhn_val)
 
     model.add_layer(torch.nn.Linear(8192, 10).to(device))
-    wf.workflow(model, epoch, device, svhn_train, svhn_val)
+    wf.workflow(model, epoch, device, svhn_train, svhn_val)'''
     
     # model.add_layer(1, 'batch_norm', [torch.zeros(32), torch.ones(32)])
     '''model.add_layer(1, 'flatten')

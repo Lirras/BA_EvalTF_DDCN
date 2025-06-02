@@ -41,8 +41,18 @@ def regression_all(df):
 def multiple_plots(df):
     plt.plot(df['epochs'], df['mae'], 'y', label='Training MAE')
     plt.plot(df['epochs'], df['val_mae'], 'r', label='Validation MAE')
-    plt.title('MAE')
+    plt.title('MAE-Comparison')
     plt.xlabel('Epochs')
     plt.ylabel('MAE')
+    plt.legend()
+    plt.show()
+
+
+def class_mult_plots(df):
+    plt.plot(df['epochs'], df['Accuracy'], 'y', label='Training Accuracy')
+    plt.plot(df['epochs'], df['val_Accuracy'], 'r', label='Validation Accuracy')
+    plt.title('Accuracy-Comparison')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
     plt.legend()
     plt.show()

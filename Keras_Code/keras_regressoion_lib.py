@@ -4,9 +4,16 @@ import numpy
 
 
 def lr_optim_reg():
-    lr_schedule = keras.callbacks.LearningRateScheduler(  # learning rate grows -> This is senseless.
+    lr_schedule = keras.callbacks.LearningRateScheduler(  # learning rate shrinks
         lambda epoch: 1e-4 * 100 ** (10/(epoch + 10)))
     optimizer = keras.optimizers.RMSprop(learning_rate=1e-03)
+    return lr_schedule, optimizer
+
+
+def fine_tuning():
+    lr_schedule = keras.callbacks.LearningRateScheduler(  # learning rate shrinks
+        lambda epoch: 1e-6 * 10 ** (1 / (epoch + 10)))
+    optimizer = keras.optimizers.RMSprop(learning_rate=1e-05)
     return lr_schedule, optimizer
 
 
@@ -24,6 +31,16 @@ def clear():
 
 def freezing(model, layer):
     model.layers[layer].trainable = False
+
+
+def freezing_model(model):
+    for i in model.layers:
+        i.trainable = False
+
+
+def unfreezing_all(model):
+    for i in model.layers:
+        i.trainable = True
 
 
 def build_2nd_in_same(e, pred):

@@ -41,13 +41,13 @@ def svhn_loader():
     # print(X_train.shape)
     # print(y_train.shape)
 
-    train_img = X_train.astype('float64')
-    train_labels = y_train.astype('int64')
+    # train_img = X_train.astype('float64')
+    # train_labels = y_train.astype('int64')
 
-    # train_img = train_img.astype('float64')
+    train_img = train_img.astype('float64')
     test_img = test_img.astype('float64')
 
-    # train_labels = train_labels.astype('int64')
+    train_labels = train_labels.astype('int64')
     test_labels = test_labels.astype('int64')
     return train_img, train_labels, test_img, test_labels
 
