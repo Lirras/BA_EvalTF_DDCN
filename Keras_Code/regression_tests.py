@@ -3,6 +3,7 @@ import pandas
 import numpy
 import time
 import fix_models_test
+import tensorflow as tf
 
 import keras_regressoion_lib as krl
 import plotting as plot
@@ -130,18 +131,21 @@ def direct_cascade_reg():
 
 
 def dcr():
+    print(tf.executing_eagerly())
     z1 = time.perf_counter()
     krl.clear()
     a, b, c, d = keras_data_loader.boston_loader()
+    r, s, t, u = a.copy(), b.copy(), c.copy(), d.copy()
     e, f, g, h, = keras_data_loader.california_loader()
     lr, optim = krl.lr_optim_reg()
     model = fix_models_test.model_01()
     model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
     # todo: Why change the data after one fit-call?
-    hist = model.fit(a, b, batch_size=16, epochs=1, validation_data=(c, d), callbacks=[lr])
+    hist = model.fit(a, b, batch_size=16, epochs=1)
+    print(tf.executing_eagerly())
     # Why will it the self call? - But it's an Object instance. Its has no self!
     # That doesn't work too!
-    keras.saving.save_model(model, 'D:/Uni/Sommersemester 2024/Bachelor_Arbeit/Code/cascadetest/BA_EvalTF_DDCN/Keras_Code/test.keras')
+    # keras.saving.save_model(model, 'D:/Uni/Sommersemester 2024/Bachelor_Arbeit/Code/cascadetest/BA_EvalTF_DDCN/Keras_Code/test.keras')
     # model.save('D:/Uni/Sommersemester 2024/Bachelor_Arbeit/Code/cascadetest/BA_EvalTF_DDCN/Keras_Code/test.keras')
     # krl.freezing_model(model)
 
@@ -150,9 +154,10 @@ def dcr():
     new_in = krl.build_2nd_in_same(a, pred)
     new_val = krl.build_2nd_in_same(c, pred_val)'''
 
-    model_2 = fix_models_test.model_02()
+    model_2 = fix_models_test.model_01()
     model_2.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
-    hist_2 = model_2.fit(a, b, batch_size=16, epochs=1, validation_data=(c, d), callbacks=[lr])
+    print(tf.executing_eagerly())
+    hist_2 = model_2.fit(r, s, batch_size=16, epochs=1)
 
     z2 = time.perf_counter()
     df_one = pandas.DataFrame.from_dict(hist.history)
@@ -161,7 +166,33 @@ def dcr():
     print(f'time: {z2 - z1:0.2f} sec')
 
 
-# dcr()
-direct_cascade_reg()
+def late_idea():
+    krl.clear()
+    a, b, c, d = keras_data_loader.boston_loader()
+    e, f, g, h = keras_data_loader.california_loader()
+    lr, optim = krl.lr_optim_reg()
+    model = keras.Sequential([keras.Input(shape=(3,))])
+    model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
+    model.add(keras.layers.Dense(units=10, activation='relu'))
+    edge = keras.layers.Dense(units=1, activation='linear')
+    model.add(edge)
+    model.fit(a, b, batch_size=16, epochs=1, validation_data=(c, d), callbacks=[lr])
+    krl.freezing_model(model)
+    r = model.predict(e)
+    s = model.predict(g)
+    # model.layers[-1].output[1]
+    # model.outputs[0][1] --> (1,), (None, 1) // Ohne 1 am Ende: (None, 2), (None, 1)
+    model.add(keras.layers.concatenate([edge, keras.Input(shape=(1,))]))
+    # Only Instances of keras.layers can be added / Only input tensors may be passed as positional arguments.
+    # --> Need keras.layers as key argument
+    model.add(keras.layers.Dense(units=10, activation='relu'))
+    model.add(keras.layers.Dense(units=1, activation='linear'))
+    model.fit(e, f, batch_size=16, epochs=1, validation_data=(g, h), callbacks=[lr])
+    # todo: Das ganze mal als Klasse und dessen instanzen austesten -> PyDCA
+
+
+# late_idea()
+dcr()
+# direct_cascade_reg()
 # regression_two()
 # regression_one()

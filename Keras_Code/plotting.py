@@ -30,11 +30,21 @@ def class_all_sm(df):
     plt.show()
 
 
+def class_acc_only(df):
+    sns.relplot(df, x='epochs', y='accuracy', kind='line')
+    plt.show()
+
+
 def regression_all(df):
     sns.relplot(df, x='epochs', y='loss', kind='line')
     sns.relplot(df, x='epochs', y='mae', kind='line')
     sns.relplot(df, x='epochs', y='val_loss', kind='line')
     sns.relplot(df, x='epochs', y='val_mae', kind='line')
+    plt.show()
+
+
+def regr_mae_only(df):
+    sns.relplot(df, x='epochs', y='mae', kind='line')
     plt.show()
 
 
