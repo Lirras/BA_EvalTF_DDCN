@@ -271,6 +271,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         \includegraphics[height=5cm]{../Plots/models01_Cas/LTF3val_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models01_Cas/LTF4vval_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models01_Cas/Lval_Accuracy.png}
+        \caption{\label{fig:figure1} less Data: Validation-Accuracy bzgl. TF-Layer 0-4}
     \end{figure}
 
     Deutlich zu sehen ist, dass sobald TF gemacht wird, die Accuracy deutlich schlechter wird. 
@@ -278,6 +279,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     Accuracy so: 
     \begin{figure}[htpb]
         \includegraphics[height=5cm]{../Plots/models01_Cas/wo_val_Accuracy.png}
+        \caption{\label{fig:figure2} normal Data: Validation-Accuracy ohne TF}
     \end{figure}
     Trotz der wenigen Datensamples ist dies hier ohne TF in der Spitze immer noch besser als mit, 
     aber es ist mit TF deutlich weniger anfällig für Overfitting und lässt somit weniger in seiner 
@@ -354,11 +356,11 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     \end{table}
 
     \begin{figure}[htpb]
-        Verlauf bei einer, fünf, zehnund Zwanzig Epochen im ersten Layer:
         \includegraphics[height=5cm]{../Plots/models_03_L2L/1val_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models_03_L2L/5val_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models_03_L2L/10val_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models_03_L2L/20val_Accuracy.png}
+        \caption{\label{fig:figure3} Verlauf bei einer, fünf, zehnund Zwanzig Epochen im ersten Layer}
     \end{figure}
 
     \begin{table}[h!]
@@ -400,6 +402,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         \includegraphics[height=5cm]{../Plots/models_03_L2L/Lwo_val_Accuracy.png}
         Ohne TF, mit komplettem Datensatz: 
         \includegraphics[height=5cm]{../Plots/models_03_L2L/wo_val_Accuracy.png}
+        \caption{\label{fig:figure4} TF nach 11 Epochen mit normal und less Data: Val-ACC}
     \end{figure}
 
     Im Endeffekt ist es ohne TF besser als mit.
@@ -420,6 +423,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         Das ganze mit TF: 
         \includegraphics[height=5cm]{../Plots/models_03_L2L/LVTF_val_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models_03_L2L/VLTF_val_loss.png}
+        \caption{\label{fig:figure5} Very less Data: Val-ACC ohne und mit TF}
     \end{figure}
 
     Bei diesen sehr wenigen Zieldaten mit etwa 700 Stück ist es nur logisch, dass der loss sehr hoch 
@@ -432,6 +436,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     74.2\%. Der Verlauf der Validation-Accuracy ist wie folgt: 
     \begin{figure}[htpb]
         \includegraphics[height=5cm]{../Plots/models_02_m2s/val_Accuracy.png}
+        \caption{\label{fig:figure6} Normal Data: MNIST to SVHN Network with TF between}
     \end{figure}
     Bei weniger Daten hat dasselbe Netz dann nur noch eine Accuracy von 56.6\%. Diese kann 
     durch verschiedene Epochenanzahlen in den Layern auf 68.4\% erhöht werden, 
@@ -448,11 +453,13 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
     \begin{figure}[htpb]
         \includegraphics[height=5cm]{../Plots/models_02_m2s/VLAccuracy.png}
         \includegraphics[height=5cm]{../Plots/models_02_m2s/VLval_Accuracy.png}
+        \caption{\label{fig:figure7} Very less Data: Vergleich zwischen ACC und Val-ACC mit TF}
     \end{figure}
     Der Unterschied ist bei etwa 40\%. Wenn kein TF gemacht wird, ist das Ergebnis folgendes: 
     \begin{figure}
         \includegraphics[height=5cm]{../Plots/models_02_m2s/VLwoAccuracy.png}
         \includegraphics[height=5cm]{../Plots/models_02_m2s/VLwoval_Accuracy.png}
+        \caption{\label{fig:figure8} Very less Data: Vergleich zwischen ACC und Val-ACC ohne TF}
     \end{figure}
     Daraus folgt, dass das Netz ohne TF immer noch besser ist als mit. 
     Die Vermutung ist, dass diese beiden Datensätze doch etwas zu weit 
@@ -492,6 +499,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         \includegraphics[height=5cm]{../Plots/models_02_DrO/val_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models_02_BtN/val_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models_01_Sce/val_Accuracy.png}
+        \caption{\label{fig:figure9} Normal Data: Val-ACC Vergleich zwischen 4 Netzen}
     \end{figure}
 
     Da das Conv8Epochs Netz das Beste ist, wird dieses noch eingehender betrachtet. 
@@ -501,6 +509,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         \includegraphics[height=5cm]{../Plots/models_03_C8E/val_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models_03_C8E/loss.png}
         \includegraphics[height=5cm]{../Plots/models_03_C8E/val_loss.png}
+        \caption{\label{fig:figure10} Normal Data: Alle Werte des Conv8Epochs}
     \end{figure}
 
     Das mit viel weniger Daten hat die Werte: 
@@ -509,6 +518,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         \includegraphics[height=5cm]{../Plots/models_03_C8E/VLval_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models_03_C8E/VLloss.png}
         \includegraphics[height=5cm]{../Plots/models_03_C8E/VLval_loss.png}
+        \caption{\label{fig:figure11} Very less Data: Alle Werte des Conv8Epochs}
     \end{figure}
 
     Zum Vergleich den ganzen Kram ohne TF: 
@@ -517,6 +527,7 @@ keras.io, numpy.org, stackoverflow, discuss.pytorch.org, pytorch.org, kaggle
         \includegraphics[height=5cm]{../Plots/models_03_C8E/VLwoval_Accuracy.png}
         \includegraphics[height=5cm]{../Plots/models_03_C8E/VLwoloss.png}
         \includegraphics[height=5cm]{../Plots/models_03_C8E/VLwoval_loss.png}
+        \caption{\label{fig:figure12} Very less Data: Alle Werte des Conv8Epochs ohne TF}
     \end{figure}
     Auch hier bleibt es gleich, dass TF keinen Unterschied macht zwischen vielen oder wenigen 
     Target-Daten. 

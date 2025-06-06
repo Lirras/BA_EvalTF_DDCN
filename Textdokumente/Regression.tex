@@ -28,6 +28,7 @@ der Daten der korrekten Funktion annähert.
     \begin{figure}[htpb]
         \includegraphics[height=5cm]{../Plots/regression/2linlayer/AP_mae.png}
         \includegraphics[height=5cm]{../Plots/regression/2linlayer/mae.png}
+        \caption{\label{fig:figure13} MAE Vergleich mit und ohne Preprocessing}
     \end{figure}
     Der erste Graph hat einen leicht höheren MAE, was am Preprocessing der Daten liegt. 
     Der einzige Unterschied ist der, dass beim zweiten die Spalte LSTAT nicht verändert wird. 
@@ -50,6 +51,7 @@ der Daten der korrekten Funktion annähert.
         \includegraphics[height=5cm]{../Plots/regression/2linlayer/lr100NAP.png}
         \includegraphics[height=5cm]{../Plots/regression/2linlayer/lr1000_AP.png}
         \includegraphics[height=5cm]{../Plots/regression/2linlayer/lr1000_NAP.png}
+        \caption{\label{fig:figure14} MAE: Learningrate Tests mit und ohne Preprocessing}
     \end{figure}
     Wenn die Spalten besser zueinander passen, also beide proportional sind, dann gibt es nach TF 
     einen nicht ganz so starken Anstieg des Errors, aber das Endergebnis ist etwas schlechter. 
@@ -59,6 +61,7 @@ der Daten der korrekten Funktion annähert.
     werdende Learningrate dort nicht mehr heraus kommt. Am deutlichsten ist es hier zu sehen: 
     \begin{figure}[htpb]
         \includegraphics[height=5cm]{../Plots/regression/2linlayer/localMinimum.png}
+        \caption{\label{fig:figure15} MAE: localMinimum}
     \end{figure}
     Dies ist ein Netz mit Vier Layern. Man sieht jedes mal, wenn ein neues Layer neu angefangen wird 
     am Ausschlag des Graphen, doch es ändert sich nichts.

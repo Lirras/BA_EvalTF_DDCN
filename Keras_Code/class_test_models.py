@@ -7,22 +7,19 @@ import keras_regressoion_lib as krl
 import keras_cascade_lib as kcl
 
 
-# todo: In den Plots Epochen bzgl. Layer angeben, Wieviele Datensamples sind es gerade?
 # todo: Metrik bauen für Anzahl Epochen pro Layer
-# todo: Erst nachdem direct Cascade läuft
-# todo: Labels oder irgendetwas ins Konzept.tex einbauen, damit man weiß, welche Graphik wozu gehört
 # todo: Ergebnisse vorher in ein Dokument hinetereinander, damit ich die nicht suchen brauch.
 
 def regression_test():
     krl.clear()
     z1 = time.perf_counter()
-    a, b, c, d = keras_data_loader.boston_loader()
+    # a, b, c, d = keras_data_loader.boston_loader()
     e, f, g, h = keras_data_loader.california_loader()
     model_1 = class_units.Regression()
     x = 3
     ls = []
     model_1.initialize((x,))
-    hist = model_1.train(a, b, c, d)
+    hist = model_1.train(e, f, g, h)
     ls.append(pandas.DataFrame.from_dict(hist.history))
     pred = model_1.pred(e)
     val_pred = model_1.pred(g)
@@ -79,5 +76,41 @@ def classification_test():
     print(f'{z2-z1:0.2f} sec')
 
 
+def classification_conv_test():  # 94.7% ACC after two Networks with TF between them with all Data.
+    # --> TF and vector builder doesn't change anything
+    print('conv_test')
+    kcl.clear()
+    z1 = time.perf_counter()
+    a, b, c, d = keras_data_loader.mnist_loader()
+    e, f, g, h = keras_data_loader.svhn_loader()
+    ls = []
+    epochs = 10
+    model_1 = class_units.ClassificationConv()
+    model_1.initialize((32, 32, 1))
+    hist = model_1.train(a, b, c, d, epochs)
+    ls.append(pandas.DataFrame.from_dict(hist.history))
+    pred = model_1.pred(e)
+    val_pred = model_1.pred(g)
+    augmented_vector = kcl.build_vec_conv(e, pred)
+    val_aug_vec = kcl.build_vec_conv(g, val_pred)
+    x = 11
+    for i in range(5):  # Why is the amount of iterations insignificant
+        model = class_units.ClassificationConv()
+        model.initialize((32, 32, x))
+        hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
+        ls.append(pandas.DataFrame.from_dict(hist.history))
+        pred = model.pred(augmented_vector)
+        val_pred = model.pred(val_aug_vec)
+        val_aug_vec = kcl.build_vec_conv(val_aug_vec, val_pred)
+        augmented_vector = kcl.build_vec_conv(augmented_vector, pred)
+        x += 10
+
+    z2 = time.perf_counter()
+    plotting.class_mult_plots(plotting.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2-z1))
+
+    print(f'{z2 - z1:0.2f} sec')
+
+
+classification_conv_test()
 # classification_test()
-regression_test()
+# regression_test()

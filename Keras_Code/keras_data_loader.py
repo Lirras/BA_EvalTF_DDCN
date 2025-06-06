@@ -37,18 +37,21 @@ def svhn_loader():
     train_labels = lb.fit_transform(train_labels)
     test_labels = lb.fit_transform(test_labels)
 
-    X_train, X_val, y_train, y_val = train_test_split(train_img, train_labels, test_size=0.99, random_state=22)
+    X_train, xval, y_train, yval = train_test_split(train_img, train_labels, test_size=0.9, random_state=22)
+    x, X_val, y, y_val = train_test_split(train_img, train_labels, test_size=0.1, random_state=22)
     # print(X_train.shape)
     # print(y_train.shape)
 
-    # train_img = X_train.astype('float64')
-    # train_labels = y_train.astype('int64')
+    train_img = X_train.astype('float64')
+    train_labels = y_train.astype('int64')
+    test_img = X_val.astype('float64')
+    test_labels = y_val.astype('int64')
 
-    train_img = train_img.astype('float64')
-    test_img = test_img.astype('float64')
+    # train_img = train_img.astype('float64')
+    # test_img = test_img.astype('float64')
 
-    train_labels = train_labels.astype('int64')
-    test_labels = test_labels.astype('int64')
+    # train_labels = train_labels.astype('int64')
+    # test_labels = test_labels.astype('int64')
     return train_img, train_labels, test_img, test_labels
 
 

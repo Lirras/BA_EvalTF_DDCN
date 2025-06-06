@@ -58,11 +58,17 @@ def multiple_plots(df):
     plt.show()
 
 
-def class_mult_plots(df):
+# todo: epochenanzahl überall hinzufügen
+def class_mult_plots(df, epochs, samples, time):
     plt.plot(df['epochs'], df['Accuracy'], 'y', label='Training Accuracy')
     plt.plot(df['epochs'], df['val_Accuracy'], 'r', label='Validation Accuracy')
     plt.title('Accuracy-Comparison')
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
+    text_3 = ('Time: ' + str(time))
+    text_2 = ('Samples: ' + str(samples) + '\n')
+    text = ('Epochs: ' + str(epochs) + '\n')
+    tex = text + text_2 + text_3
+    plt.text(epochs, 0.8, tex)
     plt.legend()
     plt.show()

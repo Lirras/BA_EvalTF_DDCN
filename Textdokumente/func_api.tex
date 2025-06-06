@@ -13,6 +13,7 @@ Epoche nach folgender Regel:
 Das Netz liegt in folgender Form vor: 
 \begin{figure}[htpb]
     \includegraphics[height=15cm]{../Plots/functional_api_tests/Classification_Network.png}
+    \caption{\label{fig:figure16} Aufbau eines Klassifikationsnetzwerk für Model as Layer learning}
 \end{figure}
 Hier wird zuerst von MNIST mit dem Model 1 ein predict gemacht. Das Ergebnis davon 
 ist der zweite Input des Gesamtnetzes. Dieses wird danach komplett 
@@ -25,7 +26,7 @@ länger mit $578.66$ Sekunden, hat aber eine um etwa 10\% höhere Accuracy.
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../Plots/functional_api_tests/TFClass_515_33sec.png}
     \includegraphics[height=5cm]{../Plots/functional_api_tests/Class_578_66sec.png}
-    Links: Mit TF; Rechts: Ohne
+    \caption{\label{fig:figure17} Classification mit und ohne TF}
 \end{figure}
 
 
@@ -38,6 +39,7 @@ folgender Regel:
 Das Netz liegt in folgender Form vor:
 \begin{figure}[htpb]
     \includegraphics[height=10cm]{../Plots/functional_api_tests/Regression_Network.png}
+    \caption{\label{fig:figure18} Aufbau Regression Network}
 \end{figure}
 Hier wird exakt das Gleiche wie in der Klassifikation oben gemacht nur auf dem 
 Boston- und dem California-Datensatz. Die Dauer mit TF ist $23.88$ Sekunden, während 
@@ -46,5 +48,5 @@ Werten im Mean Absolute Error.
 \begin{figure}
     \includegraphics[height=5cm]{../Plots/functional_api_tests/TFRegr_23_88sec.png}
     \includegraphics[height=5cm]{../Plots/functional_api_tests/Regr_39_81sec.png}
-    Links: Mit TF; Rechts: Ohne
+    \caption{\label{fig:figure19} Regression mit und ohne TF}
 \end{figure}

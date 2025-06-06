@@ -31,16 +31,6 @@ class Classification():
     def initialize(self, in_shape):
         self.network = keras.Sequential([
             keras.Input(shape=in_shape),
-            # keras.layers.Conv2D(16, kernel_size=(3, 3), padding='same', activation='relu'),
-            # keras.layers.BatchNormalization(),
-            # keras.layers.Conv2D(32, kernel_size=(3, 3), padding='same', activation='relu'),
-            # keras.layers.MaxPooling2D(2),
-            # keras.layers.Dropout(0.3),
-            # keras.layers.Conv2D(64, kernel_size=(3, 3), padding='same', activation='relu'),
-            # keras.layers.BatchNormalization(),
-            # keras.layers.Conv2D(128, kernel_size=(3, 3), padding='same', activation='relu'),
-            # keras.layers.MaxPooling2D(2),
-            # keras.layers.Dropout(0.3),
             keras.layers.Flatten(),
             keras.layers.Dense(units=512, activation='relu'),
             keras.layers.Dense(units=10, activation='softmax')
@@ -55,3 +45,34 @@ class Classification():
     def pred(self, train):
         output = self.network.predict(train)
         return output
+
+
+class ClassificationConv():
+    def __init__(self):
+        super().__init__()
+
+    def initialize(self, in_shape):
+        self.network = keras.Sequential([
+            keras.Input(shape=in_shape),
+            keras.layers.Conv2D(16, kernel_size=(3, 3), padding='same', activation='relu'),
+            keras.layers.BatchNormalization(),
+            keras.layers.Conv2D(32, kernel_size=(3, 3), padding='same', activation='relu'),
+            keras.layers.MaxPooling2D(2),
+            keras.layers.Dropout(0.3),
+            keras.layers.Conv2D(64, kernel_size=(3, 3), padding='same', activation='relu'),
+            keras.layers.BatchNormalization(),
+            keras.layers.Conv2D(128, kernel_size=(3, 3), padding='same', activation='relu'),
+            keras.layers.MaxPooling2D(2),
+            keras.layers.Dropout(0.3),
+            keras.layers.Flatten(),
+            keras.layers.Dense(units=512, activation='relu'),
+            keras.layers.Dense(units=10, activation='softmax')
+        ])
+        self.network.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-3),
+                             loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
+
+    def train(self, train, label, val_tr, val_lb, epochs):
+        return self.network.fit(train, label, batch_size=128, epochs=epochs, validation_data=(val_tr, val_lb))
+
+    def pred(self, train):
+        return self.network.predict(train)
