@@ -10,6 +10,8 @@ import keras_regressoion_lib as krl
 def classification():
     z1 = time.perf_counter()
     kcl.clear()
+    epochs = 10
+    name = 'Name'
     a, b, c, d = keras_data_loader.mnist_loader()
     e, f, g, h = keras_data_loader.svhn_loader()
     lr, optim = kcl.lr_optim()
@@ -17,19 +19,21 @@ def classification():
     model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
     # todo: Write here the Network
     model.add(keras.layers.Dense(units=10, activation='softmax'))
-    hist = model.fit(a, b, batch_size=128, epochs=1, validation_data=(c, d), callbacks=[lr])
+    hist = model.fit(a, b, batch_size=128, epochs=epochs, validation_data=(c, d), callbacks=[lr])
     df_one = pandas.DataFrame.from_dict(hist.history)
     pred = model.predict(a)
     # todo: Make pred as input for 2nd
     # todo: Write here the 2nd Network
     z2 = time.perf_counter()
     print(f'time {z2-z1:0.2f} sec')
-    plotting.class_all(plotting.add_epoch_counter_to_df(pandas.concat([df_one])))
+    plotting.class_all(plotting.add_epoch_counter_to_df(pandas.concat([df_one])), epochs, len(e), round(z2-z1), name)
 
 
 def regression():
     z1 = time.perf_counter()
     krl.clear()
+    epochs = 10
+    name = 'Name'
     a, b, c, d = keras_data_loader.boston_loader()
     e, f, g, h = keras_data_loader.california_loader()
     lr, optim = krl.lr_optim_reg()
@@ -38,7 +42,7 @@ def regression():
     # todo: Write here the Network
 
     model.add(keras.layers.Dense(units=1, activation='linear'))
-    hist = model.fit(a, b, batch_size=16, epochs=1, validation_data=(c, d), callbacks=[lr])
+    hist = model.fit(a, b, batch_size=16, epochs=epochs, validation_data=(c, d), callbacks=[lr])
     df_one = pandas.DataFrame.from_dict(hist.history)
     pred = model.predict(a)
     # todo: Make pred as input for 2nd
@@ -48,4 +52,4 @@ def regression():
 
     z2 = time.perf_counter()
     print(f'time {z2 - z1:0.2f} sec')
-    plotting.multiple_plots(plotting.add_epoch_counter_to_df(pandas.concat([df_one])))
+    plotting.multiple_plots(plotting.add_epoch_counter_to_df(pandas.concat([df_one])), epochs, len(e), round(z2-z1), name)

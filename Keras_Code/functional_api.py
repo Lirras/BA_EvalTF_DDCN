@@ -9,8 +9,10 @@ import plotting as pltt
 
 def regression_test():
     z1 = time.perf_counter()
+    epochs = 20
+    name = 'func_regression'
     krl.clear()
-    a, b, c, d = keras_data_loader.boston_loader()
+    # a, b, c, d = keras_data_loader.boston_loader()
     e, f, g, h = keras_data_loader.california_loader()
     lr, optim = krl.lr_optim_reg()
 
@@ -23,8 +25,8 @@ def regression_test():
 
     model = keras.Model(inputs, output, name='boston1')
 
-    m = model.predict(a)
-    n = model.predict(c)
+    m = model.predict(e)
+    n = model.predict(g)
 
     # output_2 = keras.layers.Identity()(inputB)
     modelB = keras.Model(inputB, inputB)
@@ -39,24 +41,26 @@ def regression_test():
     # needed pydot and graphviz; --> graphviz doesn't work
 
     model_c.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
-    hist_1 = model_c.fit((a, m), b, batch_size=16, epochs=4, validation_data=((c, n), d), callbacks=[lr])
+    hist_1 = model_c.fit((e, m), f, batch_size=16, epochs=epochs, validation_data=((g, n), h), callbacks=[lr])
 
     krl.freezing_model(model)
     r = model.predict(e)
     s = model.predict(g)
 
-    hist_2 = model_c.fit((e, r), f, batch_size=16, epochs=4, validation_data=((g, s), h), callbacks=[lr])
+    hist_2 = model_c.fit((e, r), f, batch_size=16, epochs=epochs, validation_data=((g, s), h), callbacks=[lr])
     z2 = time.perf_counter()
     print(f'{z2-z1:0.2f} sec')
     df_0 = pandas.DataFrame.from_dict(hist_1.history)
     df_1 = pandas.DataFrame.from_dict(hist_2.history)
-    pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.concat([df_0, df_1])))
+    pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.concat([df_0, df_1])), epochs, len(e), round(z2-z1), name)
 
 
 def cascade_test():
     z1 = time.perf_counter()
     kcl.clear()
-    a, b, c, d = keras_data_loader.mnist_loader()
+    epochs = 20
+    name = 'func_classification'
+    # a, b, c, d = keras_data_loader.mnist_loader()
     e, f, g, h = keras_data_loader.svhn_loader()
     lr, optim = kcl.better_lr_optim()
 
@@ -71,8 +75,8 @@ def cascade_test():
     outputA = keras.layers.Dense(units=10, activation='softmax')(x)
     model_one = keras.Model(inputA, outputA)
 
-    m = model_one.predict(a)
-    n = model_one.predict(c)
+    m = model_one.predict(e)
+    n = model_one.predict(g)
 
     model_two = keras.Model(inputB, inputB)
 
@@ -92,20 +96,20 @@ def cascade_test():
     model = keras.Model([model_one.input, model_two.input], output)
 
     model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
-    hist_1 = model.fit((a, m), b, batch_size=128, epochs=4, validation_data=((c, n), d), callbacks=[lr])
+    hist_1 = model.fit((e, m), f, batch_size=128, epochs=epochs, validation_data=((g, n), h), callbacks=[lr])
 
     krl.freezing_model(model_one)
     r = model_one.predict(e)
     s = model_one.predict(g)
 
-    hist_2 = model.fit((e, r), f, batch_size=128, epochs=4, validation_data=((g, s), h), callbacks=[lr])
+    hist_2 = model.fit((e, r), f, batch_size=128, epochs=epochs, validation_data=((g, s), h), callbacks=[lr])
     # 75%/ Better_lr: 18.9%/ little_bet_lr: 79.8%/ ohne TF: 89.7%
     z2 = time.perf_counter()
     print(f'{z2-z1:0.2f} sec')
     df_0 = pandas.DataFrame.from_dict(hist_1.history)
     df_1 = pandas.DataFrame.from_dict(hist_2.history)
-    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat([df_0, df_1])))
+    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat([df_0, df_1])), epochs, len(e), round(z2-z1), name)
 
 
-# regression_test()
+regression_test()
 cascade_test()

@@ -37,8 +37,8 @@ def svhn_loader():
     train_labels = lb.fit_transform(train_labels)
     test_labels = lb.fit_transform(test_labels)
 
-    X_train, xval, y_train, yval = train_test_split(train_img, train_labels, test_size=0.9, random_state=22)
-    x, X_val, y, y_val = train_test_split(train_img, train_labels, test_size=0.1, random_state=22)
+    X_train, xval, y_train, yval = train_test_split(train_img, train_labels, test_size=0.99, random_state=22)
+    x, X_val, y, y_val = train_test_split(train_img, train_labels, test_size=0.01, random_state=22)
     # print(X_train.shape)
     # print(y_train.shape)
 

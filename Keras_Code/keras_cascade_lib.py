@@ -117,7 +117,7 @@ def build_vec_conv(augment, vec):
         end.append(np.concat((augment[q], concat_vec[q]), axis=2))
         q += 1
     end = np.array(end)
-    # Unable to allocate 168 KiB for array with Shape 32 32 21 and dtype float64, but dataset reduction could fix this
+    # Unable to allocate 168 KiB for array with Shape 32 32 21 and dtype float64, but dataset reduction fixes this
     return end
 
 
