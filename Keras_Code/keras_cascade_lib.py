@@ -121,6 +121,19 @@ def build_vec_conv(augment, vec):
     return end
 
 
+def build_vec_for_dense(augment, vec):
+    ls = []
+    i = 0
+    for item in augment:
+        ls.append(np.concat((item.flatten(), vec[i])))
+        i += 1
+
+    end_vector = np.array(ls)
+    end_vector = np.expand_dims(end_vector, axis=2)
+
+    return end_vector
+
+
 def numpy_arrs():
     arr1 = np.array([[1, 2, 3], [8, 9, 0]])
     arr2 = np.array([[4, 5, 6, 7]])

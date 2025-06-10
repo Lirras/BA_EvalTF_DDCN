@@ -5,6 +5,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.datasets import load_digits
 
+NORM = False
+
 
 def svhn_loader():
 
@@ -42,16 +44,23 @@ def svhn_loader():
     # print(X_train.shape)
     # print(y_train.shape)
 
+    # less Data
     train_img = X_train.astype('float64')
     train_labels = y_train.astype('int64')
     test_img = X_val.astype('float64')
     test_labels = y_val.astype('int64')
 
+    # Full Data
     # train_img = train_img.astype('float64')
     # test_img = test_img.astype('float64')
 
     # train_labels = train_labels.astype('int64')
     # test_labels = test_labels.astype('int64')
+
+    if NORM == True:
+        train_img = train_img / 255
+        test_img = test_img / 255
+
     return train_img, train_labels, test_img, test_labels
 
 
@@ -63,8 +72,13 @@ def mnist_loader():
     val_dat = np.pad(val_dat, ((0, 0), (0, 4), (0, 4)), 'constant')
 
     # Scale images to the [0, 1] range
-    train_dat = train_dat.astype("float32") / 255
-    val_dat = val_dat.astype("float32") / 255
+    if NORM is True:
+        train_dat = train_dat.astype("float32") / 255
+        val_dat = val_dat.astype("float32") / 255
+    else:
+        train_dat = train_dat.astype("float32")
+        val_dat = val_dat.astype("float32")
+
     # Make sure images have shape (32, 32, 1)
     train_dat = np.expand_dims(train_dat, -1)
     val_dat = np.expand_dims(val_dat, -1)
@@ -99,13 +113,23 @@ def boston_loader():
     y_train = boston_delete_columns(y_train)
     y_train = boston_change_house_age(y_train)
 
-    # Normalize Data:
-    '''mean = x_train.mean(axis=0)
-    x_train -= mean
-    std = x_train.std(axis=0)
-    x_train /= std
-    x_test -= mean
-    x_train /= std'''
+    if NORM == True:
+        # Normalize Trainings Data:
+        mean = x_train.mean(axis=0)
+        std = x_train.std(axis=0)
+        x_train = norm_regr(x_train, mean, std)
+        x_test = norm_regr(x_test, mean, std)
+
+        # Normalize Validation Data:
+        mean = y_train.mean(axis=0)
+        std = y_train.std(axis=0)
+        y_train = norm_regr(y_train, mean, std)
+        y_test = norm_regr(y_test, mean, std)
+
+    '''x_train = x_train - mean
+    x_train = x_train / std
+    x_test = x_test - mean
+    x_train = x_train / std'''
 
     '''print('Boston Dataset:')
     print(x_train[1], x_test[1])
@@ -156,13 +180,37 @@ def boston_change_house_age(x_train):
 
 def california_loader():
     (x_train, x_test), (y_train, y_test) = keras.datasets.california_housing.load_data(
-        version="large", path="california_housing.npz", test_split=0.2, seed=113
+        version="small", path="california_housing.npz", test_split=0.2, seed=113
     )
+
+    '''x_tr, x_ts, y_tr, y_ts = train_test_split(x_train, x_test, test_size=0.99, random_state=42)
+    x_tr = california_delete_columns(x_tr)
+    x_ts = california_change_prices(x_ts)
+    y_tr = california_delete_columns(y_tr)
+    y_ts = california_change_prices(y_ts)'''
 
     x_train = california_delete_columns(x_train)
     x_test = california_change_prices(x_test)
     y_train = california_delete_columns(y_train)
     y_test = california_change_prices(y_test)
+
+    if NORM == True:
+        # Normalize Data:
+        mean = x_train.mean(axis=0)
+        std = x_train.std(axis=0)
+        x_train = norm_regr(x_train, mean, std)
+        x_test = norm_regr(x_test, mean, std)
+
+        # Normalize Validation Data:
+        mean = y_train.mean(axis=0)
+        std = y_train.std(axis=0)
+        y_train = norm_regr(y_train, mean, std)
+        y_test = norm_regr(y_test, mean, std)
+
+    '''x_train -= mean
+    x_train /= std
+    x_test -= mean
+    x_train /= std'''
 
     # longitude, latitude, age, totalRooms, Bedrooms, pop, households, median income
 
@@ -216,6 +264,13 @@ def california_change_prices(x_test):
     # AveOccup: average number of household members
     # Latitude: block group latitude
     # Longitude: block group longitude
+
+
+def norm_regr(arr, mean, std):
+    ls = []
+    for item in arr:
+        ls.append((item - mean)/std)
+    return np.array(ls)
 
 
 def digit_loader():

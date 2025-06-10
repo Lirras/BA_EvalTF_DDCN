@@ -98,3 +98,29 @@ class LittleConv():
 
     def pred(self, train):
         return self.network.predict(train)
+
+
+class Class_Dense():
+    def __init__(self):
+        super().__init__()
+
+    def initialize(self, in_shape):
+        self.network = keras.Sequential([
+            keras.Input(shape=in_shape),
+            keras.layers.Conv1D(16, kernel_size=(3,), strides=1, padding='same', activation='relu'),
+            keras.layers.MaxPooling1D(2),
+            keras.layers.Conv1D(32, kernel_size=(3,), strides=1, padding='same', activation='relu'),
+            keras.layers.Flatten(),
+            keras.layers.Dense(units=512, activation='relu'),
+            keras.layers.Dense(units=10, activation='softmax')
+        ])
+        self.network.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-3),
+                             loss=keras.losses.CategoricalCrossentropy, metrics=['accuracy'])
+
+    def train(self, train, target, val_tr, val_lb, epochs):
+        hist = self.network.fit(train, target, batch_size=128, epochs=epochs, validation_data=(val_tr, val_lb))
+        return hist
+
+    def pred(self, train):
+        output = self.network.predict(train)
+        return output

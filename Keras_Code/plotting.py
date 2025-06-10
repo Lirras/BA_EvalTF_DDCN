@@ -23,11 +23,11 @@ def class_all(df, epochs, samples, time, name):
     plt.title(name)
     plt.xlabel('Epochs')
     plt.ylabel('ACC')
-    text_3 = ('Time: ' + str(time))
+    text_3 = ('Time: ' + str(time) + 's')
     text_2 = ('Samples: ' + str(samples) + '\n')
     text = ('Epochs: ' + str(epochs) + '\n')
     tex = text + text_2 + text_3
-    plt.text(epochs, 0.8, tex)
+    plt.text(epochs, df['Accuracy'].mean(), tex)
     plt.legend()
     plt.show()
 
@@ -43,11 +43,11 @@ def class_all_sm(df, epochs, samples, time, name):
     plt.title(name)
     plt.xlabel('Epochs')
     plt.ylabel('ACC')
-    text_3 = ('Time: ' + str(time))
+    text_3 = ('Time: ' + str(time) + 's')
     text_2 = ('Samples: ' + str(samples) + '\n')
     text = ('Epochs: ' + str(epochs) + '\n')
     tex = text + text_2 + text_3
-    plt.text(epochs, 0.8, tex)
+    plt.text(epochs, df['accuracy'].mean(), tex)
     plt.legend()
     plt.show()
 
@@ -60,11 +60,11 @@ def class_acc_only(df, epochs, samples, time, name):
     plt.xlabel('Epochs')
     plt.ylabel('ACC')
 
-    text_3 = ('Time: ' + str(time))
+    text_3 = ('Time: ' + str(time) + 's')
     text_2 = ('Samples: ' + str(samples) + '\n')
     text = ('Epochs: ' + str(epochs) + '\n')
     tex = text + text_2 + text_3
-    plt.text(epochs, 0.8, tex)
+    plt.text(epochs, df['accuracy'].mean(), tex)
     plt.legend()
     plt.show()
 
@@ -80,11 +80,11 @@ def regression_all(df, epochs, samples, time, name):
     plt.xlabel('Epochs')
     plt.ylabel('MAE')
 
-    text_3 = ('Time: ' + str(time))
+    text_3 = ('Time: ' + str(time) + 's')
     text_2 = ('Samples: ' + str(samples) + '\n')
     text = ('Epochs: ' + str(epochs) + '\n')
     tex = text + text_2 + text_3
-    plt.text(epochs, 0.8, tex)
+    plt.text(epochs, df['mae'].mean(), tex)
     plt.legend()
     plt.show()
 
@@ -96,11 +96,11 @@ def regr_mae_only(df, epochs, samples, time, name):
     plt.title(name)
     plt.xlabel('Epochs')
     plt.ylabel('MAE')
-    text_3 = ('Time: ' + str(time))
+    text_3 = ('Time: ' + str(time) + 's')
     text_2 = ('Samples: ' + str(samples) + '\n')
     text = ('Epochs: ' + str(epochs) + '\n')
     tex = text + text_2 + text_3
-    plt.text(epochs, 0.8, tex)
+    plt.text(epochs, df['mae'].mean(), tex)
     plt.legend()
     plt.show()
 
@@ -111,11 +111,11 @@ def multiple_plots(df, epochs, samples, time, name):
     plt.title(name)
     plt.xlabel('Epochs')
     plt.ylabel('MAE')
-    text_3 = ('Time: ' + str(time))
+    text_3 = ('Time: ' + str(time) + 's')
     text_2 = ('Samples: ' + str(samples) + '\n')
     text = ('Epochs: ' + str(epochs) + '\n')
     tex = text + text_2 + text_3
-    plt.text(epochs, 0.8, tex)
+    plt.text(epochs, df['mae'].mean(), tex)
     plt.legend()
     plt.show()
 
@@ -126,10 +126,10 @@ def class_mult_plots(df, epochs, samples, time, name):
     plt.title(name)
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
-    text_3 = ('Time: ' + str(time))
+    text_3 = ('Time: ' + str(time) + 's')
     text_2 = ('Samples: ' + str(samples) + '\n')
     text = ('Epochs: ' + str(epochs) + '\n')
     tex = text + text_2 + text_3
-    plt.text(epochs, 0.8, tex)
+    plt.text(epochs, df['Accuracy'].mean(), tex)
     plt.legend()
     plt.show()

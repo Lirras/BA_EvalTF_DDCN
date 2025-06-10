@@ -29,7 +29,8 @@ def regression_test():
     val_aug_vec = krl.build_2nd_in_same(g, val_pred)
     x += 1
 
-    for i in range(100):
+    for i in range(10):
+        print(i)
         model = class_units.Regression()
         model.initialize((x,))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
@@ -64,6 +65,7 @@ def classification_test():
     val_aug_vec = kcl.build_vec_dense_only(g, val_pred, 1024, len(g))
     x = 1034
     for i in range(100):
+        print(i)
         model = class_units.Classification()
         model.initialize((x,))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
@@ -99,6 +101,7 @@ def classification_conv_test():  # 94.7% ACC after two Networks with TF between 
     val_aug_vec = kcl.build_vec_conv(g, val_pred)
     x = 11
     for i in range(50):  # Why is the amount of iterations insignificant?
+        print(i)
         model = class_units.ClassificationConv()
         model.initialize((32, 32, x))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
@@ -133,7 +136,8 @@ def lil_conv():
     augmented_vector = kcl.build_vec_conv(e, pred)
     val_aug_vec = kcl.build_vec_conv(g, val_pred)
     x = 11
-    for i in range(100):  # Why is the amount of iterations insignificant?
+    for i in range(50):  # Why is the amount of iterations insignificant?
+        print(i)
         model = class_units.LittleConv()
         model.initialize((32, 32, x))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
@@ -150,6 +154,47 @@ def lil_conv():
     print(f'{z2 - z1:0.2f} sec')
 
 
+def class_Dense():
+    kcl.clear()
+    z1 = time.perf_counter()
+    epochs = 10
+    name = 'Class_Dense'
+    a, b, c, d = keras_data_loader.mnist_loader()
+    e, f, g, h = keras_data_loader.svhn_loader()
+    a = a.reshape((len(a), 1024, 1))
+    c = c.reshape((len(c), 1024, 1))
+    e = e.reshape((len(e), 1024, 1))
+    g = g.reshape((len(g), 1024, 1))
+    ls = []
+    x = 1024
+    model_1 = class_units.Class_Dense()
+    model_1.initialize((x, 1))
+    hist = model_1.train(a, b, c, d, 2)
+    ls.append(pandas.DataFrame.from_dict(hist.history))
+    pred = model_1.pred(e)
+    val_pred = model_1.pred(g)
+
+    augmented_vector = kcl.build_vec_for_dense(e, pred)
+    val_aug_vec = kcl.build_vec_for_dense(g, val_pred)
+    x += 10
+    for i in range(10):
+        print(i)
+        model = class_units.Class_Dense()
+        model.initialize((x, 1))
+        hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
+        ls.append(pandas.DataFrame.from_dict(hist.history))
+        pred = model.pred(augmented_vector)
+        val_pred = model.pred(val_aug_vec)
+        val_aug_vec = kcl.build_vec_for_dense(val_aug_vec, val_pred)
+        augmented_vector = kcl.build_vec_for_dense(augmented_vector, pred)
+        x += 10
+
+    z2 = time.perf_counter()
+    plotting.class_acc_only(plotting.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2 - z1), name)
+    print(f'{z2 - z1:0.2f} sec')
+
+
+# class_Dense()
 lil_conv()
 # classification_conv_test()
 # classification_test()
