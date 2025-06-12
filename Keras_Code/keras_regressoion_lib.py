@@ -47,7 +47,14 @@ def build_2nd_in_same(e, pred):
     i = 0
     ls = []
     while i < len(e):
-        ls.append(numpy.concatenate((e[i], pred[i])))
+        ls.append(numpy.concatenate((e[i], pred[i])))  # 3 -> 4
         i += 1
     new_in = numpy.array(ls)
     return new_in
+
+
+def build_mae_test(prediction, target):
+    ls = []
+    for i in range(len(prediction)):
+        ls.append(numpy.absolute(prediction[i] - target[i]))
+    return sum(ls)/len(ls)

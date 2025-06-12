@@ -32,7 +32,7 @@ class Classification():
     def initialize(self, in_shape):
         self.network = keras.Sequential([
             keras.Input(shape=in_shape),
-            keras.layers.Flatten(),
+            # keras.layers.Flatten(),
             keras.layers.Dense(units=512, activation='relu'),
             keras.layers.Dense(units=10, activation='softmax')
         ])

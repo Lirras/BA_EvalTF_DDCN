@@ -1,3 +1,4 @@
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -120,6 +121,20 @@ def multiple_plots(df, epochs, samples, time, name):
     plt.show()
 
 
+def regr_test_plot(df, epochs, samples, time, name):
+    plt.plot(df['epochs'], df['mae'], 'y', label='Test MAE')
+    plt.title(name)
+    plt.xlabel('Networks')
+    plt.ylabel('MAE')
+    text_3 = ('Time: ' + str(time) + 's')
+    text_2 = ('Samples: ' + str(samples) + '\n')
+    text = ('Networks: ' + str(epochs) + '\n')
+    tex = text + text_2 + text_3
+    plt.text(epochs, df['mae'].mean(), tex)
+    plt.legend()
+    plt.show()
+
+
 def class_mult_plots(df, epochs, samples, time, name):
     plt.plot(df['epochs'], df['Accuracy'], 'y', label='Training Accuracy')
     plt.plot(df['epochs'], df['val_Accuracy'], 'r', label='Validation Accuracy')
@@ -133,3 +148,36 @@ def class_mult_plots(df, epochs, samples, time, name):
     plt.text(epochs, df['Accuracy'].mean(), tex)
     plt.legend()
     plt.show()
+
+
+def class_networks(df, epochs, samples, time, name):
+    plt.plot(df['epochs'], df['accuracy'], 'y', label='Test ACC')
+    plt.title(name)
+    plt.xlabel('Networks')
+    plt.ylabel('ACC')
+
+    text_3 = ('Time: ' + str(time) + 's')
+    text_2 = ('Samples: ' + str(samples) + '\n')
+    text = ('Networks: ' + str(epochs) + '\n')
+    tex = text + text_2 + text_3
+    plt.text((len(df)/5), df['accuracy'].mean(), tex)
+    plt.legend()
+    plt.show()
+
+
+def preds_for_plots(prediction, label):
+    # print(len(prediction))
+    j = 0
+    # print(prediction[0])
+    # print(label[0])
+    arg_pred = np.argmax(prediction, axis=1)
+    arg_lab = np.argmax(label, axis=1)
+    # print(arg_pred[0])
+    # print(arg_lab[0])
+    # print(prediction[1], label[1], arg_pred[1], arg_lab[1])
+    for i in range(len(prediction)):
+        if arg_pred[i] == arg_lab[i]:
+            j += 1
+    print(j)
+    test_acc = j/len(prediction)
+    return test_acc

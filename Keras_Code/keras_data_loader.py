@@ -44,11 +44,14 @@ def svhn_loader():
     # print(X_train.shape)
     # print(y_train.shape)
 
+    test_img = test_img.astype('float64')
+    test_labels = test_labels.astype('int64')
+
     # less Data
     train_img = X_train.astype('float64')
     train_labels = y_train.astype('int64')
-    test_img = X_val.astype('float64')
-    test_labels = y_val.astype('int64')
+    val_img = X_val.astype('float64')
+    val_labels = y_val.astype('int64')
 
     # Full Data
     # train_img = train_img.astype('float64')
@@ -59,9 +62,10 @@ def svhn_loader():
 
     if NORM == True:
         train_img = train_img / 255
+        val_img = val_img / 255
         test_img = test_img / 255
 
-    return train_img, train_labels, test_img, test_labels
+    return train_img, train_labels, val_img, val_labels, test_img, test_labels
 
 
 def mnist_loader():
@@ -70,18 +74,22 @@ def mnist_loader():
     # Upscaling for compatibility with svhn
     train_dat = np.pad(train_dat, ((0, 0), (0, 4), (0, 4)), 'constant')
     val_dat = np.pad(val_dat, ((0, 0), (0, 4), (0, 4)), 'constant')
+    val_dat, test_dat, val_lb, test_lb = train_test_split(val_dat, val_lb, test_size=0.5, random_state=22)
 
     # Scale images to the [0, 1] range
     if NORM is True:
         train_dat = train_dat.astype("float32") / 255
         val_dat = val_dat.astype("float32") / 255
+        test_dat = test_dat.astype("float32") / 255
     else:
         train_dat = train_dat.astype("float32")
         val_dat = val_dat.astype("float32")
+        test_dat = test_dat.astype("float32")
 
     # Make sure images have shape (32, 32, 1)
     train_dat = np.expand_dims(train_dat, -1)
     val_dat = np.expand_dims(val_dat, -1)
+    test_dat = np.expand_dims(test_dat, -1)
 
     print("train_dat shape:", train_dat.shape)
     print(train_dat.shape[0], "train samples")
@@ -90,11 +98,13 @@ def mnist_loader():
     lb = LabelBinarizer()
     train_lb = lb.fit_transform(train_lb)
     val_lb = lb.fit_transform(val_lb)
+    test_lb = lb.fit_transform(train_lb)
 
+    test_lb = test_lb.astype('int64')
     val_lb = val_lb.astype('int64')
     train_lb = train_lb.astype('int64')
 
-    return train_dat, train_lb, val_dat, val_lb
+    return train_dat, train_lb, val_dat, val_lb, test_dat, test_lb
 
 
 def load():
@@ -108,19 +118,34 @@ def boston_loader():
         path="boston_housing.npz", test_split=0.2, seed=113
     )
 
-    x_train = boston_delete_columns(x_train)
-    x_train = boston_change_house_age(x_train)
+    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, train_size=0.2, random_state=42)
+
+    x_tr = boston_delete_columns(x_tr)
+    x_tr = boston_change_house_age(x_tr)
+    y_tr = boston_delete_columns(y_tr)
+    y_tr = boston_change_house_age(y_tr)
+    # x_train = boston_delete_columns(x_train)
+    # x_train = boston_change_house_age(x_train)
     y_train = boston_delete_columns(y_train)
     y_train = boston_change_house_age(y_train)
 
     if NORM == True:
         # Normalize Trainings Data:
-        mean = x_train.mean(axis=0)
+        '''mean = x_train.mean(axis=0)
         std = x_train.std(axis=0)
         x_train = norm_regr(x_train, mean, std)
-        x_test = norm_regr(x_test, mean, std)
+        x_test = norm_regr(x_test, mean, std)'''
+        mean = x_tr.mean(axis=0)
+        std = x_tr.std(axis=0)
+        x_tr = norm_regr(x_tr, mean, std)
+        x_ts = norm_regr(x_ts, mean, std)
 
-        # Normalize Validation Data:
+        mean = y_tr.mean(axis=0)
+        std = y_tr.std(axis=0)
+        y_tr = norm_regr(y_tr, mean, std)
+        y_ts = norm_regr(y_ts, mean, std)
+
+        # Normalize Test Data:
         mean = y_train.mean(axis=0)
         std = y_train.std(axis=0)
         y_train = norm_regr(y_train, mean, std)
@@ -138,7 +163,8 @@ def boston_loader():
     print(x_train[239], x_test[239])
     print(x_train[395], x_test[395])'''
 
-    return x_train, x_test, y_train, y_test
+    return x_tr, x_ts, y_tr, y_ts, y_train, y_test
+    # return x_train, x_test, y_train, y_test
 
 
 def boston_delete_columns(x_train):
@@ -183,25 +209,36 @@ def california_loader():
         version="small", path="california_housing.npz", test_split=0.2, seed=113
     )
 
-    '''x_tr, x_ts, y_tr, y_ts = train_test_split(x_train, x_test, test_size=0.99, random_state=42)
+    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, test_size=0.99, random_state=42)
     x_tr = california_delete_columns(x_tr)
     x_ts = california_change_prices(x_ts)
     y_tr = california_delete_columns(y_tr)
-    y_ts = california_change_prices(y_ts)'''
+    y_ts = california_change_prices(y_ts)
 
-    x_train = california_delete_columns(x_train)
-    x_test = california_change_prices(x_test)
+    # x_train = california_delete_columns(x_train)
+    # x_test = california_change_prices(x_test)
     y_train = california_delete_columns(y_train)
     y_test = california_change_prices(y_test)
 
     if NORM == True:
         # Normalize Data:
-        mean = x_train.mean(axis=0)
+        '''mean = x_train.mean(axis=0)
         std = x_train.std(axis=0)
         x_train = norm_regr(x_train, mean, std)
-        x_test = norm_regr(x_test, mean, std)
+        x_test = norm_regr(x_test, mean, std)'''
 
-        # Normalize Validation Data:
+        mean = x_tr.mean(axis=0)
+        std = x_tr.std(axis=0)
+        x_tr = norm_regr(x_tr, mean, std)
+        x_ts = norm_regr(x_ts, mean, std)
+
+
+        mean = y_tr.mean(axis=0)
+        std = y_tr.std(axis=0)
+        y_tr = norm_regr(y_tr, mean, std)
+        y_ts = norm_regr(y_ts, mean, std)
+
+        # Normalize Test Data:
         mean = y_train.mean(axis=0)
         std = y_train.std(axis=0)
         y_train = norm_regr(y_train, mean, std)
@@ -227,7 +264,8 @@ def california_loader():
     print(x_train[3902], x_test[3902])
     print(x_train[6241], x_test[6241])'''
 
-    return x_train, x_test, y_train, y_test
+    return x_tr, x_ts, y_tr, y_ts, y_train, y_test
+    # return x_train, x_test, y_train, y_test
 
 
 def california_delete_columns(x_train):

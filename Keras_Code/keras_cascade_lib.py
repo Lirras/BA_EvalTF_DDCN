@@ -49,7 +49,7 @@ def post_flatten(model, a, b, c, d, lr, freeze, epochs):
 
 
 def build_vec_dense_only(augment, vec, x, in_shape):
-    augment = augment.reshape((in_shape, x))  # Das wird immer größer... Ähem...
+    # augment = augment.reshape((in_shape, x))  # Das wird immer größer... Ähem...
     ls = []
     i = 0
     while i < len(augment):
@@ -121,15 +121,18 @@ def build_vec_conv(augment, vec):
     return end
 
 
-def build_vec_for_dense(augment, vec):
+def build_vec_for_dense(augment, vec):  # pred: (N, 10)
     ls = []
     i = 0
+    # N, 32, 32, 1
+    # N, 1034, 1
     for item in augment:
-        ls.append(np.concat((item.flatten(), vec[i])))
+        # enumerate für vec[i]
+        ls.append(np.concat((item.flatten(), vec[i])))  # (32*32 = 1024), 10 -> 1034 -> (60000, 1034)
         i += 1
 
     end_vector = np.array(ls)
-    end_vector = np.expand_dims(end_vector, axis=2)
+    end_vector = np.expand_dims(end_vector, axis=2)  # Add Channel Dim
 
     return end_vector
 
