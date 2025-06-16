@@ -1,10 +1,10 @@
 import time
 import pandas
-import plotting
+import Keras_Code.libraries.plotting as pltt
 import keras
-import keras_data_loader
-import keras_cascade_lib as kcl
-import keras_regressoion_lib as krl
+import Keras_Code.libraries.keras_data_loader as dat_loader
+import Keras_Code.libraries.keras_cascade_lib as kcl
+import Keras_Code.libraries.keras_regressoion_lib as krl
 
 
 def classification():
@@ -12,8 +12,8 @@ def classification():
     kcl.clear()
     epochs = 10
     name = 'Name'
-    a, b, c, d = keras_data_loader.mnist_loader()
-    e, f, g, h = keras_data_loader.svhn_loader()
+    a, b, c, d = dat_loader.mnist_loader()
+    e, f, g, h = dat_loader.svhn_loader()
     lr, optim = kcl.lr_optim()
     model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
     model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
@@ -26,7 +26,7 @@ def classification():
     # todo: Write here the 2nd Network
     z2 = time.perf_counter()
     print(f'time {z2-z1:0.2f} sec')
-    plotting.class_all(plotting.add_epoch_counter_to_df(pandas.concat([df_one])), epochs, len(e), round(z2-z1), name)
+    pltt.class_all(pltt.add_epoch_counter_to_df(pandas.concat([df_one])), epochs, len(e), round(z2-z1), name)
 
 
 def regression():
@@ -34,8 +34,8 @@ def regression():
     krl.clear()
     epochs = 10
     name = 'Name'
-    a, b, c, d = keras_data_loader.boston_loader()
-    e, f, g, h = keras_data_loader.california_loader()
+    a, b, c, d = dat_loader.boston_loader()
+    e, f, g, h = dat_loader.california_loader()
     lr, optim = krl.lr_optim_reg()
     model = keras.Sequential([keras.Input(shape=(3,))])
     model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
@@ -52,4 +52,4 @@ def regression():
 
     z2 = time.perf_counter()
     print(f'time {z2 - z1:0.2f} sec')
-    plotting.multiple_plots(plotting.add_epoch_counter_to_df(pandas.concat([df_one])), epochs, len(e), round(z2-z1), name)
+    pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.concat([df_one])), epochs, len(e), round(z2-z1), name)

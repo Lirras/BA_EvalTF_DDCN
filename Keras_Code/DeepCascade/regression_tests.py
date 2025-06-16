@@ -5,15 +5,15 @@ import time
 # import fix_models_test
 import tensorflow as tf
 
-import keras_regressoion_lib as krl
-import plotting as plot
-import keras_data_loader
+import Keras_Code.libraries.keras_regressoion_lib as krl
+import Keras_Code.libraries.plotting as plot
+import Keras_Code.libraries.keras_data_loader as dat_loader
 
 
 def regression_one():
     krl.clear()
-    # a, b, c, d = keras_data_loader.boston_loader()
-    e, f, g, h, = keras_data_loader.california_loader()
+    # a, b, c, d = dat_loader.boston_loader()
+    e, f, g, h, = dat_loader.california_loader()
     epochs = 10
     batch_size = 16
     name = 'Only_Dense'
@@ -47,8 +47,8 @@ def regression_one():
 
 def regression_two():
     krl.clear()
-    # a, b, c, d = keras_data_loader.boston_loader()
-    e, f, g, h, = keras_data_loader.california_loader()
+    # a, b, c, d = dat_loader.boston_loader()
+    e, f, g, h, = dat_loader.california_loader()
     epochs = 25
     batch_size = 16
     name = 'regression_two'
@@ -89,8 +89,8 @@ def direct_cascade_reg():
     batch_size = 16
     name = 'CasInOneReg_FineTune'
     krl.clear()
-    # a, b, c, d = keras_data_loader.boston_loader()
-    e, f, g, h, = keras_data_loader.california_loader()
+    # a, b, c, d = dat_loader.boston_loader()
+    e, f, g, h, = dat_loader.california_loader()
     lr, optim = krl.lr_optim_reg()
     model = keras.Sequential([keras.Input(shape=(3,))])
     model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
@@ -147,9 +147,9 @@ def dcr():
     print(tf.executing_eagerly())
     z1 = time.perf_counter()
     krl.clear()
-    a, b, c, d = keras_data_loader.boston_loader()
+    a, b, c, d = dat_loader.boston_loader()
     r, s, t, u = a.copy(), b.copy(), c.copy(), d.copy()
-    e, f, g, h, = keras_data_loader.california_loader()
+    e, f, g, h, = dat_loader.california_loader()
     lr, optim = krl.lr_optim_reg()
     model = model_01()
     model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
@@ -181,8 +181,8 @@ def dcr():
 
 def late_idea():
     krl.clear()
-    a, b, c, d = keras_data_loader.boston_loader()
-    e, f, g, h = keras_data_loader.california_loader()
+    a, b, c, d = dat_loader.boston_loader()
+    e, f, g, h = dat_loader.california_loader()
     lr, optim = krl.lr_optim_reg()
     model = keras.Sequential([keras.Input(shape=(3,))])
     model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])

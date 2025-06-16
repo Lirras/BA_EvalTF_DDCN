@@ -41,6 +41,9 @@ def svhn_loader():
 
     X_train, xval, y_train, yval = train_test_split(train_img, train_labels, test_size=0.99, random_state=22)
     x, X_val, y, y_val = train_test_split(train_img, train_labels, test_size=0.01, random_state=22)
+
+    # test Dataset reduction
+    test_img, bin_one, test_labels, bin_two = train_test_split(test_img, test_labels, test_size=0.99, random_state=22)
     # print(X_train.shape)
     # print(y_train.shape)
 
@@ -91,6 +94,12 @@ def mnist_loader():
     val_dat = np.expand_dims(val_dat, -1)
     test_dat = np.expand_dims(test_dat, -1)
 
+    reduction = False
+
+    if reduction is True:
+        train_dat, bin1, train_lb, binlb1 = train_test_split(train_dat, train_lb, test_size=0.99,random_state=22)
+        val_dat, bin2, val_lb, binlb2 = train_test_split(val_dat, val_lb, test_size=0.99, random_state=22)
+
     print("train_dat shape:", train_dat.shape)
     print(train_dat.shape[0], "train samples")
     print(train_lb.shape[0], "label samples")
@@ -118,7 +127,7 @@ def boston_loader():
         path="boston_housing.npz", test_split=0.2, seed=113
     )
 
-    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, train_size=0.2, random_state=42)
+    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, train_size=0.5, random_state=42)
 
     x_tr = boston_delete_columns(x_tr)
     x_tr = boston_change_house_age(x_tr)
@@ -128,6 +137,10 @@ def boston_loader():
     # x_train = boston_change_house_age(x_train)
     y_train = boston_delete_columns(y_train)
     y_train = boston_change_house_age(y_train)
+
+    print(x_tr.shape)  # 80, 3
+    print(y_tr.shape)  # 324, 3
+    print(y_train.shape)  # 102, 3
 
     if NORM == True:
         # Normalize Trainings Data:
@@ -209,7 +222,7 @@ def california_loader():
         version="small", path="california_housing.npz", test_split=0.2, seed=113
     )
 
-    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, test_size=0.99, random_state=42)
+    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, test_size=0.5, random_state=42)
     x_tr = california_delete_columns(x_tr)
     x_ts = california_change_prices(x_ts)
     y_tr = california_delete_columns(y_tr)
@@ -219,6 +232,10 @@ def california_loader():
     # x_test = california_change_prices(x_test)
     y_train = california_delete_columns(y_train)
     y_test = california_change_prices(y_test)
+
+    print(x_tr.shape)  # 4, 3
+    print(y_tr.shape)  # 476,3
+    print(y_train.shape)  # 120, 3
 
     if NORM == True:
         # Normalize Data:

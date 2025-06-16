@@ -48,6 +48,7 @@ class Classification():
         return output
 
 
+# Not used anymore
 class ClassificationConv():
     def __init__(self):
         super().__init__()
@@ -100,6 +101,28 @@ class LittleConv():
         return self.network.predict(train)
 
 
+class OneDLilConv():
+    def __init__(self):
+        super().__init__()
+
+    def initialize(self, in_shape):
+        self.network = keras.Sequential([
+            keras.Input(shape=in_shape),
+            keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+            keras.layers.Flatten(),
+            keras.layers.Dense(units=10, activation='softmax')
+        ])
+        self.network.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-3),
+                             loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
+
+    def train(self, train, label, val_tr, val_lb, epochs):
+        return self.network.fit(train, label, batch_size=128, epochs=epochs, validation_data=(val_tr, val_lb))
+
+    def pred(self, train):
+        return self.network.predict(train)
+
+
+# Not used anymore
 class Class_Dense():
     def __init__(self):
         super().__init__()

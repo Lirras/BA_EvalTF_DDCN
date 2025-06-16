@@ -2,9 +2,9 @@
 import pandas
 import keras
 import time
-import keras_data_loader
-import keras_cascade_lib as kcl
-import plotting as plot
+import Keras_Code.libraries.keras_data_loader as dat_loader
+import Keras_Code.libraries.keras_cascade_lib as kcl
+import Keras_Code.libraries.plotting as plot
 
 
 def Conv8Epochs():
@@ -14,8 +14,8 @@ def Conv8Epochs():
     epochs = 10
     name = 'Conv8Epochs'
 
-    # a, b, c, d = keras_data_loader.mnist_loader()
-    e, f, g, h = keras_data_loader.svhn_loader()
+    # a, b, c, d = dat_loader.mnist_loader()
+    e, f, g, h = dat_loader.svhn_loader()
 
     lr, optim = kcl.lr_optim()
     model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
@@ -71,8 +71,8 @@ def Lin2Layer():
     name = 'twoLinLayer'
     z1 = time.perf_counter()
 
-    # a, b, c, d = keras_data_loader.mnist_loader()
-    e, f, g, h = keras_data_loader.svhn_loader()
+    # a, b, c, d = dat_loader.mnist_loader()
+    e, f, g, h = dat_loader.svhn_loader()
 
     lr, optim = kcl.lr_optim()
     model = keras.Sequential([keras.Input(shape=(32, 32, 1))])

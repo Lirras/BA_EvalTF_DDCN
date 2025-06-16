@@ -1,10 +1,10 @@
 import time
 import pandas
 import keras
-import keras_data_loader
-import keras_regressoion_lib as krl
-import keras_cascade_lib as kcl
-import plotting as pltt
+import Keras_Code.libraries.keras_data_loader as dat_loader
+import Keras_Code.libraries.keras_regressoion_lib as krl
+import Keras_Code.libraries.keras_cascade_lib as kcl
+import Keras_Code.libraries.plotting as pltt
 
 
 def regression_test():
@@ -12,8 +12,8 @@ def regression_test():
     epochs = 20
     name = 'func_regression'
     krl.clear()
-    # a, b, c, d = keras_data_loader.boston_loader()
-    e, f, g, h = keras_data_loader.california_loader()
+    # a, b, c, d = dat_loader.boston_loader()
+    e, f, g, h = dat_loader.california_loader()
     lr, optim = krl.lr_optim_reg()
 
     inputs = keras.Input(shape=(3,))
@@ -60,8 +60,8 @@ def cascade_test():
     kcl.clear()
     epochs = 20
     name = 'func_classification'
-    # a, b, c, d = keras_data_loader.mnist_loader()
-    e, f, g, h = keras_data_loader.svhn_loader()
+    # a, b, c, d = dat_loader.mnist_loader()
+    e, f, g, h = dat_loader.svhn_loader()
     lr, optim = kcl.better_lr_optim()
 
     inputA = keras.Input(shape=(32, 32, 1))

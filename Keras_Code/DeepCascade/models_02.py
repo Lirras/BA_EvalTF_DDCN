@@ -1,9 +1,9 @@
 import keras
 import pandas
 import time
-import keras_data_loader
-import keras_cascade_lib as kcl
-import plotting as plot
+import Keras_Code.libraries.keras_data_loader as dat_loader
+import Keras_Code.libraries.keras_cascade_lib as kcl
+import Keras_Code.libraries.plotting as plot
 
 
 def dropout_model():
@@ -11,8 +11,8 @@ def dropout_model():
     z1 = time.perf_counter()
     epochs = 10
     name = 'Dropout'
-    # m_tr_dat, m_tr_lb, m_val_dat, m_val_lb = keras_data_loader.mnist_loader()
-    train_data, train_label, test_data, test_label = keras_data_loader.svhn_loader()
+    # m_tr_dat, m_tr_lb, m_val_dat, m_val_lb = dat_loader.mnist_loader()
+    train_data, train_label, test_data, test_label = dat_loader.svhn_loader()
 
     lr_schedule, optimizer = kcl.lr_optim()
 
@@ -70,8 +70,8 @@ def mnist_svhn_net():
     epochs_svhn = 10
     name = 'MNIST2SVHN'
 
-    # a, b, c, d = keras_data_loader.mnist_loader()
-    e, f, g, h = keras_data_loader.svhn_loader()
+    # a, b, c, d = dat_loader.mnist_loader()
+    e, f, g, h = dat_loader.svhn_loader()
 
     lr, optim = kcl.lr_optim()
     model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
@@ -171,8 +171,8 @@ def batch_norm_net():
     epochs = 10
     name = 'BatchNorm'
 
-    # a, b, c, d = keras_data_loader.mnist_loader()
-    e, f, g, h = keras_data_loader.svhn_loader()
+    # a, b, c, d = dat_loader.mnist_loader()
+    e, f, g, h = dat_loader.svhn_loader()
 
     lr, optim = kcl.lr_optim()
     model = keras.Sequential([keras.Input(shape=(32, 32, 1))])

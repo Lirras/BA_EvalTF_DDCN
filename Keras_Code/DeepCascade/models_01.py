@@ -1,9 +1,9 @@
 import time
 import pandas
 import keras
-import keras_data_loader
-import keras_cascade_lib as kcl
-import plotting as plot
+import Keras_Code.libraries.keras_data_loader as dat_loader
+import Keras_Code.libraries.keras_cascade_lib as kcl
+import Keras_Code.libraries.plotting as plot
 
 
 def cascade_network():
@@ -12,8 +12,8 @@ def cascade_network():
     z1 = time.perf_counter()
     name = 'Conv_MaxPool'
 
-    # a, b, c, d = keras_data_loader.mnist_loader()
-    e, f, g, h = keras_data_loader.svhn_loader()
+    # a, b, c, d = dat_loader.mnist_loader()
+    e, f, g, h = dat_loader.svhn_loader()
     epochs = 10
 
     lr, optim = kcl.lr_optim()
@@ -65,8 +65,8 @@ def schedule():
     z1 = time.perf_counter()
     lr_schedule, optimizer = kcl.lr_optim()
 
-    # m_tr_dat, m_tr_lb, m_val_dat, m_val_lb = keras_data_loader.mnist_loader()
-    train_data, train_label, test_data, test_label = keras_data_loader.svhn_loader()
+    # m_tr_dat, m_tr_lb, m_val_dat, m_val_lb = dat_loader.mnist_loader()
+    train_data, train_label, test_data, test_label = dat_loader.svhn_loader()
 
     # model = test_model()
     model = keras.Sequential([keras.Input(shape=(32, 32, 1))])

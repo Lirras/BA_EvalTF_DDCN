@@ -4,8 +4,8 @@ import tensorflow
 import keras
 import pandas
 import seaborn as sns
-import keras_data_loader
-import keras_cascade_lib as kcl
+import Keras_Code.libraries.keras_data_loader as dat_loader
+import Keras_Code.libraries.keras_cascade_lib as kcl
 # import copied_models
 from matplotlib import pyplot as plt
 # from sklearn.model_selection import train_test_split
@@ -19,8 +19,8 @@ def schedule():
     keras.backend.clear_session()
     lr_schedule, optimizer = kcl.lr_optim()
 
-    m_tr_dat, m_tr_lb, m_val_dat, m_val_lb = keras_data_loader.mnist_loader()
-    train_data, train_label, test_data, test_label = keras_data_loader.svhn_loader()
+    m_tr_dat, m_tr_lb, m_val_dat, m_val_lb = dat_loader.mnist_loader()
+    train_data, train_label, test_data, test_label = dat_loader.svhn_loader()
 
     # df = sns.load_dataset("penguins")
     # df = pandas.DataFrame(m_tr_dat[300].squeeze())
@@ -72,8 +72,8 @@ def cascade_network():
 
     kcl.clear()
 
-    a, b, c, d = keras_data_loader.mnist_loader()
-    e, f, g, h = keras_data_loader.svhn_loader()
+    a, b, c, d = dat_loader.mnist_loader()
+    e, f, g, h = dat_loader.svhn_loader()
 
     lr, optim = kcl.lr_optim()
     model = keras.Sequential([keras.Input(shape=(32, 32, 1))])
