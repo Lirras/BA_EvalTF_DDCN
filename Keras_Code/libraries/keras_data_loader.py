@@ -94,7 +94,7 @@ def mnist_loader():
     val_dat = np.expand_dims(val_dat, -1)
     test_dat = np.expand_dims(test_dat, -1)
 
-    reduction = False
+    reduction = True
 
     if reduction is True:
         train_dat, bin1, train_lb, binlb1 = train_test_split(train_dat, train_lb, test_size=0.99,random_state=22)

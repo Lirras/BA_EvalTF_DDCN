@@ -1,7 +1,8 @@
 import Keras_Code.libraries.keras_cascade_lib as kcl
 import time
 import Keras_Code.libraries.keras_data_loader as dat_loader
-import class_units
+import Keras_Code.DirectCascade.class_units as clun
+import big_networks_class
 import pandas
 import Keras_Code.libraries.plotting as pltt
 
@@ -15,7 +16,7 @@ def classification_test():
     a, b, c, d = dat_loader.mnist_loader()
     e, f, g, h = dat_loader.svhn_loader()
     ls = []
-    model_1 = class_units.Classification()
+    model_1 = clun.Classification()
     # todo: model needs Flatten Layer
     model_1.initialize((32, 32, 1))
     hist = model_1.train(a, b, c, d, 5)
@@ -28,7 +29,7 @@ def classification_test():
     x = 1034
     for i in range(100):
         print(i)
-        model = class_units.Classification()
+        model = clun.Classification()
         model.initialize((x,))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
         ls.append(pandas.DataFrame.from_dict(hist.history))
@@ -54,7 +55,7 @@ def classification_conv_test():  # 94.7% ACC after two Networks with TF between 
     e, f, g, h = dat_loader.svhn_loader()
     ls = []
     epochs = 10
-    model_1 = class_units.ClassificationConv()
+    model_1 = big_networks_class.ClassificationConv()
     model_1.initialize((32, 32, 1))
     hist = model_1.train(a, b, c, d, epochs)
     ls.append(pandas.DataFrame.from_dict(hist.history))
@@ -65,7 +66,7 @@ def classification_conv_test():  # 94.7% ACC after two Networks with TF between 
     x = 11
     for i in range(50):  # Why is the amount of iterations insignificant?
         print(i)
-        model = class_units.ClassificationConv()
+        model = big_networks_class.ClassificationConv()
         model.initialize((32, 32, x))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
         ls.append(pandas.DataFrame.from_dict(hist.history))
@@ -99,7 +100,7 @@ def class_Dense():
     ls = []
     x = 1024
 
-    model_1 = class_units.Class_Dense()
+    model_1 = big_networks_class.Class_Dense()
     model_1.initialize((x, 1))
     hist = model_1.train(a, b, c, d, 1)
     ls.append(pandas.DataFrame.from_dict(hist.history))
@@ -126,7 +127,7 @@ def class_Dense():
     # Source Networks
     for i in range(1):
         print(i)
-        model = class_units.Class_Dense()
+        model = big_networks_class.Class_Dense()
         model.initialize((x, 1))
         hist = model.train(maugmented_vector, b, mval_aug_vec, d, 1)
         ls.append(pandas.DataFrame.from_dict(hist.history))
@@ -153,7 +154,7 @@ def class_Dense():
     # Target Networks
     for i in range(10):
         print(i)
-        model = class_units.Class_Dense()
+        model = big_networks_class.Class_Dense()
         model.initialize((x, 1))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
         ls.append(pandas.DataFrame.from_dict(hist.history))

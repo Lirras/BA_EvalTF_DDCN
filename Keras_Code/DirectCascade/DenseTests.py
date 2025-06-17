@@ -27,11 +27,13 @@ def regression_test():
     e, f, g, h, cali_test_data, cali_test_target = dat_loader.california_loader()
     model_1 = class_units.Regression()
     x = 3
-    ls = []
+    # ls = []
+    list_of_dfs = []
     test_plot = []
     model_1.initialize((x,))
     hist = model_1.train(a, b, c, d, 5)
-    ls.append(pandas.DataFrame.from_dict(hist.history))
+    list_of_dfs.append(hist)
+    # ls.append(pandas.DataFrame.from_dict(hist.history))
 
     bost_pred = model_1.pred(a)
     bost_val_pred = model_1.pred(c)
@@ -55,7 +57,8 @@ def regression_test():
         model = class_units.Regression()
         model.initialize((x,))
         hist = model.train(bost_augmented_vector, b, bost_val_aug_vec, d, epochs)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # boston
         bost_pred = model.pred(bost_augmented_vector)
@@ -81,7 +84,8 @@ def regression_test():
         model = class_units.Regression()
         model.initialize((x,))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
         pred = model.pred(augmented_vector)
         augmented_vector = krl.build_2nd_in_same(augmented_vector, pred)
         val_pred = model.pred(val_aug_vec)
@@ -94,7 +98,7 @@ def regression_test():
 
     z2 = time.perf_counter()
     pltt.regr_test_plot(pltt.add_epoch_counter_to_df(pandas.DataFrame({'mae': test_plot})), epochs, len(cali_test_data), round(z2-z1), name)
-    pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2-z1), name)
+    pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2-z1), name)
     print(f'{z2 - z1:0.2f} sec')
 
 
@@ -112,13 +116,15 @@ def classification_test():
     e = e.reshape(len(e), x)
     g = g.reshape(len(g), x)
     svhn_test = svhn_test.reshape(len(svhn_test), x)
-    ls = []
+    # ls = []
+    list_of_dfs = []
     test_ls_plot = []
 
     model_before = class_units.Classification()
     model_before.initialize((x,))
     hist = model_before.train(a, b, c, d, epochs)
-    ls.append(pandas.DataFrame.from_dict(hist.history))
+    list_of_dfs.append(hist)
+    # ls.append(pandas.DataFrame.from_dict(hist.history))
     pred = model_before.pred(a)
     val_pred = model_before.pred(c)
     mnist_augmented_vector = kcl.build_vec_dense_only(a, pred, x, len(a))
@@ -135,13 +141,14 @@ def classification_test():
     x += 10
 
     # MNIST Iterations:
-    for i in range(10):
+    for i in range(9):
         print(i)
         model_1 = class_units.Classification()
         model_1.initialize((x,))
 
         hist = model_1.train(mnist_augmented_vector, b, mnist_val_aug_vec, d, epochs)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
 
         print(mnist_augmented_vector.shape)  # 60000 1034
         pred = model_1.pred(mnist_augmented_vector)
@@ -161,12 +168,13 @@ def classification_test():
         x += 10
 
     in_shape = len(e)
-    for i in range(50):
+    for i in range(10):
         print(i)
         model = class_units.Classification()
         model.initialize((x,))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
         pred = model.pred(augmented_vector)
         val_pred = model.pred(val_aug_vec)
         val_aug_vec = kcl.build_vec_dense_only(val_aug_vec, val_pred, x, len(g))
@@ -179,11 +187,9 @@ def classification_test():
 
     z2 = time.perf_counter()
     pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls_plot})), epochs, len(svhn_test), round(z2-z1), name)
-    pltt.class_acc_only(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2-z1), name)
+    pltt.class_acc_only(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2-z1), name)  # ls instead of list_of_dfs for old use
     print(f'{z2-z1:0.2f} sec')
 
-
-# todo: only use here class_Dense and regression_test; The third Network is at mnist_long
 
 classification_test()
 # regression_test()

@@ -19,13 +19,15 @@ def OneDLilConv():
     g = g.reshape((len(g), 1024, 1))
     # test_dat_mnist = test_dat_mnist.reshape((len(test_dat_mnist), 1024, 1))
     test_dat_svhn = test_dat_svhn.reshape((len(test_dat_svhn), 1024, 1))
-    ls = []
+    # ls = []
+    list_of_dfs = []
     x = 1024
 
-    model_1 = class_units.Class_Dense()
+    model_1 = class_units.OneDLilConv()
     model_1.initialize((x, 1))
     hist = model_1.train(a, b, c, d, epochs)
-    ls.append(pandas.DataFrame.from_dict(hist.history))
+    list_of_dfs.append(hist)
+    # ls.append(pandas.DataFrame.from_dict(hist.history))
 
     # Source Data
     mpred = model_1.pred(a)
@@ -49,10 +51,11 @@ def OneDLilConv():
     # Source Networks
     for i in range(9):
         print(i)
-        model = class_units.Class_Dense()
+        model = class_units.OneDLilConv()
         model.initialize((x, 1))
         hist = model.train(maugmented_vector, b, mval_aug_vec, d, epochs)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # Source Data
         mpred = model.pred(maugmented_vector)
@@ -76,10 +79,11 @@ def OneDLilConv():
     # Target Networks
     for i in range(10):
         print(i)
-        model = class_units.Class_Dense()
+        model = class_units.OneDLilConv()
         model.initialize((x, 1))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # Target Data
         pred = model.pred(augmented_vector)
@@ -96,7 +100,7 @@ def OneDLilConv():
 
     z2 = time.perf_counter()
     pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot})), 2, len(e), round(z2 - z1), name)
-    pltt.class_acc_only(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2 - z1), name)
+    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2 - z1), name)
     print(f'{z2 - z1:0.2f} sec')
 
 
@@ -110,12 +114,14 @@ def lil_conv():
     e, f, g, h, test_dat_svhn, test_lb_svhn = dat_loader.svhn_loader()  # full: 1/less: 10/ Very less: More
     print(a.shape)
     print(c.shape)
-    ls = []
+    # ls = []
+    list_of_dfs = []
     test_plot_list = []
     model_1 = class_units.LittleConv()
     model_1.initialize((32, 32, 1))
     hist = model_1.train(a, b, c, d, epochs)
-    ls.append(pandas.DataFrame.from_dict(hist.history))
+    list_of_dfs.append(hist)
+    # ls.append(pandas.DataFrame.from_dict(hist.history))
 
     # Source
     mpred = model_1.pred(a)
@@ -142,7 +148,8 @@ def lil_conv():
         model = class_units.LittleConv()
         model.initialize((32, 32, x))
         hist = model.train(maugmented_vector, b, mval_aug_vec, d, epochs)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # Source
         mpred = model.pred(maugmented_vector)
@@ -168,7 +175,8 @@ def lil_conv():
         model = class_units.LittleConv()
         model.initialize((32, 32, x))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
         pred = model.pred(augmented_vector)
         val_pred = model.pred(val_aug_vec)
 
@@ -180,7 +188,7 @@ def lil_conv():
     z2 = time.perf_counter()
 
     pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot_list})), epochs, len(e), round(z2-z1), name)
-    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2-z1), name)
+    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2-z1), name)
 
     print(f'{z2 - z1:0.2f} sec')
 
