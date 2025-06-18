@@ -1,0 +1,49 @@
+Es wurden sowohl für Klassifikation als auch für Regression drei verschiedene Ansätze der Kaskadierung genutzt. 
+Ebenso wurde Direct TF mit Domainwechsel durchgeführt. 
+
+Die drei Ansätze sind Deep Cascade, Direct Cascade und eine Kaskadierung von einem Netz im Netz mit mehreren Inputs.
+
+Bei Deep Cascade wird ein Netz Layer für Layer aufgebaut und jedes Layer einzelnd trainiert und gefreezt. 
+Bei Direct Cascade werden ganze Netze trainiert und dessen Prediction als zusätzlichen Input für das nächste Netz zu nutzen.
+Bei der dritten Variante wird ein Netz trainiert, dann auf einem Teilnetz davon die Prediction gemacht, um mit dieser das 
+ganze Netz außer das vorher erwähnte Teilnetz zu trainieren. 
+Nur Deep Cascade wird genauer betrachtet, denn die beiden anderen Ansätze sind nur zum Vergleichen da.
+
+Es wurde bei jedem gleichbleibende Epochenanzahlen, zufällige und von einer Metrik abhängige durchgeführt. 
+
+Bei allen Neuronalen Netzen wurden die dafür benötigten Daten in ein Trainings-, Validation- und Testdatensatz aufgeteilt. 
+Ebenfalls wurde MNIST auf 32x32 erweitert, sowie SVHN in graue Bilder mit einem Channel verändert. 
+Es wurde erweitert, da keine Daten unnötig verloren werden sollten. Die Reduzierung von SVHN liegt daran, dass MNIST nur 
+Schwarz-Weiß-Bilder sind und es nicht möglich ist, dies in bunte Bilder zu verändern.
+Die Veränderungen der Datensätze kommt daher, dass sie technisch gleich aussehen müssen, da sie sonst nicht als Input 
+desselben Netzes genutzt werden können.
+
+Für die Regressionsnetze müssen alle Spalten weggenommen werden, die kein Gegenüber im anderen Datensatz besitzen. 
+Somit fielen die Spalten: Verbrechensrate, Anteil der Wohngebiete über 25000 Fuß, Nicht-Einzelhandelanteil der Gewerbeflächen, 
+Flussgrundstück, Stickoxidkonzentration, Entfernung zu Arbeitsvermittlungszentren, Erreichbarkeit von Autobahnen, 
+Vollwertsteuersatz, Schüler-Lehrer-Verhältnis und die Anzahl von Schwarzen im Bosten weg, während im California die 
+folgenden Spalten wegfielen: Längengrad, Breitengrad, Schlafzimmer und Bevölkerung. Aus der Gesamtanzahl der Räume und der Haushalte 
+wird die durchschnittliche Anzahl an Räumen pro Wohnung errechnet.
+Diese Spalten haben alle keinen Gegenüber im anderen Datensatz und eine Spalte ist aus ethnischen Gründen nicht nutzbar, was daran liegt, 
+dass der Datensatz aus den Siebzigern stammt.
+Übrig blieben von Boston nur noch die durchschnittliche Anzahl der Räume pro Wohnung, die Menge der Häuser, die vor 1940 
+erbaut worden sind und der prozentuale Anteil der Bevölkerung mit niedrigem Status.
+Bei California blieben das Errechnete und das Hausalter, sowie das durchschnittliche Einkommen. 
+Die Anzahl der Räume pro Wohnung passen offensichtlich zueinander, während der prozentuale Anteil der Bevölkerung mit niedrigem Status 
+antiproportional zu dem durchschnittlichen Einkommen ist. Dies wird vorher zu einer Proportionalität umgewandelt.
+Als etwas komplizierter erweist sich das Alter. Mit Prozentrechnung kann man aber das ungefäre Alter der Häuser aus dem 
+Boston Datensatz abschätzen. Da immer eine Häuseranzahl von einhundert betrachtet wird, ist dies die Gesamtmenge und folgende Formel 
+löst das Problem: 
+\begin{equation}
+    \frac{Hausanzahl * Hausalter}{Gesamtmenge}
+\end{equation}
+Die Hausanzahl ist hier die Menge der Häuser, die vor 1940 erbaut worden sind. Das Hausalter bezieht sich auf das Alter der eben 
+erwähnten Häuser und ist auf Heute angedacht; sind also 85 Jahre.
+
+Die Hypothese war, dass man mit TF bei zu wenig Daten eine verhältnismäßig gute Performanz der Netze erwarten kann, sowie, 
+dass durch einen Kaskadierungsansatz das Training der Netze sehr kurz ist.
+
+Generell wird zuerst eine Weile auf dem Sourcedatensatz trainiert und dann auf den Targetdatensatz gewechselt ohne die 
+bisherigen Netze zu verändern. Bis auf den Direct Cascade Ansatz werden auch die Inputs während des ganzen Prozesses nicht 
+verändert.
+Bei Direct Cascade werden die Inputs immer größer, denn die Prediction des vorherigen Netzes wird zum Input hinzugefügt.

@@ -1,0 +1,50 @@
+Die Klassifikation über Filternetze im Direct Cascade Ansatz. 
+Es wird zudem zwischen eindimensionalen und zweidimensionalen Bilddaten unterschieden, um zu zeigen, dass die Dimensionalität für die 
+Accuracy irrelevant ist und es im zweidimensionalen nur länger dauert. 
+
+Der zweidimensionale Fall hat folgende Updateregel: 
+Die Prediction wird ausgelesen und dessen Wert wird in ein Array mit demselben Shape hineingeschrieben und dies wird dann mit den Trainingsdaten 
+auf der Channelachse konkateniert. Dies ergibt den Augmented Vector, der als Input für das nächste Netz genutzt wird.
+
+Die Besonderheit des zweidimensionalen Netzes ist es, dass es in der Updateregel sehr viel Arbeitsspeicher benötigt wird. Deshalb wird nicht nur 
+der Targetdatensatz auf 1\% verkleinert, sondern auch der Sourcedatensatz. 
+
+Es wurde einmal ohne Metrik, einmal mit der Accuracy-Metrik und einmal mit der Loss-Letrik ausgetestet.
+
+\begin{figure}[htpb]
+    \includegraphics[height=5cm]{../../Plots/DirClass_LilConv/Dir2DLilConvTrainTen2Ten.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_LilConv/Dir2DLilConvTestTen2Ten.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_LilConv/Ten2TenTrain_ACC.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_LilConv/Ten2TenTest_ACC.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_LilConv/Ten2TenTrain_Loss.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_LilConv/Ten2TenTest_Loss.png}
+    \caption{\label{fig:2dconv}}
+\end{figure}
+
+Die Figure 2.1 zeigt die Plots der Tests zuerst ohne eine Metrik, dann mit der ACCM und zum Schluss mit der LM. 
+Da der Sourcedatensatz verringert wurde, ist die Accuracy im ersten Bereich geringer als es erwartbar ist. 
+Das Early Stopping ist hier nicht erkennbar, da die Berechnungszeit des Augmented Vector hier für die Zeit entscheidend ist.
+
+Im eindimensionalen Fall gibt es folgende Updateregel: 
+Die Bilddaten werden zuerst in eindimensionale Bilder verändert mit Channels. Dies ist der Input des Netzes. Die Prediction und der Netzinput, 
+dessen Channelachse vorübergehend entfernt wird, werden direkt konkateniert und das Ergebnis, um die Channelachse erweitert. 
+
+Hier wird nur der Targetdatensatz verkleinert und einem ohne Metrik, mit der ACCM und der LM ausgetestet. Dies zeigt die Figure 2.2.
+
+\begin{figure}[htpb]
+    \includegraphics[height=5cm]{../../Plots/DirClass_OneDConv/Ten2TenTrain.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_OneDConv/Ten2TenTest.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_OneDConv/DataTrain_ACC_Metr.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_OneDConv/DataTest_ACC_Metr.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_OneDConv/Ten2TenTrain_Loss.png}
+    \includegraphics[height=5cm]{../../Plots/DirClass_OneDConv/Ten2TenTest_Loss.png}
+    \caption{\label{fig:1dconv}}
+\end{figure}
+
+Hier werden die Metriken eindeutig gesehen, denn die Trainingszeit ist sehr verschieden. Es wird auch klar, dass der eindimensionale Fall 
+schlechter ist als der Zweidimensionale.
+Dies liegt daran, dass im eindimensionalen nur die Daten rechts und links von dem betrachteten Pixel in die Berechnung mit eingezogen werden 
+können, während im zweidimensionalen zusätzlich auch die Daten oben, unten und die vier Ecken jenes Kreuzes betrachtet werden.
+% da der eindimensionale Fall nicht die Verhältnisse der Pixel innerhalb einer Achse auf beiden Achsen betrachten kann. 
+Beide Netze haben eine sehr schlechte Accuracy. Dies liegt aber nicht daran, dass auf dem Sourcedatensatz Overfitting passiert ist, denn es 
+wird nicht besser, wenn der Wechsel der Datensätze beliebig nach vorne geschoben wird.

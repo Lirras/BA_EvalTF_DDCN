@@ -1,0 +1,14 @@
+Es wurden drei Metriken erstellt. 
+Die Accuracy- (ACCM), Loss- (LM) und MAE-Metrik (MAEM). MAE heißt dabei Mean absolute Error. 
+Alle drei Metriken sind für Early Stopping und entscheiden, wieviele Epochen genutzt werden. 
+Die Accuracy-Metrik bricht immer dann ab, wenn die Validation-Accuracy mindestens um 10\% 
+schlechter ist als die Trainingsaccuracy, da dann in dem Netzwerk Overfitting herrscht.
+
+Die Loss- und die MAE-Metrik brechen beide dann ab, wenn der Validation-Wert der aktuellen 
+Epoche schlechter ist als in der Epoche davor. Dies hat zur Folge, dass die Netze in lokale 
+Minima hineinlaufen und nicht wieder herauskommen. Dabei unterliegt die Anzahl der Netze für 
+das Direct Cascade keiner Metrik.
+
+% Evtl eine Metrik bauen, die über einen Max-Value für ACC geht und dann den Abbruch macht, wenn es besser 
+% wird oder schlechter als dieser Wert(Muss rel. enger Bereich sein)
+% Ebenso für Min-Value für Loss und MAE

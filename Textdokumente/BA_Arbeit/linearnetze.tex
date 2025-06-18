@@ -1,0 +1,24 @@
+Die Klassifikation über Linearnetze mittels eines Direct Cascade Ansatzes. 
+
+Das Netz hat ein Linearlayer mit 512 Nodes und der ReLU-Activation function.
+
+Für den augmented Vector werden alle inputdaten in eindimensionale Bilder verwandelt. Der Input wird mit der Prediction konkateniert und 
+direkt an das nächste Netz weitergegeben.
+
+Dieses Netz wurde ohne Metrik, mit der ACCM und LM ausgetestet. 
+
+\begin{figure}[htpb]
+    \includegraphics[height=5cm]{../../Plots/MnistLongDense/DataTrain.png}
+    \includegraphics[height=5cm]{../../Plots/MnistLongDense/DataTest.png}
+    \includegraphics[height=5cm]{../../Plots/MnistLongDense/Ten2Ten_Train_ACC.png}
+    \includegraphics[height=5cm]{../../Plots/MnistLongDense/Ten2Ten_Test_ACC.png}
+    \includegraphics[height=5cm]{../../Plots/MnistLongDense/Ten2Ten_Train_Loss.png}
+    \includegraphics[height=5cm]{../../Plots/MnistLongDense/Ten2Ten_Test_Loss.png}
+    \caption{\label{fig:linclass}}
+\end{figure}
+
+Die Figure 2.3 zeigt, dass ein Netzwerk mit nur Linearlayers etwas schlechter ist als ein zweidimensionales Filternetz. 
+Hier werden die Metriken auch bereits gesehen, aber sie bringen kein erhofftes Ergebnis. 
+
+Die Klassifikation funktioniert mit den Updateregeln und diesen Netzen nicht. Auch TF bringt dabei nichts. Das einzige, 
+was halbwegs etwas bringt, ist, wenn mehr Targetdaten benutzt werden. Aber dann wird TF auch nicht mehr gebraucht. 

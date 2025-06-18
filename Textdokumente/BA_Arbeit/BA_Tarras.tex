@@ -1,0 +1,34 @@
+\documentclass[ngerman]{report}
+
+\usepackage[
+        bibencoding=utf8, 
+        style=alphabetic
+    ]{biblatex}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{caption}
+
+\title{Evaluierung von Transferlernen mit Deep Direct Cascade Networks}
+
+\author{Simon Tarras}
+
+\begin{document}
+    \maketitle
+    \tableofcontents
+    % Einleitung
+    \chapter{Einführung}
+    \section{Setup}
+    \input{setup.tex}
+    \section{Durchführungen}
+    \input{durchfuehrungen.tex}
+    \section{Metrik}
+    \input{metrik.tex}
+    \chapter{Klassifikation}
+    \section{Filternetze}
+    \input{filternetze.tex}
+    \section{Linearnetze}
+    \input{linearnetze.tex}
+    \chapter{Regression}
+    % Diskussion
+\end{document}
