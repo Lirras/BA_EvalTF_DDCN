@@ -9,6 +9,8 @@
 \usepackage{amsmath}
 \usepackage{caption}
 
+\bibliography{bibliography}
+
 \title{Evaluierung von Transferlernen mit Deep Direct Cascade Networks}
 
 \author{Simon Tarras}
@@ -16,19 +18,70 @@
 \begin{document}
     \maketitle
     \tableofcontents
+    % Vollständige Struktur anlegen
     % Einleitung
-    \chapter{Einführung}
+    % Auch etwas über den Code schreiben (Methoden der Vorstellung (Bsp. Klassendiagram))
+    \chapter{Einleitung}  % 1.Einleitung
+    \section{Einführung}
+    \input{1.Einleitung/einfuehrung.tex}
+    \section{Motivation}
+    \input{1.Einleitung/motivation.tex}
+    \section{Related Work}
+    \input{1.Einleitung/relatedwork.tex}
+
+    \chapter{Methodik}  % 2.Methodik
+    \section{Transferlernen}
+    \input{2.Methodik/transferlernen.tex}
+    \section{Kaskadierung}
+    \input{2.Methodik/cascade.tex}
+    \subsection{Deep Cascade}
+    \input{2.Methodik/deepcascade.tex}
+    \subsection{Direct Cascade}
+    \input{2.Methodik/directcascade.tex}
     \section{Setup}
-    \input{setup.tex}
-    \section{Durchführungen}
-    \input{durchfuehrungen.tex}
+    \input{2.Methodik/setup.tex}
+    % \section{Durchführungen}
+    % \input{durchfuehrungen.tex}
     \section{Metrik}
-    \input{metrik.tex}
-    \chapter{Klassifikation}
-    \section{Filternetze}
-    \input{filternetze.tex}
-    \section{Linearnetze}
-    \input{linearnetze.tex}
-    \chapter{Regression}
+    \input{2.Methodik/metrik.tex}
+    \section{Liste der Tests}
+    \input{2.Methodik/testliste.tex}
+
+    \chapter{Allgemeines}  % 3.Allgemeines
+    \section{ConvMaxPool}
+    \subsection{Einbruch bei TF}
+    \subsection{Wenig Epochen für Stabilisierung}
+    \subsection{Overfitting auf Sourcedatensatz}
+    \section{Zeitnahme}
+
+    \chapter{Klassifikation}  % 4.Klassifikation
+    \section{Größe des Targetdatensatzes}
+    \section{Bilddimensionalität}
+    \section{Augmentierung}
+    \section{Mit und Ohne}
+    \subsection{TF}
+    \subsection{Kaskadierung}
+
+    % \section{Filternetze}
+    % \input{filternetze.tex}
+    % \section{Linearnetze}
+    % \input{linearnetze.tex}
+
+    \chapter{Regression}  % 5.Regression
+    \section{Datenaugmentation}
+    \subsection{Wenig Daten}
+    \subsection{Viele Daten}
+    \section{Early Stopping}
     % Diskussion
+    % Schreibe alles auf, was du gelernt hast: Das ist dann die Diskussion -> Wie kommt man dahin, was braucht man dafür?
+    % Struktur -> Steil
+    % Eine Liste aller Experimente, die relevant sind, die ich gemacht habe. -> Heiko (Und KFOLD-Cross bei wichtigen Durchführen)
+    % Achsenbeschriftung verbessern (Einheit + Größe)
+    
+    \chapter{Diskussion}  % 6.Diskussion
+    \section{Erkenntnisse}
+    \input{6.Diskussion/erkenntnisse.tex}
+    \section{Ausblick}
+    \section{Fazit}
+    \printbibliography
 \end{document}

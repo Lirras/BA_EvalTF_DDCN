@@ -1,0 +1,52 @@
+Allgemeines:
+
+Das ist alles ein Plot eines DeepCascade Networks, welches vor vorgestellt wird:
+Es kommt relativ schnell zu Overfitting auf dem Sourcedatensatz. % Veränderung, wann TF gemacht wird.
+% ConvMaxPool = Deep Cascade
+
+Bei der Stelle des TFs bricht die Performanz des Netzes ein, nur bei deep Cascade erholt sich das ein wenig. 
+% Jeder Plot mit TF 
+% Deep Cascade, aber auch OneLayer; Direct Cascade Classification nicht, da keine Stabilisierung
+
+Bei Deep Cascade benötigt es weniger Epochen nach TF bis sich die Performanz der Netze stabilisiert. 
+% Irgendein Deep Cascade Plot
+
+Die Direct Cascade Netze sind erheblich schneller als die Deep Cascade und diese sind wiederum schneller als die normalen Netze. 
+% Zeitnahme zwischen Direct und Deep
+% Direct 1DConv, Deep Cascade TF und Full(DCAS)
+% Zeitnahme zwischen OneLayer vs. RegressionTwo
+
+Inverses Deep Cascade ist völliger Blödsinn. \newline
+% Höchstens als Bemerkung
+
+Klassifikation: 
+
+Bei der Klassifikation ist der endgültige Accuracy-Wert hauptsächlich von der Datenmenge des Targetdatensatzes abhängig. 
+Je weniger Daten, desto schlechter ist der Wert. % Veränderung wieviele Targetdaten genutzt werden
+% OneDConv, ConvMaxPool
+
+Klassifikation läuft so schlecht, dass man es nicht tun sollte, da es nichts bringt. % Jedes Klassifikationsnetz mit TF, vor allem bei Direct Cascade
+% ClassOneDense
+
+Bei TF ist die Performanz des Netzes etwas schlechter als ohne. % Vergleich zwischen TF und ohne bei Deep Cascade beides und bei Direct Cascade Klassifikation
+% Deep Cascade TF vs. Deep Cascade
+Bei Cascade Networks ist es ebenfalls schlechter. % Vergleich zwischen Cascade und Gesamtnetze
+% Deep Cascade vs. Ohne
+
+
+Die Erstellung bei mehrdimensionalen Augmented Vectors kann zur Arbeitsspeicherplatzproblemen führen. % 2D-Class augmentation vector update
+% 2DConv
+
+Eindimensionale Klassifikation ist schlechter als zweidimensionale. \newline
+% Vergleich zwischen 1D und 2D.
+% 1DConv vs 2DConv
+
+Regression:
+
+Die Regression ist mit TF bei wenigen Daten besser als, wenn sie auf den Targetdatensatz von Scratch lernt. % Vergleich zwischen TF und Scratch Regression
+% OneLayer TF/Scratch (Very Less Data)
+
+
+In der Regression ist der Abfall der Performanz bei weitem weniger groß. % Regressionsnetz mit und ohne TF
+% OneLayer TF/Scratch (Full Data)
+

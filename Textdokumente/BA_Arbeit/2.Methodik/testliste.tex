@@ -1,0 +1,130 @@
+
+Liste aller hier vorkommenden Netze:
+
+\begin{enumerate}
+    \item ConvMaxPool
+    \item 1DConv
+    \item 2DConv
+    \item ClassOneDense
+    \item RegressionTwo
+    \item OneLayer
+\end{enumerate}
+
+Davon sind ConvMaxPool und RegressionTwo Deep Cascade Netzwerke, während alle anderen Direct Cascade Netzwerke sind. 
+Ebenso sind nur RegressionTwo und OneLayer Regressionsnetze, während der Rest Klassifikationsnetze sind. 
+
+Alle Netze werden mit dem Adam-Optimizer mit der learningrate 1e-3 gelernt. Klassifikationsnetze haben als Loss den 
+CategoricalCrossEntropy und Softmax als Aktivierungsfunktion, während die Regressionsnetze MeanSquaredError und Linear als 
+Aktivierungsfunktion vorweisen. 
+
+Mit allen Direct Cascade Netzwerken wurden zusätzlich Early Stopping Metriken durchgeführt mit MAEM, LM, ACCM. 
+
+Für fast alle Netze gilt, dass sie mit vielen, mittleren und wenigen Source- und Targetdaten durchgeführt wurden. Die 
+einzige Ausnahme ist das 2DConv-Netzwerk, welches nur mit wenigen Daten durchgeführt wurde, da mit mehr Daten es 
+technisch nicht mehr mit derselben Hardware möglich war. 
+
+Es wurde mit allen Deep Cascade Netzen ein Vergleich zwischen mit TF und ohne angefertigt. 
+
+Mit allen Netzwerken wurde der Zeitpunkt für das TF frei ausgetestet. 
+
+Alle Direct Cascade Networks haben jeweils nur ein Hidden Layer. In manchen Fällen noch mit einem Hilfslayer, um den Wechsel 
+zwischen Filterlayern und Linearlayern zu bewerkstelligen. 
+
+% !TODO!: Dies muss noch gemacht werden:
+Für alle Direct Cascade Networks wurde derselbe Seed für die Initialisierung der Weights genutzt. Zudem wurde ein KFOLD 
+verwendet und der Mean aller Läufe als Wert für den Plot genutzt.
+
+\iffalse
+% Es gibt einen Unterschied innerhalb der einzelnen Netze
+Alle mit und ohne TF durchgeführt. Beliebig viele Source- und Targetepochen. Mit MAEM, LM und ACCM als Early-Stopping. 
+Alle mit vielen, wenigen und sehr wenigen Source- und Targetdaten. 
+
+Die Direct Cascade Netze: 
+\begin{enumerate}
+    \item ClassConv1D
+    \item ClassConv2D
+    \item ClassDense
+    \item RegrDense
+    \item BigNet
+\end{enumerate}
+
+Was für Layer sind da enthalten, was sind die Loss-Functions? Anzahl Units. Long MNIST/Short MNIST
+
+Klassifikation: 
+
+Direct Cascade:
+Network: 
+Name: OneDLilConv
+Input: N, W*H, C
+TF: Ja/Nein
+Datensamples S/T: 100\%/1\%-100\%
+Sourcedaten Train/Valid/Test: 
+Targetdaten Train/Valid/Test: 732/
+Hidden Layer: 1 Conv1D mit 32 Filtern, kernelsize = 3, padding same -> Datenlänge unverändert
+Hidden Activation: Relu
+Output Layer: Linearlayer mit 10 Nodes und Softmax
+Max Networks S/T: 10/10
+Max Epochs: 10
+Stopping Metrics: non, LM, ACCM
+Optimizer: Adam mit learningrate 1e-3
+Loss: CategoricalCrossEntropy
+Augmentation: N, W*H, C/N, Lb -> N, (W*H).Lb, C  % N: Datensamples, W: Width, H:Height, C: Channel, Lb: Label
+
+
+Network: 
+Name: LittleConv
+Input: N, W, H, C
+TF: Ja/Nein
+Datensamples S/T: 1\%/1\%
+Sourcedaten Train/Valid/Test: 
+Targetdaten Train/Valid/Test: 732/
+Hidden Layer: 1 Conv2D mit 32 Filtern, kernelsize = (3, 3), padding same -> Datenlänge unverändert
+Hidden Activation: Relu
+Output Layer: Linearlayer mit 10 Nodes und Softmax
+Max Networks S/T: 10/50
+Max Epochs: 10
+Stopping Metrics: non, LM, ACCM
+Optimizer: Adam mit learningrate 1e-3
+Loss: CategoricalCrossEntropy
+Augmentation: N, W, H, C/N, Lb -> N, W, H, C+10 ((N, W, H)[0-9] = Lb[0-9] -> C Concat)
+
+
+Network:
+Name: oneDense
+Input: N, W*H
+TF: Ja/Nein
+Datensamples S/T: 100\%/1\%-100\%
+Sourcedaten Train/Valid/Test: 
+Targetdaten Train/Valid/Test: 
+Hidden Layer: 1 Linearlayer mit 512 Nodes
+Hidden Activation: Relu
+Output Layer: Linearlayer mit 10 Nodes und Softmax
+Max Networks S/T: 30/50
+Max Epochs: 10
+Stopping Metrics: non, LM, ACCM
+Optimizer: Adam mit learningrate 1e-3
+Loss: CategoricalCrossEntropy
+Augmentation: N, W*H/N, Lb -> N, W*H.Lb
+
+
+
+Regression:
+Direct Cascade:
+
+Network: 
+Name: oneLayer
+Input: N, Columns
+TF: Ja/Nein
+Datensamples S/T: 4800/600 (Full/Big,Small)
+Sourcedaten Train/Valid/Test: 
+Targetdaten Train/Valid/Test: 
+Hidden Layer: 1 Linearlayer mit 512 Nodes
+Hidden Activation: Relu
+Output Layer: Linearlayer mit 1 Node und Linear
+Max Networks S/T: 10/10
+Max Epochs: 10
+Stopping Metrics: non, LM, MAEM
+Optimizer: Adam mit learningrate 1e-3
+Loss: MeanSquaredError
+Augmentation: N, Columns/Target -> N, Columns+1
+\fi
