@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{caption}
+\usepackage{hyperref}
 
 \bibliography{bibliography}
 
@@ -46,6 +47,8 @@
     \input{2.Methodik/testliste.tex}
 
     \chapter{Allgemeine Resultate}  % 3.Allgemeines
+    \section{Ploterklärung}
+    \input{3.Allgemeines/ploterklaerung.tex}
     \section{ConvMaxPool}
     \input{3.Allgemeines/convmaxpool.tex}
     \subsection{Veränderungen bei TF}
@@ -55,6 +58,7 @@
     \subsection{Overfitting auf Sourcedatensatz}
     \input{3.Allgemeines/overfitting.tex}
     \section{Zeitnahme}
+    \input{3.Allgemeines/zeitnahme.tex}
 
     \chapter{Klassifikation}  % 4.Klassifikation
     \section{Größe des Targetdatensatzes}

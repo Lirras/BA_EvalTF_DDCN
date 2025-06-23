@@ -1,0 +1,13 @@
+Hier werden alle Netze bearbeitet und überprüft wieviel Zeit sie für ihr Training benötigten. 
+Diese wird in jedem Plot angezeigt. Sie ist generell stark abhängig davon, wieviele Datensamples genutzt werden und 
+wieviele maximale Epochen erlaubt sind. Deshalb werden hier jeweils gleich viele Datensamples für die Klassifikationsnetze und 
+Regressionsnetze verwendet, sowie eine gleiche Gesamtepochenanzahl. 
+
+Dazu wird jedes Mal der kleinste Targetdatensatz und der größte Sourcedatensatz genutzt, bis auf das 2DConv-Netzwerk. Jedes Klassifikationsnetz 
+wird auf eine Gesamtanzahl von 40 Epochen trainiert. Wenn TF gemacht wird, dann nach 20 Epochen. Bei Regressionsnetzen wird auf 80 Epochen 
+trainiert. TF wird nach 30 Epochen gemacht. Tatsächliche Graphen werden hier nicht verwendet werden, da es zuviele sind und die meisten an 
+anderen Stellen in ähnlicher Form bereits vorkommen. Um diese Graphen zu kontrollieren, schaut bitte auf das GitHub Repo unter 
+\url{https://github.com/Lirras/BA_EvalTF_DDCN/tree/main/Plots/ba_plots/timing}. 
+Es wird hier keine Early-Stopping Metrik genutzt. 
+
+Zuerst zu allen Klassifikationnetzen. 
