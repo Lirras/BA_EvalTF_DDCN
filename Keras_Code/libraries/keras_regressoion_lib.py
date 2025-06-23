@@ -17,12 +17,14 @@ def fine_tuning():
     return lr_schedule, optimizer
 
 
-def predict(model, a, b, c, d, lr, epoch, batch):
+def predict(model, a, b, c, d, lr, epoch, batch, test_data):
     model.add(keras.layers.Dense(units=1, activation=keras.activations.linear))
-    history = model.fit(a, b, batch_size=batch, epochs=epoch, validation_data=(c, d), callbacks=[lr])
+    history = model.fit(a, b, batch_size=batch, epochs=epoch, validation_data=(c, d))  # , callbacks=[lr])
+    pred = model.predict(test_data)
+
     model.pop()
     freezing(model, len(model.layers)-1)
-    return pandas.DataFrame.from_dict(history.history)
+    return pandas.DataFrame.from_dict(history.history), pred
 
 
 def clear():

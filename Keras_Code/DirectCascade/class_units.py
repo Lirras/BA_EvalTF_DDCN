@@ -2,6 +2,9 @@ import keras
 import Keras_Code.libraries.metrics as metr
 
 
+keras.utils.set_random_seed(812)
+
+
 class Regression():
 
     def __init__(self):

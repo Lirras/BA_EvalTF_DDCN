@@ -10,6 +10,9 @@ import Keras_Code.libraries.plotting as plot
 import Keras_Code.libraries.keras_data_loader as dat_loader
 
 
+keras.utils.set_random_seed(812)
+
+
 def regression_one():
     krl.clear()
     # a, b, c, d = dat_loader.boston_loader()
@@ -47,39 +50,84 @@ def regression_one():
 
 def regression_two():
     krl.clear()
-    # a, b, c, d = dat_loader.boston_loader()
-    e, f, g, h, = dat_loader.california_loader()
-    epochs = 25
+    a, b, c, d, sts_tr, sts_lb = dat_loader.boston_loader()
+    e, f, g, h, tts_tr, tts_lb = dat_loader.california_loader()
+    epochs = 10
     batch_size = 16
     name = 'regression_two'
+    test_ls = []
     z1 = time.perf_counter()
     lr, optim = krl.lr_optim_reg()
     model = keras.Sequential([keras.Input(shape=(3,))])
     model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
     model.add(keras.layers.Dense(units=128, activation='relu'))
-    df_0 = krl.predict(model, e, f, g, h, lr, epochs, batch_size)
+    df_0, pred = krl.predict(model, a, b, c, d, lr, epochs, batch_size, tts_tr)
+    test_ls.append(krl.build_mae_test(pred, tts_lb))
     model.add(keras.layers.BatchNormalization())
-    df_1 = krl.predict(model, e, f, g, h, lr, epochs, batch_size)
+    df_1, pred = krl.predict(model, a, b, c, d, lr, epochs, batch_size, tts_tr)
+    test_ls.append(krl.build_mae_test(pred, tts_lb))
     model.add(keras.layers.Dense(units=256, activation='relu'))
-    df_2 = krl.predict(model, e, f, g, h, lr, epochs, batch_size)
+    df_2, pred = krl.predict(model, a, b, c, d, lr, epochs, batch_size, tts_tr)
+    test_ls.append(krl.build_mae_test(pred, tts_lb))
     model.add(keras.layers.Dropout(0.5))
-    df_3 = krl.predict(model, e, f, g, h, lr, epochs, batch_size)
+    df_3, pred = krl.predict(model, a, b, c, d, lr, epochs, batch_size, tts_tr)
+    test_ls.append(krl.build_mae_test(pred, tts_lb))
 
     model.add(keras.layers.Dense(units=512, activation='relu'))
-    df_4 = krl.predict(model, e, f, g, h, lr, epochs, batch_size)
+    df_4, pred = krl.predict(model, e, f, g, h, lr, epochs, batch_size, tts_tr)
+    test_ls.append(krl.build_mae_test(pred, tts_lb))
     model.add(keras.layers.BatchNormalization())  # What happened here?
-    df_5 = krl.predict(model, e, f, g, h, lr, epochs, batch_size)
+    df_5, pred = krl.predict(model, e, f, g, h, lr, epochs, batch_size, tts_tr)
+    test_ls.append(krl.build_mae_test(pred, tts_lb))
     model.add(keras.layers.Dense(units=1024, activation='relu'))
-    df_6 = krl.predict(model, e, f, g, h, lr, epochs, batch_size)
+    df_6, pred = krl.predict(model, e, f, g, h, lr, epochs, batch_size, tts_tr)
+    test_ls.append(krl.build_mae_test(pred, tts_lb))
     model.add(keras.layers.Dropout(0.5))
     model.add(keras.layers.Dense(units=1, activation='linear'))
     hist = model.fit(e, f, batch_size=batch_size, epochs=epochs, validation_data=(g, h), callbacks=[lr])
+    test_ls.append(krl.build_mae_test(model.predict(tts_tr), tts_lb))
 
     z2 = time.perf_counter()
     df_7 = pandas.DataFrame.from_dict(hist.history)
 
     df = plot.add_epoch_counter_to_df(pandas.concat([df_0, df_1, df_2, df_3, df_4, df_5, df_6, df_7]))
     plot.multiple_plots(df, epochs, len(e), round(z2-z1), name)
+    plot.regr_test_plot(plot.add_epoch_counter_to_df(pandas.DataFrame({'mae': test_ls})), epochs, len(e), round(z2-z1), name)
+    model.summary()
+
+
+def regression_two_complete():
+    krl.clear()
+    # a, b, c, d, sts_tr, sts_lb = dat_loader.boston_loader()
+    e, f, g, h, tts_tr, tts_lb = dat_loader.california_loader()
+    epochs = 10
+    batch_size = 16
+    name = 'regression_two'
+    test_ls = []
+    z1 = time.perf_counter()
+    lr, optim = krl.lr_optim_reg()
+    model = keras.Sequential([keras.Input(shape=(3,)),
+                              keras.layers.Dense(units=128, activation='relu'),
+                              keras.layers.BatchNormalization(),
+                              keras.layers.Dense(units=256, activation='relu'),
+                              keras.layers.Dropout(0.5),
+                              keras.layers.Dense(units=512, activation='relu'),
+                              keras.layers.BatchNormalization(),
+                              keras.layers.Dense(units=1024, activation='relu'),
+                              keras.layers.Dropout(0.5),
+                              keras.layers.Dense(units=1, activation='linear')
+                              ])
+    model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
+
+    hist = model.fit(e, f, batch_size=batch_size, epochs=80, validation_data=(g, h), callbacks=[lr])
+    test_ls.append(krl.build_mae_test(model.predict(tts_tr), tts_lb))
+
+    z2 = time.perf_counter()
+    df_7 = pandas.DataFrame.from_dict(hist.history)
+
+    df = plot.add_epoch_counter_to_df(pandas.concat([df_7]))
+    plot.multiple_plots(df, epochs, len(e), round(z2-z1), name)
+    plot.regr_test_plot(plot.add_epoch_counter_to_df(pandas.DataFrame({'mae': test_ls})), epochs, len(e), round(z2-z1), name)
     model.summary()
 
 
@@ -211,6 +259,8 @@ class model_01(keras.Sequential):
 
 # late_idea()
 # dcr()
-direct_cascade_reg()
+# direct_cascade_reg()
+# regression_one()
+
 regression_two()
-regression_one()
+# regression_two_complete()

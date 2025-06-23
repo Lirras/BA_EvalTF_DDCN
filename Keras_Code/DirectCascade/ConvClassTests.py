@@ -49,7 +49,7 @@ def OneDLilConv():
     x += 10
 
     # Source Networks
-    for i in range(9):
+    for i in range(1):
         print(i)
         model = class_units.OneDLilConv()
         model.initialize((x, 1))
@@ -77,7 +77,7 @@ def OneDLilConv():
         x += 10
 
     # Target Networks
-    for i in range(10):
+    for i in range(2):
         print(i)
         model = class_units.OneDLilConv()
         model.initialize((x, 1))
@@ -143,7 +143,7 @@ def lil_conv():
     x = 11
 
     # Source
-    for i in range(9):
+    for i in range(0):
         print(i)
         model = class_units.LittleConv()
         model.initialize((32, 32, x))
@@ -170,7 +170,7 @@ def lil_conv():
         x += 10
 
     # Target
-    for i in range(10):  # Why is the amount of iterations insignificant?
+    for i in range(3):  # Why is the amount of iterations insignificant?
         print(i)
         model = class_units.LittleConv()
         model.initialize((32, 32, x))
@@ -193,5 +193,5 @@ def lil_conv():
     print(f'{z2 - z1:0.2f} sec')
 
 
-# OneDLilConv()
-lil_conv()
+OneDLilConv()
+# lil_conv()

@@ -28,16 +28,18 @@ def freezing(model, layer):
     #     layer.trainable = False
 
 
-def predict_train(model, train_dat, train_lb, val_dat, val_lb, lr, freeze, epochs):
+def predict_train(model, train_dat, train_lb, val_dat, val_lb, lr, freeze, epochs, test_data):
 
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(10, activation='softmax'))
 
-    history = model.fit(train_dat, train_lb, batch_size=128, epochs=epochs, validation_data=(val_dat, val_lb), callbacks=[lr])
+    history = model.fit(train_dat, train_lb, batch_size=128, epochs=epochs, validation_data=(val_dat, val_lb))  # , callbacks=[lr])
     freezing(model, freeze)
+    pred = model.predict(test_data)
+
     model.pop()
     model.pop()
-    return pandas.DataFrame.from_dict(history.history)
+    return pandas.DataFrame.from_dict(history.history), pred
 
 
 def post_flatten(model, a, b, c, d, lr, freeze, epochs):

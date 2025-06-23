@@ -39,11 +39,11 @@ def svhn_loader():
     train_labels = lb.fit_transform(train_labels)
     test_labels = lb.fit_transform(test_labels)
 
-    X_train, xval, y_train, yval = train_test_split(train_img, train_labels, test_size=0.99, random_state=22)
-    x, X_val, y, y_val = train_test_split(train_img, train_labels, test_size=0.01, random_state=22)
+    X_train, xval, y_train, yval = train_test_split(train_img, train_labels, test_size=0.99, random_state=22)  # 0.99/0.3
+    x, X_val, y, y_val = train_test_split(train_img, train_labels, test_size=0.01, random_state=22)  # 0.01/0.7
 
     # test Dataset reduction
-    test_img, bin_one, test_labels, bin_two = train_test_split(test_img, test_labels, test_size=0.99, random_state=22)
+    # test_img, bin_one, test_labels, bin_two = train_test_split(test_img, test_labels, test_size=0.99, random_state=22)  # 0.99
     # print(X_train.shape)
     # print(y_train.shape)
 
@@ -94,11 +94,15 @@ def mnist_loader():
     val_dat = np.expand_dims(val_dat, -1)
     test_dat = np.expand_dims(test_dat, -1)
 
-    reduction = True
+    reduction = False
 
     if reduction is True:
-        train_dat, bin1, train_lb, binlb1 = train_test_split(train_dat, train_lb, test_size=0.99,random_state=22)
+        train_dat, bin1, train_lb, binlb1 = train_test_split(train_dat, train_lb, test_size=0.99, random_state=22)
         val_dat, bin2, val_lb, binlb2 = train_test_split(val_dat, val_lb, test_size=0.99, random_state=22)
+
+    # 5 K-Fold, dann mehrmals laufen lassen (mit unterschiedlichem State) und das dann zusammen plotten (mean, std)
+    # sklearn.Kfold(Train, Test) und dann iterieren
+    # Alles mal in einem Plot speichern
 
     print("train_dat shape:", train_dat.shape)
     print(train_dat.shape[0], "train samples")

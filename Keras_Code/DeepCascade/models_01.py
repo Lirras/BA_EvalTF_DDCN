@@ -6,14 +6,18 @@ import Keras_Code.libraries.keras_cascade_lib as kcl
 import Keras_Code.libraries.plotting as plot
 
 
+keras.utils.set_random_seed(812)
+
+
 def cascade_network():
 
     kcl.clear()
     z1 = time.perf_counter()
     name = 'Conv_MaxPool'
+    test_ls = []
 
-    # a, b, c, d = dat_loader.mnist_loader()
-    e, f, g, h = dat_loader.svhn_loader()
+    a, b, c, d, sts_tr, sts_lb = dat_loader.mnist_loader()
+    e, f, g, h, tts_tr, tts_lb = dat_loader.svhn_loader()
     epochs = 10
 
     lr, optim = kcl.lr_optim()
@@ -30,26 +34,33 @@ def cascade_network():
     # maxPool2D: 93%/71.9%
 
     model.add(keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"))
-    df_1 = kcl.predict_train(model, e, f, g, h, lr, 0, 1)
+    df_1, pred = kcl.predict_train(model, a, b, c, d, lr, 0, 1, tts_tr)
+    test_ls.append(plot.preds_for_plots(pred, tts_lb))
 
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    df_2 = kcl.predict_train(model, e, f, g, h, lr, 1, epochs)
+    df_2, pred = kcl.predict_train(model, a, b, c, d, lr, 1, epochs, tts_tr)
+    test_ls.append(plot.preds_for_plots(pred, tts_lb))
 
     model.add(keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"))
-    df_3 = kcl.predict_train(model, e, f, g, h, lr, 2, epochs)
+    df_3, pred = kcl.predict_train(model, e, f, g, h, lr, 2, epochs, tts_tr)
+    test_ls.append(plot.preds_for_plots(pred, tts_lb))
 
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    df_4 = kcl.predict_train(model, e, f, g, h, lr, 3, epochs)
+    df_4, pred = kcl.predict_train(model, e, f, g, h, lr, 3, epochs, tts_tr)
+    test_ls.append(plot.preds_for_plots(pred, tts_lb))
 
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(10, 'softmax'))
     history = model.fit(e, f, batch_size=128, epochs=epochs, validation_data=(g, h), callbacks=[lr])
+    test_ls.append(plot.preds_for_plots(model.predict(tts_tr), tts_lb))
+
     df_5 = pandas.DataFrame.from_dict(history.history)
 
     z2 = time.perf_counter()
 
     df = pandas.concat([df_1, df_2, df_3, df_4, df_5])
     df = plot.add_epoch_counter_to_df(df)
+    plot.class_networks(plot.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls})), epochs, len(e), round(z2-z1), name)
     plot.class_all(df, epochs, len(e), round(z2-z1), name)
 
     model.summary()
@@ -102,5 +113,43 @@ def schedule():
     model.summary()
 
 
+def convmaxpool_complete():
+    kcl.clear()
+    z1 = time.perf_counter()
+    name = 'Conv_MaxPool'
+    test_ls = []
+
+    # a, b, c, d, sts_tr, sts_lb = dat_loader.mnist_loader()
+    e, f, g, h, tts_tr, tts_lb = dat_loader.svhn_loader()
+    epochs = 10
+
+    lr, optim = kcl.lr_optim()
+    model = keras.Sequential([keras.Input(shape=(32, 32, 1)),
+                              keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
+                              keras.layers.MaxPooling2D(pool_size=(2, 2)),
+                              keras.layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
+                              keras.layers.MaxPooling2D(pool_size=(2, 2)),
+                              keras.layers.Flatten(),
+                              keras.layers.Dense(10, 'softmax')
+                              ])
+    model.compile(optimizer=optim, loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
+
+    history = model.fit(e, f, batch_size=128, epochs=40, validation_data=(g, h))  # , callbacks=[lr])
+    test_ls.append(plot.preds_for_plots(model.predict(tts_tr), tts_lb))
+
+    df_5 = pandas.DataFrame.from_dict(history.history)
+
+    z2 = time.perf_counter()
+
+    df = pandas.concat([df_5])
+    df = plot.add_epoch_counter_to_df(df)
+    plot.class_networks(plot.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls})), epochs, len(e),
+                        round(z2 - z1), name)
+    plot.class_all(df, epochs, len(e), round(z2 - z1), name)
+
+    model.summary()
+
+
+# convmaxpool_complete()
 cascade_network()
-schedule()
+# schedule()

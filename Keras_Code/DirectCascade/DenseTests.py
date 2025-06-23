@@ -12,7 +12,6 @@ import Keras_Code.libraries.keras_cascade_lib as kcl
 # todo: Ergebnisse vorher in ein Dokument hinetereinander, damit ich die nicht suchen brauch.
 
 # todo: Was wurde durchgeführt, wie und warum
-# todo: Setup aufschreiben
 
 
 def regression_test():
@@ -31,7 +30,7 @@ def regression_test():
     list_of_dfs = []
     test_plot = []
     model_1.initialize((x,))
-    hist = model_1.train(a, b, c, d, 5)
+    hist = model_1.train(a, b, c, d, 10)
     list_of_dfs.append(hist)
     # ls.append(pandas.DataFrame.from_dict(hist.history))
 
@@ -79,7 +78,7 @@ def regression_test():
         x += 1
 
     # california
-    for i in range(30):
+    for i in range(10):
         print(i)
         model = class_units.Regression()
         model.initialize((x,))
@@ -141,7 +140,7 @@ def classification_test():
     x += 10
 
     # MNIST Iterations:
-    for i in range(9):
+    for i in range(10):
         print(i)
         model_1 = class_units.Classification()
         model_1.initialize((x,))
