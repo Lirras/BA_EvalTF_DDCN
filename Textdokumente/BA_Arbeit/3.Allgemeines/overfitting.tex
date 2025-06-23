@@ -28,13 +28,12 @@ Weder auf dem Sourcedatensatz noch auf dem Targetdatensatz.
     \caption{\label{fig:regr2tf} TF bei Regression}
 \end{figure}
 
-Dieses Overfitting-Problem hat nur die Klassifikation. Dies muss an der Loss-Function, die für Klassifikation benutz wird, liegen. Also 
+Dieses Overfitting-Problem hat nur die Klassifikation. Dies muss an der Loss-Function, die für Klassifikation benutzt wird, liegen. Also 
 am CategoricalCrossEntropy. Dahinter ist folgende Formel: 
 
 \begin{equation}
-    CCE = -\frac{1}{M}*\sum_{k=1}^{K}\sum_{m=1}^{M}*y_m^k * \log(h_w(x_m, k))
+    CCE = -\frac{1}{M} \sum_{k=1}^{K}\sum_{m=1}^{M} y_m^k * \log(h_w(x_m, k))
 \end{equation} 
 
 Dabei ist M die Anzahl der Datensamples, K die Anzahl der Klassen, $y_m^k$ das Target label, x der Input und $h_w$ die 
-Gewichte \cite{rwcrossentropy}.
-
+Gewichte \cite{rwcrossentropy}. 

@@ -10,4 +10,35 @@ anderen Stellen in ähnlicher Form bereits vorkommen. Um diese Graphen zu kontro
 \url{https://github.com/Lirras/BA_EvalTF_DDCN/tree/main/Plots/ba_plots/timing}. 
 Es wird hier keine Early-Stopping Metrik genutzt. 
 
-Zuerst zu allen Klassifikationnetzen. 
+Hier nun die Tabelle mit allen Zeiten der Netze in einer vergleichbaren Variante: \newline
+
+\begin{table}[h!]
+    \begin{center}
+        \caption{Timingvergleich in Sekunden}
+        \label{tab:time}
+        \begin{tabular}{l|l|l|l}
+            \textbf{Netzwerk} & \textbf{Cascade TF} & \textbf{Cascade} & \textbf{Complete} \\
+            \hline
+            ConvMaxPool & 78 & 25 & 20 \\
+            RegressionTwo & 11 & 12 & 17 \\
+            1DConv & 207 & 34 \\
+            2DConv & 23 & 24 \\
+            ClassOneDense & 79 & 28 \\
+            OneLayer & 16 & 18
+        \end{tabular}
+    \end{center}
+\end{table}
+
+In Table 3.1 ist die Spalte Cascade TF, die Kaskadennetzwerke mit TF beeinhaltet. Die Spalte Cascade ist diejenige, in der die Netze nur auf dem 
+Targetdatensatz gelernt haben, aber Kaskadennetzwerke sind und die Spalte Complete sind die Lernzeiten der Netze, die weder TF machen noch 
+Kaskadennetzwerke sind, sondern dessen Layer vor dem Training bereits feststanden und komplett in einem auf dem Targetdatensatz gelernt wurden. 
+
+Auffällig ist, dass die Regressionsnetze keine große Zeitveränderung haben. Mitunter benötigt mit TF weniger Zeit als ohne, was daran liegt, dass 
+der Targetdatensatz der Regression ein wenig größer ist als der Sourcedatensatz. Beide sind allerdings mit etwas über 200 Datensamples sehr klein. 
+
+Ebenso brauchen alle Klassifikationsnetze länger mit TF als ohne, was daran liegt, dass sie zuerst auf dem Sourcedatensatz trainieren, welcher mit 
+48000 Trainingsdaten recht groß ausfällt, während die Anderen direkt auf dem kleinen Targetdatensatz, der mit 732 Datensamples klein ist, 
+trainieren. 
+
+% Ich müsste ein Netzwerk bauen, welches den gleichen Kram direkt macht, was die Direct Klassifkationsnetze machen. 
+% Anzahl Netzwerk = Anzahl Hidden Layer und dann gib ihm! 
