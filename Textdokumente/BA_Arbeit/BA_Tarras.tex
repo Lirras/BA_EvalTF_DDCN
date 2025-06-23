@@ -18,9 +18,7 @@
 \begin{document}
     \maketitle
     \tableofcontents
-    % Vollständige Struktur anlegen
-    % Einleitung
-    % Auch etwas über den Code schreiben (Methoden der Vorstellung (Bsp. Klassendiagram))
+
     \chapter{Einleitung}  % 1.Einleitung
     \section{Einführung}
     \input{1.Einleitung/einfuehrung.tex}
@@ -30,7 +28,7 @@
     \input{1.Einleitung/relatedwork.tex}
 
     \chapter{Methodik}  % 2.Methodik
-    \section{Transferlernen}
+    \section{Transferlernen}  % Irgendwo hier hin schreiben, dass es ohne Normalisierung ist!
     \input{2.Methodik/transferlernen.tex}
     \section{Kaskadierung}
     \input{2.Methodik/cascade.tex}
@@ -50,9 +48,12 @@
     \chapter{Allgemeine Resultate}  % 3.Allgemeines
     \section{ConvMaxPool}
     \input{3.Allgemeines/convmaxpool.tex}
-    \subsection{Einbruch bei TF}
-    \subsection{Wenig Epochen für Stabilisierung}
+    \subsection{Veränderungen bei TF}
+    \input{3.Allgemeines/einbruch.tex}
+    % \subsection{Stabilisierung}
+    % \input{3.Allgemeines/stabilisierung.tex}
     \subsection{Overfitting auf Sourcedatensatz}
+    \input{3.Allgemeines/overfitting.tex}
     \section{Zeitnahme}
 
     \chapter{Klassifikation}  % 4.Klassifikation
@@ -73,16 +74,12 @@
     \subsection{Wenig Daten}
     \subsection{Viele Daten}
     \section{Early Stopping}
-    % Diskussion
-    % Schreibe alles auf, was du gelernt hast: Das ist dann die Diskussion -> Wie kommt man dahin, was braucht man dafür?
-    % Struktur -> Steil
-    % Eine Liste aller Experimente, die relevant sind, die ich gemacht habe. -> Heiko (Und KFOLD-Cross bei wichtigen Durchführen)
-    % Achsenbeschriftung verbessern (Einheit + Größe)
     
     \chapter{Diskussion}  % 6.Diskussion
     \section{Erkenntnisse}
     \input{6.Diskussion/erkenntnisse.tex}
     \section{Ausblick}
     \section{Fazit}
+
     \printbibliography
 \end{document}
