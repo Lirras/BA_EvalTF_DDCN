@@ -3,12 +3,16 @@ Diese wird in jedem Plot angezeigt. Sie ist generell stark abhängig davon, wiev
 wieviele maximale Epochen erlaubt sind. Deshalb werden hier jeweils gleich viele Datensamples für die Klassifikationsnetze und 
 Regressionsnetze verwendet, sowie eine gleiche Gesamtepochenanzahl. 
 
-Dazu wird jedes Mal der kleinste Targetdatensatz und der größte Sourcedatensatz genutzt, bis auf das 2DConv-Netzwerk. Jedes Klassifikationsnetz 
+Dazu wird jedes Mal der kleinste Targetdatensatz und der größte Sourcedatensatz genutzt, bis auf das 2DConv-Netzwerk, wenn TF verwendet wird. 
+Solange nicht TF verwendet wird, wird nur der kleinste Targetdatensatz genommen. Jedes Klassifikationsnetz 
 wird auf eine Gesamtanzahl von 40 Epochen trainiert. Wenn TF gemacht wird, dann nach 20 Epochen. Bei Regressionsnetzen wird auf 80 Epochen 
-trainiert. TF wird nach 30 Epochen gemacht. Tatsächliche Graphen werden hier nicht verwendet werden, da es zuviele sind und die meisten an 
+trainiert. TF wird nach 30 Epochen gemacht. Tatsächliche Graphen werden hier nicht verwendet, da es zuviele sind und die meisten an 
 anderen Stellen in ähnlicher Form bereits vorkommen. Um diese Graphen zu kontrollieren, schaut bitte auf das GitHub Repo unter 
 \url{https://github.com/Lirras/BA_EvalTF_DDCN/tree/main/Plots/ba_plots/timing}. 
 Es wird hier keine Early-Stopping Metrik genutzt. 
+
+Dabei werden alle Klassifikationsnetze mit denselben Inputdaten gespeist, ebenso wie alle Regressionsnetze zur Vergleichbarkeit untereinander. 
+Die jeweiligen Netzversion zwischen Cascade TF, Cascade und Complete haben dieselben Layer, sowie diegleiche Anzahl. 
 
 Hier nun die Tabelle mit allen Zeiten der Netze in einer vergleichbaren Variante: \newline
 
@@ -20,11 +24,11 @@ Hier nun die Tabelle mit allen Zeiten der Netze in einer vergleichbaren Variante
             \textbf{Netzwerk} & \textbf{Cascade TF} & \textbf{Cascade} & \textbf{Complete} \\
             \hline
             ConvMaxPool & 78 & 25 & 20 \\
+            1DConv & 207 & 34 & 30 \\
+            2DConv & 23 & 24 & 40 \\
+            ClassOneDense & 79 & 28 & 13 \\
             RegressionTwo & 11 & 12 & 17 \\
-            1DConv & 207 & 34 \\
-            2DConv & 23 & 24 \\
-            ClassOneDense & 79 & 28 \\
-            OneLayer & 16 & 18
+            OneLayer & 16 & 18 & 11
         \end{tabular}
     \end{center}
 \end{table}
@@ -40,5 +44,7 @@ Ebenso brauchen alle Klassifikationsnetze länger mit TF als ohne, was daran lie
 48000 Trainingsdaten recht groß ausfällt, während die Anderen direkt auf dem kleinen Targetdatensatz, der mit 732 Datensamples klein ist, 
 trainieren. 
 
-% Ich müsste ein Netzwerk bauen, welches den gleichen Kram direkt macht, was die Direct Klassifkationsnetze machen. 
-% Anzahl Netzwerk = Anzahl Hidden Layer und dann gib ihm! 
+Da Cascade TF mit dem Sourcedatensatz ist und die anderen Netze nur auf dem Targetdatensatz arbeiten sind diese meist kürzer. Allerdings 
+benötigen die Complete Netzwerk, die ohne Kaskadierung sind, noch weniger Zeit. Dies wird an der Implementierung der Netze liegen, da bei jedem 
+Kaskadennetzwerk das Outputlayer in jeder Kaskade mit berechnet wird, während bei den Complete Netzwerken nur ein einziges Outputlayer existiert. 
+Des Weiteren werden keine extra Predictions und keine Berechnung der Augmented Vectors gemacht. 
