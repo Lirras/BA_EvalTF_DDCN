@@ -2,32 +2,32 @@ import time
 import pandas
 import Keras_Code.libraries.keras_data_loader as dat_loader
 import Keras_Code.libraries.keras_cascade_lib as kcl
-import class_units
+import Keras_Code.DirectCascade.class_units as cls
 import Keras_Code.libraries.plotting as pltt
 
 
-def OneDLilConv():
+def OneDLilConv(percentage):
     kcl.clear()
     z1 = time.perf_counter()
     epochs = 10
     name = 'OneDLilConv'
     a, b, c, d, test_dat_mnist, test_lab_mnist = dat_loader.mnist_loader()
-    e, f, g, h, test_dat_svhn, test_lab_svhn = dat_loader.svhn_loader()
+    e, f, g, h, test_dat_svhn, test_lab_svhn = dat_loader.svhn_loader(percentage)
     a = a.reshape((len(a), 1024, 1))
     c = c.reshape((len(c), 1024, 1))
     e = e.reshape((len(e), 1024, 1))
     g = g.reshape((len(g), 1024, 1))
     # test_dat_mnist = test_dat_mnist.reshape((len(test_dat_mnist), 1024, 1))
     test_dat_svhn = test_dat_svhn.reshape((len(test_dat_svhn), 1024, 1))
-    # ls = []
+    ls = []
     list_of_dfs = []
     x = 1024
 
-    model_1 = class_units.OneDLilConv()
+    model_1 = cls.OneDLilConv()
     model_1.initialize((x, 1))
     hist = model_1.train(a, b, c, d, epochs)
-    list_of_dfs.append(hist)
-    # ls.append(pandas.DataFrame.from_dict(hist.history))
+    # list_of_dfs.append(hist)
+    ls.append(pandas.DataFrame.from_dict(hist.history))
 
     # Source Data
     mpred = model_1.pred(a)
@@ -51,11 +51,11 @@ def OneDLilConv():
     # Source Networks
     for i in range(1):
         print(i)
-        model = class_units.OneDLilConv()
+        model = cls.OneDLilConv()
         model.initialize((x, 1))
         hist = model.train(maugmented_vector, b, mval_aug_vec, d, epochs)
-        list_of_dfs.append(hist)
-        # ls.append(pandas.DataFrame.from_dict(hist.history))
+        # list_of_dfs.append(hist)
+        ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # Source Data
         mpred = model.pred(maugmented_vector)
@@ -79,11 +79,11 @@ def OneDLilConv():
     # Target Networks
     for i in range(2):
         print(i)
-        model = class_units.OneDLilConv()
+        model = cls.OneDLilConv()
         model.initialize((x, 1))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
-        list_of_dfs.append(hist)
-        # ls.append(pandas.DataFrame.from_dict(hist.history))
+        # list_of_dfs.append(hist)
+        ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # Target Data
         pred = model.pred(augmented_vector)
@@ -99,9 +99,12 @@ def OneDLilConv():
         x += 10
 
     z2 = time.perf_counter()
-    pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot})), 2, len(e), round(z2 - z1), name)
-    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2 - z1), name)
+    # pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot})), 2, len(e), round(z2 - z1), name)
+    # pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2 - z1), name)
     print(f'{z2 - z1:0.2f} sec')
+    df_ts = pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot}))
+    df_tr = pltt.add_epoch_counter_to_df(pandas.concat(ls))
+    return df_tr, df_ts, len(e)
 
 
 # Beware! This one needs a very big RAM!
@@ -117,7 +120,7 @@ def lil_conv():
     # ls = []
     list_of_dfs = []
     test_plot_list = []
-    model_1 = class_units.LittleConv()
+    model_1 = cls.LittleConv()
     model_1.initialize((32, 32, 1))
     hist = model_1.train(a, b, c, d, epochs)
     list_of_dfs.append(hist)
@@ -145,7 +148,7 @@ def lil_conv():
     # Source
     for i in range(0):
         print(i)
-        model = class_units.LittleConv()
+        model = cls.LittleConv()
         model.initialize((32, 32, x))
         hist = model.train(maugmented_vector, b, mval_aug_vec, d, epochs)
         list_of_dfs.append(hist)
@@ -172,7 +175,7 @@ def lil_conv():
     # Target
     for i in range(3):  # Why is the amount of iterations insignificant?
         print(i)
-        model = class_units.LittleConv()
+        model = cls.LittleConv()
         model.initialize((32, 32, x))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
         list_of_dfs.append(hist)
@@ -193,5 +196,5 @@ def lil_conv():
     print(f'{z2 - z1:0.2f} sec')
 
 
-OneDLilConv()
+# OneDLilConv()
 # lil_conv()

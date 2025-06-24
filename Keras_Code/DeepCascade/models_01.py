@@ -9,7 +9,7 @@ import Keras_Code.libraries.plotting as plot
 keras.utils.set_random_seed(812)
 
 
-def cascade_network():
+def cascade_network(percentage):
 
     kcl.clear()
     z1 = time.perf_counter()
@@ -17,7 +17,7 @@ def cascade_network():
     test_ls = []
 
     a, b, c, d, sts_tr, sts_lb = dat_loader.mnist_loader()
-    e, f, g, h, tts_tr, tts_lb = dat_loader.svhn_loader()
+    e, f, g, h, tts_tr, tts_lb = dat_loader.svhn_loader(percentage)
     epochs = 10
 
     lr, optim = kcl.lr_optim()
@@ -34,7 +34,7 @@ def cascade_network():
     # maxPool2D: 93%/71.9%
 
     model.add(keras.layers.Conv2D(32, kernel_size=(3, 3), activation="relu"))
-    df_1, pred = kcl.predict_train(model, a, b, c, d, lr, 0, 1, tts_tr)
+    df_1, pred = kcl.predict_train(model, a, b, c, d, lr, 0, epochs, tts_tr)
     test_ls.append(plot.preds_for_plots(pred, tts_lb))
 
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
@@ -46,8 +46,8 @@ def cascade_network():
     test_ls.append(plot.preds_for_plots(pred, tts_lb))
 
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    df_4, pred = kcl.predict_train(model, e, f, g, h, lr, 3, epochs, tts_tr)
-    test_ls.append(plot.preds_for_plots(pred, tts_lb))
+    # df_4, pred = kcl.predict_train(model, e, f, g, h, lr, 3, epochs, tts_tr)
+    # test_ls.append(plot.preds_for_plots(pred, tts_lb))
 
     model.add(keras.layers.Flatten())
     model.add(keras.layers.Dense(10, 'softmax'))
@@ -58,12 +58,14 @@ def cascade_network():
 
     z2 = time.perf_counter()
 
-    df = pandas.concat([df_1, df_2, df_3, df_4, df_5])
+    df = pandas.concat([df_1, df_2, df_3, df_5])  # df_4 were deleted
     df = plot.add_epoch_counter_to_df(df)
-    plot.class_networks(plot.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls})), epochs, len(e), round(z2-z1), name)
-    plot.class_all(df, epochs, len(e), round(z2-z1), name)
+    df_x = plot.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls}))
+    # plot.class_networks(plot.add_epoch_counter_to_df(df_x), epochs, len(e), round(z2-z1), name)
+    # plot.class_all(df, epochs, len(e), round(z2-z1), name)
 
-    model.summary()
+    # model.summary()
+    return df, df_x, len(e)
 
 
 def schedule():
@@ -151,5 +153,5 @@ def convmaxpool_complete():
 
 
 # convmaxpool_complete()
-cascade_network()
+# cascade_network()
 # schedule()

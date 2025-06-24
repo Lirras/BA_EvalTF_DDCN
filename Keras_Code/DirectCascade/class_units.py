@@ -22,10 +22,10 @@ class Regression():
 
     def train(self, train, target, val_tr, val_lb, epochs):
         # return metr.kfoldcross(self.network, train, target, epochs)
-        return metr.mae_met(self.network, train, target, val_tr, val_lb, epochs)
+        # return metr.mae_met(self.network, train, target, val_tr, val_lb, epochs)
         # return metr.loss_met(self.network, train, target, val_tr, val_lb, epochs)
-        # hist = self.network.fit(train, target, batch_size=16, epochs=epochs, validation_data=(val_tr, val_lb))
-        # return hist
+        hist = self.network.fit(train, target, batch_size=16, epochs=epochs, validation_data=(val_tr, val_lb))
+        return hist
 
     def pred(self, train):
         output = self.network.predict(train)
@@ -47,10 +47,10 @@ class Classification():
                              loss=keras.losses.CategoricalCrossentropy, metrics=['accuracy'])
 
     def train(self, train, target, val_tr, val_lb, epochs):
-        return metr.acc_met(self.network, train, target, val_tr, val_lb, epochs)
+        # return metr.acc_met(self.network, train, target, val_tr, val_lb, epochs)
         # return metr.loss_met(self.network, train, target, val_tr, val_lb, epochs)
-        # hist = self.network.fit(train, target, batch_size=128, epochs=epochs, validation_data=(val_tr, val_lb))
-        # return hist
+        hist = self.network.fit(train, target, batch_size=128, epochs=epochs, validation_data=(val_tr, val_lb))
+        return hist
 
     def pred(self, train):
         output = self.network.predict(train)
@@ -72,9 +72,9 @@ class LittleConv():
                              loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
 
     def train(self, train, label, val_tr, val_lb, epochs):
-        return metr.acc_met(self.network, train, label, val_tr, val_lb, epochs)
+        # return metr.acc_met(self.network, train, label, val_tr, val_lb, epochs)
         # return metr.loss_met(self.network, train, label, val_tr, val_lb, epochs)
-        # return self.network.fit(train, label, batch_size=128, epochs=epochs, validation_data=(val_tr, val_lb))
+        return self.network.fit(train, label, batch_size=128, epochs=epochs, validation_data=(val_tr, val_lb))
 
     def pred(self, train):
         return self.network.predict(train)
@@ -95,9 +95,9 @@ class OneDLilConv():
                              loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
 
     def train(self, train, label, val_tr, val_lb, epochs):
-        return metr.acc_met(self.network, train, label, val_tr, val_lb, epochs)
+        # return metr.acc_met(self.network, train, label, val_tr, val_lb, epochs)
         # return metr.loss_met(self.network, train, label, val_tr, val_lb, epochs)
-        # return self.network.fit(train, label, batch_size=128, epochs=epochs, validation_data=(val_tr, val_lb))
+        return self.network.fit(train, label, batch_size=128, epochs=epochs, validation_data=(val_tr, val_lb))
 
     def pred(self, train):
         return self.network.predict(train)

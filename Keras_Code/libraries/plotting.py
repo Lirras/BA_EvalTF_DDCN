@@ -213,3 +213,42 @@ def class_kfold(df, df_2, epochs, samples, time, name):
     plt.text(epochs, df['mean'].mean(), tex)
     plt.legend()
     plt.show()
+
+
+def great_data_class_train(tr_dfs, name, samples, timing):
+    plt.plot(tr_dfs[0]['epochs'], tr_dfs[0]['Accuracy'], 'y', label=str(samples[0]) + ' ' + str(timing[0]) + 's')
+    plt.plot(tr_dfs[1]['epochs'], tr_dfs[1]['Accuracy'], 'g', label=str(samples[1]) + ' ' + str(timing[1]) + 's')
+    plt.plot(tr_dfs[2]['epochs'], tr_dfs[2]['Accuracy'], 'm', label=str(samples[2]) + ' ' + str(timing[2]) + 's')
+    plt.plot(tr_dfs[3]['epochs'], tr_dfs[3]['Accuracy'], 'b', label=str(samples[3]) + ' ' + str(timing[3]) + 's')
+    plt.plot(tr_dfs[4]['epochs'], tr_dfs[4]['Accuracy'], 'r', label=str(samples[4]) + ' ' + str(timing[4]) + 's')
+    plt.title(name + ' Train')
+    plt.xlabel('Epochs')
+    plt.ylabel('ACC in clean')
+    plt.legend()
+    plt.show()
+
+
+def great_data_class_train_small(tr_dfs, name, samples, timing):
+    plt.plot(tr_dfs[0]['epochs'], tr_dfs[0]['accuracy'], 'y', label=str(samples[0]) + ' ' + str(timing[0]) + 's')
+    plt.plot(tr_dfs[1]['epochs'], tr_dfs[1]['accuracy'], 'g', label=str(samples[1]) + ' ' + str(timing[1]) + 's')
+    plt.plot(tr_dfs[2]['epochs'], tr_dfs[2]['accuracy'], 'm', label=str(samples[2]) + ' ' + str(timing[2]) + 's')
+    plt.plot(tr_dfs[3]['epochs'], tr_dfs[3]['accuracy'], 'b', label=str(samples[3]) + ' ' + str(timing[3]) + 's')
+    plt.plot(tr_dfs[4]['epochs'], tr_dfs[4]['accuracy'], 'r', label=str(samples[4]) + ' ' + str(timing[4]) + 's')
+    plt.title(name + ' Train')
+    plt.xlabel('Epochs')
+    plt.ylabel('ACC in clean')
+    plt.legend()
+    plt.show()
+
+
+def great_data_class_test(ts_dfs, name, samples, timing):
+    plt.plot(ts_dfs[0]['epochs'], ts_dfs[0]['accuracy'], 'y', label=str(samples[0]) + ' ' + str(timing[0]) + 's')
+    plt.plot(ts_dfs[1]['epochs'], ts_dfs[1]['accuracy'], 'g', label=str(samples[1]) + ' ' + str(timing[1]) + 's')
+    plt.plot(ts_dfs[2]['epochs'], ts_dfs[2]['accuracy'], 'm', label=str(samples[2]) + ' ' + str(timing[2]) + 's')
+    plt.plot(ts_dfs[3]['epochs'], ts_dfs[3]['accuracy'], 'b', label=str(samples[3]) + ' ' + str(timing[3]) + 's')
+    plt.plot(ts_dfs[4]['epochs'], ts_dfs[4]['accuracy'], 'r', label=str(samples[4]) + ' ' + str(timing[4]) + 's')
+    plt.title(name + ' Test')
+    plt.xlabel('Epochs')
+    plt.ylabel('ACC in clean')
+    plt.legend()
+    plt.show()

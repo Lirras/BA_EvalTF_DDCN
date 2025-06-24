@@ -8,7 +8,7 @@ from sklearn.datasets import load_digits
 NORM = False
 
 
-def svhn_loader():
+def svhn_loader(percentage):
 
     train, test = load()
     train_img = np.array(train['X'])
@@ -39,7 +39,8 @@ def svhn_loader():
     train_labels = lb.fit_transform(train_labels)
     test_labels = lb.fit_transform(test_labels)
 
-    X_train, xval, y_train, yval = train_test_split(train_img, train_labels, test_size=0.99, random_state=22)  # 0.99/0.3
+    # Very Less: 1%; Less: 30%; Middle: 50%; Much: 70%; Very Much: 99% of Trainingsdata
+    X_train, xval, y_train, yval = train_test_split(train_img, train_labels, test_size=percentage, random_state=22)  # 0.99/0.3
     x, X_val, y, y_val = train_test_split(train_img, train_labels, test_size=0.01, random_state=22)  # 0.01/0.7
 
     # test Dataset reduction
@@ -341,4 +342,4 @@ def digit_loader():
     print(label.shape)
 
 
-svhn_loader()
+# svhn_loader()
