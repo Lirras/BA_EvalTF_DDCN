@@ -181,3 +181,35 @@ def preds_for_plots(prediction, label):
     print(j)
     test_acc = j/len(prediction)
     return test_acc
+
+
+def regr_kfold(df, df_2, epochs, samples, time, name):
+    plt.plot(df['epochs'], df['mean'], 'r', label='Mean MAE')
+    plt.plot(df['epochs'], df['mean']+df_2['std'], 'y', label='Upper Deviation')
+    plt.plot(df['epochs'], df['mean']-df_2['std'], 'y', label='Lower Deviation')
+    plt.title(name)
+    plt.xlabel('Epochs')
+    plt.ylabel('MAE in 1.000$')
+    text_3 = ('Time: ' + str(time) + 's')
+    text_2 = ('Samples: ' + str(samples) + '\n')
+    text = ('Networks: ' + str(epochs) + '\n')
+    tex = text + text_2 + text_3
+    plt.text(epochs, df['mean'].mean(), tex)
+    plt.legend()
+    plt.show()
+
+
+def class_kfold(df, df_2, epochs, samples, time, name):
+    plt.plot(df['epochs'], df['mean'], 'r', label='Mean MAE')
+    plt.plot(df['epochs'], df['mean'] + df_2['std'], 'y', label='Upper Deviation')
+    plt.plot(df['epochs'], df['mean'] - df_2['std'], 'y', label='Lower Deviation')
+    plt.title(name)
+    plt.xlabel('Epochs')
+    plt.ylabel('ACC in clean')
+    text_3 = ('Time: ' + str(time) + 's')
+    text_2 = ('Samples: ' + str(samples) + '\n')
+    text = ('Networks: ' + str(epochs) + '\n')
+    tex = text + text_2 + text_3
+    plt.text(epochs, df['mean'].mean(), tex)
+    plt.legend()
+    plt.show()

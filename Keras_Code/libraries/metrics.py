@@ -1,4 +1,6 @@
 import pandas
+from sklearn.model_selection import cross_val_score
+import sklearn.metrics as skmet
 
 
 def acc_met(network, tr_dat, tr_lb, val_dat, val_lb, epochs):
@@ -46,3 +48,15 @@ def mae_met(network, tr_dat, tr_lb, val_dat, val_lb, epochs):
         if before_loss < val_mae:
             break
     return pandas.concat(list_of_dfs)
+
+
+def kfoldcross(network, tr_dat, tr_lab, epochs):
+    mean_ls = []
+    std_ls = []
+    for i in range(epochs):
+        out = cross_val_score(network, tr_dat, tr_lab, scoring=skmet.make_scorer(skmet.mean_squared_error), cv=5)
+        mean_ls.append(out.mean())
+        std_ls.append(out.std())
+    mean = pandas.DataFrame({'mae': mean_ls})
+    std = pandas.DataFrame({'std': std_ls})
+    return mean, std

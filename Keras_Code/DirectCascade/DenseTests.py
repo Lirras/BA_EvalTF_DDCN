@@ -15,6 +15,7 @@ import Keras_Code.libraries.keras_cascade_lib as kcl
 
 
 def regression_test():
+    kfold = False
     krl.clear()
     z1 = time.perf_counter()
     epochs = 10
@@ -28,9 +29,14 @@ def regression_test():
     x = 3
     # ls = []
     list_of_dfs = []
+    list_of_stds = []
     test_plot = []
     model_1.initialize((x,))
-    hist = model_1.train(a, b, c, d, 10)
+    if kfold is True:
+        hist, hist_2 = model_1.train(a, b, c, d, 10)
+        list_of_stds.append(hist_2)
+    else:
+        hist = model_1.train(a, b, c, d, 10)
     list_of_dfs.append(hist)
     # ls.append(pandas.DataFrame.from_dict(hist.history))
 
@@ -55,7 +61,11 @@ def regression_test():
         print(i)
         model = class_units.Regression()
         model.initialize((x,))
-        hist = model.train(bost_augmented_vector, b, bost_val_aug_vec, d, epochs)
+        if kfold is True:
+            hist, hist_2 = model.train(bost_augmented_vector, b, bost_val_aug_vec, d, epochs)
+            list_of_stds.append(hist_2)
+        else:
+            hist = model.train(bost_augmented_vector, b, bost_val_aug_vec, d, epochs)
         list_of_dfs.append(hist)
         # ls.append(pandas.DataFrame.from_dict(hist.history))
 
@@ -82,7 +92,11 @@ def regression_test():
         print(i)
         model = class_units.Regression()
         model.initialize((x,))
-        hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
+        if kfold is True:
+            hist, hist_2 = model.train(augmented_vector, f, val_aug_vec, h, epochs)
+            list_of_stds.append(hist_2)
+        else:
+            hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
         list_of_dfs.append(hist)
         # ls.append(pandas.DataFrame.from_dict(hist.history))
         pred = model.pred(augmented_vector)
@@ -96,13 +110,20 @@ def regression_test():
         x += 1
 
     z2 = time.perf_counter()
+
     pltt.regr_test_plot(pltt.add_epoch_counter_to_df(pandas.DataFrame({'mae': test_plot})), epochs, len(cali_test_data), round(z2-z1), name)
-    pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2-z1), name)
+    if kfold is True:
+        pltt.regr_kfold(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)),
+                        pltt.add_epoch_counter_to_df(pandas.concat(list_of_stds)), epochs, len(cali_test_data),
+                        round(z2-z1), name)
+    else:
+        pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2-z1), name)
     print(f'{z2 - z1:0.2f} sec')
 
 
 def classification_test():
     kcl.clear()
+    kfold = False
     z1 = time.perf_counter()
     epochs = 10
     name = 'Classification_one_Dense'
@@ -118,10 +139,15 @@ def classification_test():
     # ls = []
     list_of_dfs = []
     test_ls_plot = []
+    list_of_stds = []
 
     model_before = class_units.Classification()
     model_before.initialize((x,))
-    hist = model_before.train(a, b, c, d, epochs)
+    if kfold is True:
+        hist, hist_2 = model_before.train(a, b, c, d, epochs)
+        list_of_stds.append(hist_2)
+    else:
+        hist = model_before.train(a, b, c, d, epochs)
     list_of_dfs.append(hist)
     # ls.append(pandas.DataFrame.from_dict(hist.history))
     pred = model_before.pred(a)
@@ -190,5 +216,5 @@ def classification_test():
     print(f'{z2-z1:0.2f} sec')
 
 
-classification_test()
-# regression_test()
+# classification_test()
+regression_test()

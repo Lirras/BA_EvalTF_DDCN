@@ -21,6 +21,7 @@ class Regression():
                              loss=keras.losses.MeanSquaredError, metrics=['mae'])
 
     def train(self, train, target, val_tr, val_lb, epochs):
+        # return metr.kfoldcross(self.network, train, target, epochs)
         return metr.mae_met(self.network, train, target, val_tr, val_lb, epochs)
         # return metr.loss_met(self.network, train, target, val_tr, val_lb, epochs)
         # hist = self.network.fit(train, target, batch_size=16, epochs=epochs, validation_data=(val_tr, val_lb))

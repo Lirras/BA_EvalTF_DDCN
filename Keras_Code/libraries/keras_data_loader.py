@@ -339,3 +339,6 @@ def digit_loader():
     label = np.array(digits['target'])
     print(data.shape)
     print(label.shape)
+
+
+svhn_loader()
