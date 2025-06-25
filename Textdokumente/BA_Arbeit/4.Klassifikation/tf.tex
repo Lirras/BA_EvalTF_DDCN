@@ -19,3 +19,5 @@ extrem schlecht. Dies zeigt sich auch auf den Testdaten.
 
 In Figure 4.5 zeigt sich dasselbe Bild nur auf Basis von Linearlayern. Dies kann zwei Gründe haben: Entweder funktioniert das Kaskadieren nicht 
 oder es sind nicht genügend Targetdaten vorhanden. Letzteres wurde oben ausgetestet und lieferte zwar bessere, aber trotzdem nur mäßige Ergebnisse. 
+Das Rauschen in den Plots kommt hier daher, dass alle zehn Epochen ein neues Netzwerk angefangen wird zu lernen. Dies hat zwar das Wissen aller 
+vorherigen Netze im Input, aber nicht in der Art, dass die Gewichte direkt gleich gut sind. 

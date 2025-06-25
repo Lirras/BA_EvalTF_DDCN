@@ -25,7 +25,7 @@ def OneDLilConv(percentage):
 
     model_1 = cls.OneDLilConv()
     model_1.initialize((x, 1))
-    hist = model_1.train(a, b, c, d, epochs)
+    hist = model_1.train(e, f, g, h, epochs)
     # list_of_dfs.append(hist)
     ls.append(pandas.DataFrame.from_dict(hist.history))
 
@@ -49,7 +49,7 @@ def OneDLilConv(percentage):
     x += 10
 
     # Source Networks
-    for i in range(1):
+    for i in range(0):
         print(i)
         model = cls.OneDLilConv()
         model.initialize((x, 1))
@@ -77,7 +77,7 @@ def OneDLilConv(percentage):
         x += 10
 
     # Target Networks
-    for i in range(2):
+    for i in range(29):
         print(i)
         model = cls.OneDLilConv()
         model.initialize((x, 1))
@@ -99,12 +99,12 @@ def OneDLilConv(percentage):
         x += 10
 
     z2 = time.perf_counter()
-    # pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot})), 2, len(e), round(z2 - z1), name)
-    # pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2 - z1), name)
+    pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot})), 2, len(e), round(z2 - z1), name)
+    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2 - z1), name)
     print(f'{z2 - z1:0.2f} sec')
-    df_ts = pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot}))
-    df_tr = pltt.add_epoch_counter_to_df(pandas.concat(ls))
-    return df_tr, df_ts, len(e)
+    # df_ts = pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot}))
+    # df_tr = pltt.add_epoch_counter_to_df(pandas.concat(ls))
+    # return df_tr, df_ts, len(e)
 
 
 # Beware! This one needs a very big RAM!
@@ -114,17 +114,17 @@ def lil_conv():
     epochs = 10
     name = 'little_conv'
     a, b, c, d, test_dat_mnist, test_lb_mnist = dat_loader.mnist_loader()
-    e, f, g, h, test_dat_svhn, test_lb_svhn = dat_loader.svhn_loader()  # full: 1/less: 10/ Very less: More
+    e, f, g, h, test_dat_svhn, test_lb_svhn = dat_loader.svhn_loader(0.99)  # full: 1/less: 10/ Very less: More
     print(a.shape)
     print(c.shape)
-    # ls = []
+    ls = []
     list_of_dfs = []
     test_plot_list = []
     model_1 = cls.LittleConv()
     model_1.initialize((32, 32, 1))
     hist = model_1.train(a, b, c, d, epochs)
-    list_of_dfs.append(hist)
-    # ls.append(pandas.DataFrame.from_dict(hist.history))
+    # list_of_dfs.append(hist)
+    ls.append(pandas.DataFrame.from_dict(hist.history))
 
     # Source
     mpred = model_1.pred(a)
@@ -146,13 +146,13 @@ def lil_conv():
     x = 11
 
     # Source
-    for i in range(0):
+    for i in range(1):
         print(i)
         model = cls.LittleConv()
         model.initialize((32, 32, x))
         hist = model.train(maugmented_vector, b, mval_aug_vec, d, epochs)
-        list_of_dfs.append(hist)
-        # ls.append(pandas.DataFrame.from_dict(hist.history))
+        # list_of_dfs.append(hist)
+        ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # Source
         mpred = model.pred(maugmented_vector)
@@ -173,13 +173,13 @@ def lil_conv():
         x += 10
 
     # Target
-    for i in range(3):  # Why is the amount of iterations insignificant?
+    for i in range(2):  # Why is the amount of iterations insignificant?
         print(i)
         model = cls.LittleConv()
         model.initialize((32, 32, x))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
-        list_of_dfs.append(hist)
-        # ls.append(pandas.DataFrame.from_dict(hist.history))
+        # list_of_dfs.append(hist)
+        ls.append(pandas.DataFrame.from_dict(hist.history))
         pred = model.pred(augmented_vector)
         val_pred = model.pred(val_aug_vec)
 
@@ -191,10 +191,10 @@ def lil_conv():
     z2 = time.perf_counter()
 
     pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot_list})), epochs, len(e), round(z2-z1), name)
-    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2-z1), name)
+    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2-z1), name)
 
     print(f'{z2 - z1:0.2f} sec')
 
 
-# OneDLilConv()
+OneDLilConv(0.99)
 # lil_conv()

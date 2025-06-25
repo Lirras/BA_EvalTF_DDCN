@@ -71,8 +71,6 @@ def onedconv():
     pltt.great_data_class_test(ts_dfs, name, samples, timings)
 
 
-# todo Train after Youth
 cod()  # Small
-# todo: Train while Youth
-cmp()  # Big
-onedconv()  # Big
+# cmp()  # Big
+# onedconv()  # Big

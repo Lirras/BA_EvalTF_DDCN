@@ -40,7 +40,7 @@ def OneDConv():
     z1 = time.perf_counter()
     epochs = 10
     name = 'OneDLilConv'
-    e, f, g, h, test_dat_svhn, test_lab_svhn = dat_loader.svhn_loader()
+    e, f, g, h, test_dat_svhn, test_lab_svhn = dat_loader.svhn_loader(0.99)
     e = e.reshape((len(e), 1024, 1))
     g = g.reshape((len(g), 1024, 1))
     x = 1024
@@ -51,12 +51,44 @@ def OneDConv():
         keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
         keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
         keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+        keras.layers.Conv1D(32, kernel_size=3, padding='same', activation='relu'),
+
         keras.layers.Flatten(),
         keras.layers.Dense(units=10, activation='softmax')
     ])
     network.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-3),
                     loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
-    hist = network.fit(e, f, batch_size=128, epochs=40, validation_data=(g, h))
+    hist = network.fit(e, f, batch_size=128, epochs=300, validation_data=(g, h))
     z2 = time.perf_counter()
     pltt.class_all(pltt.add_epoch_counter_to_df(pandas.DataFrame.from_dict(hist.history)), epochs, len(e),
                    round(z2 - z1), name)
@@ -67,7 +99,7 @@ def ClassOneDense():
     z1 = time.perf_counter()
     epochs = 10
     name = 'Classification_one_Dense'
-    e, f, g, h, svhn_test, svhn_test_lab = dat_loader.svhn_loader()
+    e, f, g, h, svhn_test, svhn_test_lab = dat_loader.svhn_loader(0.99)
     x = 1024
     e = e.reshape(len(e), x)
     g = g.reshape(len(g), x)
@@ -78,12 +110,44 @@ def ClassOneDense():
         keras.layers.Dense(units=512, activation='relu'),
         keras.layers.Dense(units=512, activation='relu'),
         keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+        keras.layers.Dense(units=512, activation='relu'),
+
         keras.layers.Dense(units=10, activation='softmax')
     ])
     network.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-3),
                     loss=keras.losses.CategoricalCrossentropy, metrics=['accuracy'])
 
-    hist = network.fit(e, f, batch_size=128, epochs=40, validation_data=(g, h))
+    hist = network.fit(e, f, batch_size=128, epochs=300, validation_data=(g, h))
     z2 = time.perf_counter()
     pltt.class_all_sm(pltt.add_epoch_counter_to_df(pandas.DataFrame.from_dict(hist.history)), epochs, len(e),
                       round(z2 - z1), name)
@@ -118,11 +182,11 @@ def OneLayer():
                         round(z2 - z1), name)
 
 
-TwoDConv()
+# TwoDConv()
 print('first')
-OneDConv()
+OneDConv()  # 55min
 print('SEcond')
-ClassOneDense()
+ClassOneDense()  # 35min
 print('Third')
-OneLayer()
+# OneLayer()
 print('Fourth')

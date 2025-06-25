@@ -61,11 +61,11 @@ def cascade_network(percentage):
     df = pandas.concat([df_1, df_2, df_3, df_5])  # df_4 were deleted
     df = plot.add_epoch_counter_to_df(df)
     df_x = plot.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls}))
-    # plot.class_networks(plot.add_epoch_counter_to_df(df_x), epochs, len(e), round(z2-z1), name)
-    # plot.class_all(df, epochs, len(e), round(z2-z1), name)
+    plot.class_networks(df_x, epochs, len(e), round(z2-z1), name)
+    plot.class_all(df, epochs, len(e), round(z2-z1), name)
 
     # model.summary()
-    return df, df_x, len(e)
+    # return df, df_x, len(e)
 
 
 def schedule():
@@ -153,5 +153,5 @@ def convmaxpool_complete():
 
 
 # convmaxpool_complete()
-# cascade_network()
+cascade_network(0.3)
 # schedule()

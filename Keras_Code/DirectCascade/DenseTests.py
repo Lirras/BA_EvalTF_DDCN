@@ -147,7 +147,7 @@ def classification_test(percentage):
         hist, hist_2 = model_before.train(a, b, c, d, epochs)
         list_of_stds.append(hist_2)
     else:
-        hist = model_before.train(a, b, c, d, epochs)
+        hist = model_before.train(e, f, g, h, epochs)
     # list_of_dfs.append(hist)
     ls.append(pandas.DataFrame.from_dict(hist.history))
     pred = model_before.pred(a)
@@ -166,7 +166,7 @@ def classification_test(percentage):
     x += 10
 
     # MNIST Iterations:
-    for i in range(1):
+    for i in range(0):
         print(i)
         model_1 = cls.Classification()
         model_1.initialize((x,))
@@ -193,7 +193,7 @@ def classification_test(percentage):
         x += 10
 
     in_shape = len(e)
-    for i in range(2):
+    for i in range(29):
         print(i)
         model = cls.Classification()
         model.initialize((x,))
@@ -211,13 +211,13 @@ def classification_test(percentage):
         x += 10
 
     z2 = time.perf_counter()
-    # pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls_plot})), epochs, len(svhn_test), round(z2-z1), name)
-    # pltt.class_acc_only(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2-z1), name)  # ls instead of list_of_dfs for old use
+    pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls_plot})), epochs, len(svhn_test), round(z2-z1), name)
+    pltt.class_acc_only(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2-z1), name)  # ls instead of list_of_dfs for old use
     print(f'{z2-z1:0.2f} sec')
-    df_tr = pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls_plot}))
-    df_ts = pltt.add_epoch_counter_to_df(pandas.concat(ls))
-    return df_tr, df_ts, len(e)
+    # df_ts = pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_ls_plot}))
+    # df_tr = pltt.add_epoch_counter_to_df(pandas.concat(ls))
+    # return df_tr, df_ts, len(e)
 
 
-# classification_test()
+classification_test(0.99)
 # regression_test()
