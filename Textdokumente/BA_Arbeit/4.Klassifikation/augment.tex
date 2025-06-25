@@ -1,0 +1,41 @@
+Hier wird auf die Erstellung der Augmented Vectors der Direct Cascade Netzwerk für die Klassifikation eingegangen. Jedes der drei Netze hat 
+eine eigene Berechnung davon. Es wird zuerst das ClassOneDense-, dann das 1DConv- und zum Schluss das 2DConv-Netzwerk betrachtet. 
+
+Bei allen Netzwerken wird der Input des Netzwerkes und die Prediction gebraucht, um diesen Vector zu erstellen. Der Input ist entweder der 
+Datensatz selbst oder der vorherige Augmented Vector. Nur beim ersten Mal ist es der Datensatz, da danach der Augmented Vector existiert. 
+Der Augmented Vector wächst dabei bei jeder Iteration von einem neuen Netzwerk an, da darüber das Wissen aller vorherigen auf das neue 
+übertragen wird. 
+Die Prediction ist das Ergebnis, welches aus der Inferenz des fertig trainierten Netzwerkes kommt. Im folgenden bedeuten die Buchstaben N, W, 
+H und C Datensamples, Bildbreite, Bildhöhe und Channel. 
+
+Das ClassOneDense-Netzwerk hat als Input den Datensatz mit folgendem Shape: (N, W*H). 
+Die Prediction hat immer den Shape (N, 10). 
+Diese beiden Sachen werden in der zweiten Dimension konkateniert. Dies ergibt die Formel 4.1 und damit den Augmented Vector. 
+
+\begin{equation}
+    AugVec(Input(N, W*H), Prediction(N, 10)) = (N, (W*H).10)
+\end{equation}
+
+Das 1DConv-Netzwerk hat als Input hingegen den Datensatz in folgendem Shape: (N, W*H, C). Da der Channel nur eindimensional ist, wird dieser 
+zuerst entfernt und dann die Berechnung nach der Formel 4.1 durchgeführt. Zum Schluss wird die Channeldimension wieder hinzugefügt. 
+Beide bisher behandelten Netzwerke haben somit einen um N*10 Einträge linear wachsenden Augmented Vector. 
+
+Das 2DConv-Netzwerk hat einen komplexeren Input mit dem Shape: (N, W, H, C). Dies muss verbunden werden mit der Prediction die in der Form (N, 10) 
+vorliegt. Dafür wird für jedes N zehn Arrays gebaut, die alle die Form (W, H, C) haben. Diese haben von eins bis zehn den Inhalt der Prediction. 
+Dies wird dann auf der Channeldimension konkateniert. Daraus resultiert die Formel 4.2. 
+
+\begin{multline}
+    AugVec(Input(N, W, H, C), Prediction(N, 10)) = Input(N, W, H, C.ConVec)\\
+    ConVec(W, H, C)[0-9] = Prediction(10)[0-9]
+\end{multline}
+
+Dabei ist der ConVec der Vector in dem die Predictionwerte von eins bis zehn jeweils in der Form (W, H, C) enthalten sind. Dies skaliert bei 
+den Netziterationen im Speicherplatz aber in der Form, wie es in Formel 4.3 zu sehen ist.  
+
+\begin{equation}
+    AugVecNew = N*W*H*C_{old} + N*W*H*10
+\end{equation}
+
+Daraus ergibt sich, dass der Arbeitsspeicherplatz mit einer Steigung von dem Zehnfachen des Datensatzes zunimmt. Bei Daten, die in einem Sample 
+bereits 8192 Bytes benötigen, ist klar, dass diese Variante des Bauens des Augmented Vectors nicht durchgeführt werden sollte, da dieser zu 
+schnell zu groß wird. Aus diesem Grund wird das 2DConv-Netzwerk im Folgenden nicht mehr verwendet. 

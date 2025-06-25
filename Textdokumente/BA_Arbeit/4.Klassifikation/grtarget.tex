@@ -4,15 +4,27 @@ Die Vermutung ist, dass es schlechter wird, je weniger Daten vorhanden sind.
 Um Vergleiche zu haben, werden wieder insgesamt 40 Epochen trainiert und nach zwanzig TF vollzogen. Dies wird mit den Netzwerken 
 ConvMaxPool, 1DConv und ClassOneDense vollzogen. Hier wird auch auf den Testdatensatz eingegangen. 
 
-In Figure 4.1 sieht man den direkten Unterschied zwischen Deep Cascade und Direct Cascade. Während bei Deep Cascade bei etwa 20.Tausend 
-Datensamples bereits eine deutliche Verbesserung zu sehen ist, bleibt diese bei Direct Cascade aus. 
-
-\iffalse
 \begin{figure}[htpb]
-    \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/1.VL/cmp_ts.png}
-    \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/2.L/cmp_ts.png}
-    \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/1.VL/cod_ts.png}
-    \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/2.L/cod_ts.png}
-    \caption{\label{fig:vl2l} Vergleich zwischen Deep und Direct Cascade}
+    \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/cmp_ts.png}
+    % \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/cod_ts.png}
+    \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/1dc_ts.png}
+    \caption{\label{fig:targetgroessedeepdir} Vergleich zwischen Deep und Direct Cascade}
 \end{figure}
-\fi
+
+In Figure 4.1 sieht man die Testdatenläufe bezüglich der Menge der Trainingsdaten. Dabei ist die erste Zahl in der Legende die Menge und die 
+Zweite die Dauer. Dabei bezieht die Menge sich nur auf den Targetdatensatz. Es wird deutlich, dass es länger dauert, je mehr Daten vorhanden sind. 
+Ebenso bestätigt sich die Vermutung, dass es auch bei Kaskadennetzwerken mit TF besser wird, je mehr Daten vorhanden sind. 
+Ebenfalls zeigt sich, dass Deep Cascade etwas besser ist als Direct Cascade. Dies dürfte daran liegen, dass Direct Cascade Netzwerke sind, 
+die nur ein Hidden Layer haben, während es bei Deep Cascade mehrere sind. 
+
+\begin{figure}[htpb]
+    \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/cod_ts.png}
+    \caption{\label{fig:targetgroesselinear} Targetgrößenänderung bei nur Linearlayern}
+\end{figure}
+
+In Figure 4.2 ist das Deep Cascade Netzwerk, welches als Hidden Layer ausschließlich Linearlayer hat. Auffällig ist, dass dieses bei egal 
+wievielen Datensamples immer schlechter abschneidet als die anderen beiden Netzwerke, die Convolutionlayer besitzen. 
+
+Generell ist es bei allen Testplots so, dass sie nie eine annehmbar hohe Accuracy besitzen und das auch dann nicht, wenn es genügend Daten 
+gibt, damit auf dem Targetdatensatz direkt gelernt werden könnte. Wenn dies mit dem Deep Cascade Netzwerk gemacht wird, kommt dabei eine 
+Accuracy von etwa 70\% heraus, was deutlich besser als jedes TF Netzwerk ist. 

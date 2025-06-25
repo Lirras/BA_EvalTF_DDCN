@@ -1,0 +1,29 @@
+Hier werden kurz die Direct Cascade Netze für die Klassifikation vorgestellt. Die Besonderheit eines solchen Netzwerkes ist es, dass es 
+immer nur ein einziges Hiddenlayer existiert und die Netze so iteriert werden, dass sie das Wissen der vorherigen mitnehmen. 
+
+\begin{table}[h!]
+    \caption{Direct Cascade Networks}
+        \label{tab:classvor}
+    \begin{tabular}{l|l|l|l|l}
+        \textbf{Name} & \textbf{Hiddenlayer} & \textbf{Nodes/Filter} & \textbf{Aktivierung} & \textbf{Input} \\
+        \hline
+        ClassOneDense & Linear & 512 & Relu & 1 \\
+        1DConv & 1DConv & 32 & Relu & 1 \\
+        2DConv & 2DConv & 32 & Relu & 2
+    \end{tabular}
+\end{table}
+
+Dabei ist der Input die Dimension in der die Bilddaten vorliegen und nur in der ersten Zeile sind es Nodes, sonst sind es die Filter. 
+Bei beiden Convolution-Netzen wird ein Kern der Größe 3 beziehungsweise 3x3 verwendet mit einem solchen Padding, dass die Größe der Daten 
+dabei nicht verändert wird. 
+
+\iffalse
+Das ClassOneDense-Netzwerk besitzt ein Linearlayer mit 512 Nodes als Hiddenlayer 
+und der Aktivierungsfunktion Relu. Es nimmt als Input eindimensionale Bilddaten. 
+
+Das 1DConv-Netzwerk besitzt ein 1DConv-Layer als Hiddenlayer mit 32 Filtern, einer Kerngröße von 3 und solchem Padding, dass sich die Größe 
+der Daten nicht verändert. Zudem wird die Aktivierungsfunktion Relu genutzt und eindimensionale Bilddaten. 
+
+Das 2DConv-Netzwerk besitzt ein 2DConv-Layer als Hiddenlayer mit 32 Filtern, einer Kerngröße von 3x3 und einem Padding, sodass die Datengröße 
+nicht verändert wird. Es wird als Aktivierungsfunktion Relu genutzt und als Input zweidimensionale Bilddaten. 
+\fi
