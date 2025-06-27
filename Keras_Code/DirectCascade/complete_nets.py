@@ -88,7 +88,7 @@ def OneDConv():
     ])
     network.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-3),
                     loss=keras.losses.CategoricalCrossentropy, metrics=['Accuracy'])
-    hist = network.fit(e, f, batch_size=128, epochs=300, validation_data=(g, h))
+    hist = network.fit(e, f, batch_size=128, epochs=30, validation_data=(g, h))
     z2 = time.perf_counter()
     pltt.class_all(pltt.add_epoch_counter_to_df(pandas.DataFrame.from_dict(hist.history)), epochs, len(e),
                    round(z2 - z1), name)
@@ -147,7 +147,7 @@ def ClassOneDense():
     network.compile(optimizer=keras.optimizers.Adam(learning_rate=1e-3),
                     loss=keras.losses.CategoricalCrossentropy, metrics=['accuracy'])
 
-    hist = network.fit(e, f, batch_size=128, epochs=300, validation_data=(g, h))
+    hist = network.fit(e, f, batch_size=128, epochs=30, validation_data=(g, h))
     z2 = time.perf_counter()
     pltt.class_all_sm(pltt.add_epoch_counter_to_df(pandas.DataFrame.from_dict(hist.history)), epochs, len(e),
                       round(z2 - z1), name)
@@ -180,13 +180,15 @@ def OneLayer():
     z2 = time.perf_counter()
     pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.DataFrame.from_dict(hist.history)), epochs, len(e),
                         round(z2 - z1), name)
+    print(krl.build_mae_test(network.predict(cali_test_data), cali_test_target))
+    # Value: 53
 
 
 # TwoDConv()
 print('first')
-OneDConv()  # 55min
+# OneDConv()  # 55min
 print('SEcond')
-ClassOneDense()  # 35min
+# ClassOneDense()  # 35min
 print('Third')
-# OneLayer()
+OneLayer()
 print('Fourth')

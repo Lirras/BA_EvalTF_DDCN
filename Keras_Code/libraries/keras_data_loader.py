@@ -129,10 +129,10 @@ def load():
 
 def boston_loader():
     (x_train, x_test), (y_train, y_test) = keras.datasets.boston_housing.load_data(
-        path="boston_housing.npz", test_split=0.2, seed=113
+        path="boston_housing.npz", test_split=0.1, seed=113
     )
 
-    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, train_size=0.5, random_state=42)
+    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, train_size=0.8, random_state=42)
 
     x_tr = boston_delete_columns(x_tr)
     x_tr = boston_change_house_age(x_tr)
@@ -143,9 +143,9 @@ def boston_loader():
     y_train = boston_delete_columns(y_train)
     y_train = boston_change_house_age(y_train)
 
-    print(x_tr.shape)  # 80, 3
-    print(y_tr.shape)  # 324, 3
-    print(y_train.shape)  # 102, 3
+    print(x_tr.shape)  # 80, 3 - 364
+    print(y_tr.shape)  # 324, 3 - 91
+    print(y_train.shape)  # 102, 3 - 51
 
     if NORM == True:
         # Normalize Trainings Data:
@@ -226,6 +226,8 @@ def california_loader():
     (x_train, x_test), (y_train, y_test) = keras.datasets.california_housing.load_data(
         version="small", path="california_housing.npz", test_split=0.2, seed=113
     )
+    # small
+    # large
 
     x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, test_size=0.5, random_state=42)
     x_tr = california_delete_columns(x_tr)

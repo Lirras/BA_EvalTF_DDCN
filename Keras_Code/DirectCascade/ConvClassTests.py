@@ -19,15 +19,15 @@ def OneDLilConv(percentage):
     g = g.reshape((len(g), 1024, 1))
     # test_dat_mnist = test_dat_mnist.reshape((len(test_dat_mnist), 1024, 1))
     test_dat_svhn = test_dat_svhn.reshape((len(test_dat_svhn), 1024, 1))
-    ls = []
+    # ls = []
     list_of_dfs = []
     x = 1024
 
     model_1 = cls.OneDLilConv()
     model_1.initialize((x, 1))
-    hist = model_1.train(e, f, g, h, epochs)
-    # list_of_dfs.append(hist)
-    ls.append(pandas.DataFrame.from_dict(hist.history))
+    hist = model_1.train(a, b, c, d, epochs)
+    list_of_dfs.append(hist)
+    # ls.append(pandas.DataFrame.from_dict(hist.history))
 
     # Source Data
     mpred = model_1.pred(a)
@@ -49,13 +49,13 @@ def OneDLilConv(percentage):
     x += 10
 
     # Source Networks
-    for i in range(0):
+    for i in range(9):
         print(i)
         model = cls.OneDLilConv()
         model.initialize((x, 1))
         hist = model.train(maugmented_vector, b, mval_aug_vec, d, epochs)
-        # list_of_dfs.append(hist)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # Source Data
         mpred = model.pred(maugmented_vector)
@@ -77,13 +77,13 @@ def OneDLilConv(percentage):
         x += 10
 
     # Target Networks
-    for i in range(29):
+    for i in range(10):
         print(i)
         model = cls.OneDLilConv()
         model.initialize((x, 1))
         hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
-        # list_of_dfs.append(hist)
-        ls.append(pandas.DataFrame.from_dict(hist.history))
+        list_of_dfs.append(hist)
+        # ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # Target Data
         pred = model.pred(augmented_vector)
@@ -100,7 +100,7 @@ def OneDLilConv(percentage):
 
     z2 = time.perf_counter()
     pltt.class_networks(pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot})), 2, len(e), round(z2 - z1), name)
-    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2 - z1), name)
+    pltt.class_mult_plots(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2 - z1), name)
     print(f'{z2 - z1:0.2f} sec')
     # df_ts = pltt.add_epoch_counter_to_df(pandas.DataFrame({'accuracy': test_plot}))
     # df_tr = pltt.add_epoch_counter_to_df(pandas.concat(ls))
