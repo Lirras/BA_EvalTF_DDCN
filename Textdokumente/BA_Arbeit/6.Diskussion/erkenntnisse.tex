@@ -1,6 +1,6 @@
 Allgemeines:
 
-Das ist alles ein Plot eines DeepCascade Networks, welches vor vorgestellt wird:
+Das ist alles ein Plot eines DeepCascade Networks, welches vorgestellt wird:
 Es kommt relativ schnell zu Overfitting auf dem Sourcedatensatz. % Veränderung, wann TF gemacht wird.
 % ConvMaxPool = Deep Cascade
 
@@ -12,13 +12,13 @@ Bei der Stelle des TFs bricht die Performanz des Netzes ein, nur bei deep Cascad
 % Irgendein Deep Cascade Plot -> Das war falsch!
 
 Die normalen Netzwerke sind im kleinen schneller als die Direct Cascade und diese wiederum schneller als die Deep Cascade Netze. 
-Sie sind in der Performanz aber unterschiedlich gut. 
+Sie sind in der Performanz aber unterschiedlich gut. \newline
 % Die Direct Cascade Netze sind erheblich schneller als die Deep Cascade und diese sind wiederum schneller als die normalen Netze. 
 % Zeitnahme zwischen Direct und Deep
 % Direct 1DConv, Deep Cascade TF und Full(DCAS)
 % Zeitnahme zwischen OneLayer vs. RegressionTwo
 
-Inverses Deep Cascade ist völliger Blödsinn. \newline
+% Inverses Deep Cascade ist völliger Blödsinn. \newline
 % Höchstens als Bemerkung
 
 Klassifikation: 
@@ -45,10 +45,13 @@ Eindimensionale Klassifikation ist minimal schlechter als zweidimensionale. Dies
 
 Regression:
 
-Die Regression ist mit TF bei wenigen Daten besser als, wenn sie auf den Targetdatensatz von Scratch lernt. % Vergleich zwischen TF und Scratch Regression
+Die Regression ist mit TF bei wenigen Daten besser als, wenn sie auf den Targetdatensatz von Scratch lernt. 
+Aber nur, wenn es sich um Direct Cascade handelt. 
+% Vergleich zwischen TF und Scratch Regression
 % OneLayer TF/Scratch (Very Less Data)
 
 
 In der Regression ist der Abfall der Performanz bei weitem weniger groß. % Regressionsnetz mit und ohne TF
 % OneLayer TF/Scratch (Full Data)
 
+Die simplen hier aufgeführten Early-Stopping Metriken verschlechtern das Ergebnis. 
