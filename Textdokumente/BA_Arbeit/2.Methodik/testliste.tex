@@ -17,21 +17,57 @@ Alle Netze werden mit dem Adam-Optimizer mit der learningrate 1e-3 gelernt. Klas
 CategoricalCrossEntropy und Softmax als Aktivierungsfunktion, während die Regressionsnetze MeanSquaredError und Linear als 
 Aktivierungsfunktion vorweisen. 
 
-Mit allen Direct Cascade Netzwerken wurden zusätzlich Early Stopping Metriken durchgeführt mit MAEM, LM, ACCM. 
+Mit allen Direct Cascade Netzwerken wurden zusätzlich Early Stopping Metriken durchgeführt mit MAEM, LM und ACCM. 
 
-Für fast alle Netze gilt, dass sie mit vielen, mittleren und wenigen Source- und Targetdaten durchgeführt wurden. Die 
-einzige Ausnahme ist das 2DConv-Netzwerk, welches nur mit wenigen Daten durchgeführt wurde, da mit mehr Daten es 
-technisch nicht mehr mit derselben Hardware möglich war. 
+Für alle Klassifikationsnetze gilt, dass sie mit fünf verschiedenen Größen des Targetdatensatzes trainiert wurden. Die Ausnahme ist das 
+2DConv-Netzwerk, welches nur mit sehr wenigen Source- und Targetdaten trainiert werden kann, da es technisch auf derselben Hardware mit mehr 
+Daten unmöglich ist. 
 
-Es wurde mit allen Deep Cascade Netzen ein Vergleich zwischen mit TF und ohne angefertigt. 
+Bei den Regressionsnetze jeweils einmal mit vielen und wenigen Targetdaten trainiert. 
+
+% Für fast alle Netze gilt, dass sie mit vielen, mittleren und wenigen Source- und Targetdaten durchgeführt wurden. Die 
+% einzige Ausnahme ist das 2DConv-Netzwerk, welches nur mit wenigen Daten durchgeführt wurde, da mit mehr Daten es 
+% technisch nicht mehr mit derselben Hardware möglich war. 
+
+Es wurde mit allen Netzwerken ein Vergleich sowohl zwischen mit TF und ohne als auch zwischen ohne TF und Kompletten angefertigt. 
 
 Mit allen Netzwerken wurde der Zeitpunkt für das TF frei ausgetestet. 
 
 Alle Direct Cascade Networks haben jeweils nur ein Hidden Layer. In manchen Fällen noch mit einem Hilfslayer, um den Wechsel 
 zwischen Filterlayern und Linearlayern zu bewerkstelligen. 
 
-% !TODO!: Dies muss noch gemacht werden:
 Für alle Direct Cascade Networks wurde derselbe Seed für die Initialisierung der Weights genutzt. 
+
+
+In Tabelle 2.1 sind die Tests, die sich mit der Zeitdauer befassen mit der Endung Time. Dabei gilt, dass CasTF Kaskadierung mit TF, CasTime 
+Kaskadierung ohne TF und Comp bedeutet, dass es weder TF noch Kaskadierung gab. ACCM, LM und MAEM sind die Tests bezüglich der Early-Stopping 
+Metriken. 
+Vor dem ersten Schrägstrich steht, wann TF gemacht wurde. Wenn kein TF gemacht wurde, ist diese nicht existent. Dahinter steht die Datenmenge 
+des Targetdatensatzes und danach die Menge an Epochen üro Trainingsiteration. Wenn es noch etwas viertes gibt, dann zeigt dieses an, wieviele 
+Epochen in Zehnern es insgesamt gab. 
+
+
+\begin{table}[h!]
+    \begin{tabular}{l|l|l|l|l|l}
+        \textbf{CMP} & \textbf{COD} & \textbf{1DC} & \textbf{2DC} & \textbf{Regr2} & \textbf{1Lay} \\
+        \hline
+        TF0/732/10 & CasTFTime & CasTFTime & CasTFTime & TF0/240/25 & CasTFTime \\
+        TF1/732/10 & CasTime & CasTime & CasTime & TF1/240/25 & CasTime \\
+        TF2/732/10 & CompTime & CompTime & CompTime & CasTFTime & CompTime \\
+        TF3/732/10 & TF2/732/10 & TF2/732/10 & TF2/732/10 & CasTime & TF11/8k/8 \\
+        TF4/732/10 & TF2/7k/10 & TF2/7k/10 & & CompTime & 8k/8 \\
+        TF5/732/10 & TF2/21k/10 & TF2/21k/10 & & TF3/8k/8 & Comp/8k/8 \\
+        CasTFTime & TF2/36k/10 & TF2/36k/10 & & 8k/8 & TF11/240/20 \\
+        CasTime & TF2/51k/10 & TF2/51k/10 & & Comp/8k/8 & 240/10 \\
+        CompTime & TF10/732/10/30 & TF10/732/10/30 & & TF3/240/8 & Comp/240/8 \\
+        TF2/7k/10 & 732/10/30 & 732/10/30 & & 240/8 & MAEM/240/10 \\
+        TF2/21k/10 & Comp/732//30 & Comp/732//30 & & Comp/240/8 & LM/240/10 \\
+        TF2/36k/10 & ACCM/732/10 & ACCM/732/10 & & & \\
+        TF2/51k/10 & LM/732/10 & LM/732/10 & & & 
+    \end{tabular}
+    \caption{\label{tab:alltests} Liste aller Tests, die inhaltlich in dieser Arbeit vorkommen}
+\end{table}
+
 
 % Zudem wurde ein KFOLD 
 % verwendet und der Mean aller Läufe als Wert für den Plot genutzt.

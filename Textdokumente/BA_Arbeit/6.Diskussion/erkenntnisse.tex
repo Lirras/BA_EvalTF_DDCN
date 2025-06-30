@@ -1,10 +1,10 @@
-Allgemeines:
+% Allgemeines:
 
-Das ist alles ein Plot eines DeepCascade Networks, welches vorgestellt wird:
+% Das ist alles ein Plot eines DeepCascade Networks, welches vorgestellt wird:
 Es kommt relativ schnell zu Overfitting auf dem Sourcedatensatz. % Veränderung, wann TF gemacht wird.
 % ConvMaxPool = Deep Cascade
 
-Bei der Stelle des TFs bricht die Performanz des Netzes ein, nur bei deep Cascade erholt sich das ein wenig. 
+Bei der Stelle des TFs bricht die Performanz des Netzes ein, nur bei deep Cascade Klassifikation und Regression erholt sich das. 
 % Jeder Plot mit TF 
 % Deep Cascade, aber auch OneLayer; Direct Cascade Classification nicht, da keine Stabilisierung
 
@@ -21,7 +21,7 @@ Sie sind in der Performanz aber unterschiedlich gut. \newline
 % Inverses Deep Cascade ist völliger Blödsinn. \newline
 % Höchstens als Bemerkung
 
-Klassifikation: 
+% Klassifikation: 
 
 Bei der Klassifikation ist der endgültige Accuracy-Wert hauptsächlich von der Datenmenge des Targetdatensatzes abhängig. 
 Je weniger Daten, desto schlechter ist der Wert. % Veränderung wieviele Targetdaten genutzt werden
@@ -32,7 +32,7 @@ Klassifikation läuft so schlecht, dass man es nicht tun sollte, da es nichts br
 
 Bei TF ist die Performanz des Netzes etwas schlechter als ohne. % Vergleich zwischen TF und ohne bei Deep Cascade beides und bei Direct Cascade Klassifikation
 % Deep Cascade TF vs. Deep Cascade
-Bei Cascade Networks ist es ebenfalls schlechter. % Vergleich zwischen Cascade und Gesamtnetze
+Ein Cascade Networks ist ebenfalls schlechter als ein Komplettes. % Vergleich zwischen Cascade und Gesamtnetze
 % Deep Cascade vs. Ohne
 
 
@@ -43,7 +43,7 @@ Eindimensionale Klassifikation ist minimal schlechter als zweidimensionale. Dies
 % Vergleich zwischen 1D und 2D.
 % 1DConv vs 2DConv
 
-Regression:
+% Regression:
 
 Die Regression ist mit TF bei wenigen Daten besser als, wenn sie auf den Targetdatensatz von Scratch lernt. 
 Aber nur, wenn es sich um Direct Cascade handelt. 
@@ -54,4 +54,4 @@ Aber nur, wenn es sich um Direct Cascade handelt.
 In der Regression ist der Abfall der Performanz bei weitem weniger groß. % Regressionsnetz mit und ohne TF
 % OneLayer TF/Scratch (Full Data)
 
-Die simplen hier aufgeführten Early-Stopping Metriken verschlechtern das Ergebnis. 
+Die simplen hier aufgeführten Early-Stopping Metriken verschlechtern das Ergebnis, da diese in lokalen Minima stecken bleiben. 

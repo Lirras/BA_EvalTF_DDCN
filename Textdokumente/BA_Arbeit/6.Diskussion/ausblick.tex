@@ -1,1 +1,13 @@
-Hier wird ausgeführt, was alles noch in die Richtung gemacht werden kann. 
+
+Klassifikation sollte nicht weiter ausgetestet werden im Direct Cascade Verfahren. Wenn, dann nur mit einem anderen Loss als 
+CategoricalCrossEntropy oder einer anderen Art, wie die Augmented Vectors zwischen den Netzwerken gebaut werden. 
+
+Für die Regressionsnetze kann ein anderer Loss als MeanSquaredError verwendet werden. 
+
+Bei beiden Varianten können noch andere Early-Stopping Metriken genutzt werden. Zudem auch welche, die die Anzahl der Netziterationen anhand 
+einer solchen Metrik bestimmen. Genauso eine, die keine Maxmialanzahl an Epochen besitzt, aber dort kann es passiert, dass das Training nie endet. 
+
+Es kann auch noch ein anderer Optimizer als Adam genutzt werden und andere Datensätze als Source und Target. Sowie die aktuellen in einer anderen 
+Art für die Netze vorbereitet werden können. 
+
+Ebenso kann noch ausgetestet werden, wie sich TF bei einem Taskwechsel verhält, genauso wie bei Task- und Domainwechsel zugleich. 
