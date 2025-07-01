@@ -1,11 +1,13 @@
 
-Klassifikation sollte nicht weiter ausgetestet werden im Direct Cascade Verfahren. Wenn, dann nur mit einem anderen Loss als 
+Klassifikation sollte nicht weiter in einem Cascade Verfahren ausgetestet werden, da es bei egal wie vielen Daten 
+immer schlechter ist als, wenn mit einem Kompletten gelernt wird. Wenn, dann nur mit einem anderen Loss als 
 CategoricalCrossEntropy oder einer anderen Art, wie die Augmented Vectors zwischen den Netzwerken gebaut werden. 
 
 Für die Regressionsnetze kann ein anderer Loss als MeanSquaredError verwendet werden. 
 
-Bei beiden Varianten können noch andere Early-Stopping Metriken genutzt werden. Zudem auch welche, die die Anzahl der Netziterationen anhand 
-einer solchen Metrik bestimmen. Genauso eine, die keine Maxmialanzahl an Epochen besitzt, aber dort kann es passiert, dass das Training nie endet. 
+Bei beiden Varianten können noch andere Early-Stopping Metriken genutzt werden, die auch eine minimale Verschlechterung dulden. Zudem auch 
+welche, die die Anzahl der Netziterationen anhand 
+einer solchen Metrik bestimmen. Genauso eine, die keine Maxmialanzahl an Epochen besitzt, aber dort kann es passieren, dass das Training nie endet. 
 
 Es kann auch noch ein anderer Optimizer als Adam genutzt werden und andere Datensätze als Source und Target. Sowie die aktuellen in einer anderen 
 Art für die Netze vorbereitet werden können. 

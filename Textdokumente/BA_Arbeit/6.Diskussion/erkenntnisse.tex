@@ -4,14 +4,15 @@
 Es kommt relativ schnell zu Overfitting auf dem Sourcedatensatz. % Veränderung, wann TF gemacht wird.
 % ConvMaxPool = Deep Cascade
 
-Bei der Stelle des TFs bricht die Performanz des Netzes ein, nur bei deep Cascade Klassifikation und Regression erholt sich das. 
+Bei der Stelle des TFs bricht die Performanz des Netzes ein. Diese erholt sich wieder etwas, aber nicht auf dasselbe Level wie zuvor. 
 % Jeder Plot mit TF 
 % Deep Cascade, aber auch OneLayer; Direct Cascade Classification nicht, da keine Stabilisierung
 
 % Bei Deep Cascade benötigt es weniger Epochen nach TF bis sich die Performanz der Netze stabilisiert. 
 % Irgendein Deep Cascade Plot -> Das war falsch!
 
-Die normalen Netzwerke sind im kleinen schneller als die Direct Cascade und diese wiederum schneller als die Deep Cascade Netze. 
+Die normalen Netzwerke sind in der hier vorliegenden Implementierung mit kleinen Datensätzen schneller als die Direct Cascade und diese 
+wiederum schneller als die Deep Cascade Netze. 
 Sie sind in der Performanz aber unterschiedlich gut. \newline
 % Die Direct Cascade Netze sind erheblich schneller als die Deep Cascade und diese sind wiederum schneller als die normalen Netze. 
 % Zeitnahme zwischen Direct und Deep
@@ -27,7 +28,8 @@ Bei der Klassifikation ist der endgültige Accuracy-Wert hauptsächlich von der 
 Je weniger Daten, desto schlechter ist der Wert. % Veränderung wieviele Targetdaten genutzt werden
 % OneDConv, ConvMaxPool
 
-Klassifikation läuft so schlecht, dass man es nicht tun sollte, da es nichts bringt. % Jedes Klassifikationsnetz mit TF, vor allem bei Direct Cascade
+Klassifikation läuft so schlecht, dass man es nicht tun sollte, da es nichts bringt, wenn diese nur zu 20\% richtig liegt. 
+% Jedes Klassifikationsnetz mit TF, vor allem bei Direct Cascade
 % ClassOneDense
 
 Bei TF ist die Performanz des Netzes etwas schlechter als ohne. % Vergleich zwischen TF und ohne bei Deep Cascade beides und bei Direct Cascade Klassifikation
