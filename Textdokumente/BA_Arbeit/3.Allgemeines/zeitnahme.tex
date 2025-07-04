@@ -11,8 +11,9 @@ anderen Stellen in ähnlicher Form bereits vorkommen. Um diese Graphen zu kontro
 \url{https://github.com/Lirras/BA_EvalTF_DDCN/tree/main/Plots/ba_plots/timing}. 
 Es wird hier keine Early-Stopping Metrik genutzt. 
 
-Dabei werden alle Klassifikationsnetze mit denselben Inputdaten gespeist, ebenso wie alle Regressionsnetze zur Vergleichbarkeit untereinander. 
-Die jeweiligen Netzversion zwischen Cascade TF, Cascade und Complete haben dieselben Layer, sowie diegleiche Anzahl. 
+Dabei werden alle Klassifikationsnetze mit denselben Inputdaten gespeist, ebenso wie bei allen Regressionsnetze, was zur besseren 
+Vergleichbarkeit jeweils untereinander führt. 
+Die jeweiligen Netzversionen zwischen Cascade TF, Cascade und Complete haben dieselben Layer, sowie diegleiche Anzahl. 
 
 Hier nun die Tabelle mit allen Zeiten der Netze in einer vergleichbaren Variante: \newline
 
@@ -44,7 +45,7 @@ Ebenso brauchen alle Klassifikationsnetze länger mit TF als ohne, was daran lie
 48000 Trainingsdaten recht groß ausfällt, während die Anderen direkt auf dem kleinen Targetdatensatz, der mit 732 Datensamples klein ist, 
 trainieren. 
 
-Da Cascade TF mit dem Sourcedatensatz ist und die anderen Netze nur auf dem Targetdatensatz arbeiten sind diese meist kürzer. Allerdings 
-benötigen die Complete Netzwerk, die ohne Kaskadierung sind, noch weniger Zeit. Dies wird an der Implementierung der Netze liegen, da bei jedem 
+Da Cascade TF mit dem Sourcedatensatz ist und die anderen Netze nur auf dem Targetdatensatz arbeiten, sind diese meist kürzer. Allerdings 
+benötigen die Complete Netzwerke, die ohne Kaskadierung sind, noch weniger Zeit. Dies wird an der Implementierung der Netze liegen, da bei jedem 
 Kaskadennetzwerk das Outputlayer in jeder Kaskade mit berechnet wird, während bei den Complete Netzwerken nur ein einziges Outputlayer existiert. 
 Des Weiteren werden keine extra Predictions und keine Berechnung der Augmented Vectors gemacht. 

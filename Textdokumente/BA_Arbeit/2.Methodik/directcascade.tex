@@ -19,6 +19,6 @@ TF kann nun jederzeit im Trainingsschritt gemacht werden, indem dort der Targetd
 wird. Dabei können beliebig viele Netzwerke vor und nach TF genutzt werden. Der einzige Unterschied ist der, dass der Augmented Vector 
 für jedes Netzwerk ein wenig größer wird, da dieser sowohl das Wissen von jedem bisherigen Netzwerk als auch die Ursprungsdaten enthält. 
 
-Dabei muss hier in der Implementation bereits von Anfang an, sowohl der Sourcedatensatz als auch der Targetdatensatz in das feste Netz 
+Dabei muss hier in der Implementation bereits von Anfang an sowohl der Sourcedatensatz als auch der Targetdatensatz in das feste Netz 
 hineingegeben werden, um die Prediction auf dem Targetdatensatz von der Trainingsphase des Sourcedatensatzes im Augmented Vector zu 
-integrieren, damit die Netzwerke, die auf dem Sourcedatensatz gelernt haben, Berücksichtigung finden. 
+integrieren, damit die Netzwerke, die auf dem Sourcedatensatz gelernt haben, während dem Training auf dem Targetdatensatz Berücksichtigung finden. 

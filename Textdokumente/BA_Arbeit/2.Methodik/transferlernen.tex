@@ -1,31 +1,31 @@
 Transferlernen (TF) ist das Prinzip des Lernens über einer Eselsbrücke. 
-Es gibt mehrere Varianten, wie TF verwendet werden kann. Dies sind Task-Wechsel und Domain-Wechsel. 
-Nur wenn keine davon genutzt wird, wird nicht von TF gesprochen. 
+Es gibt mehrere Varianten, wie TF verwendet werden kann: Dies sind Task-Wechsel und Domain-Wechsel. 
+Nur wenn keine Option davon genutzt wird, wird nicht von TF gesprochen. 
 Hier wird nur der Domain-Wechsel vorgestellt werden, da nur dieser benutzt wird. Ein Domain-Wechsel ist hier der Wechsel 
-zwischen zwei verschiedenen Datensätzen, während diegleichen Netzarten genutzt wird. 
+zwischen zwei verschiedenen Datensätzen, während diegleiche Netzart genutzt wird. 
 Dies wird Transductive Transferlernen\cite{survey_transfer} genannt. 
-Das Wissen vom ersten Datensatz wird auf den zweiten übertragen. Der erste Datensatz ist dabei die Source, der Zweite das Target. 
-Es gibt dabei drei Stellschrauben, bei denen nicht klar ist, was besser ist: What, How, When to Transfer \cite{survey_transfer}. 
-Da es sowohl eine Klassifikation als auch eine Regression ausgetestet wird, werden jeweils zwei Source- und Targetdatensätze benötigt. 
+Das Wissen vom ersten Datensatz wird auf den Zweiten übertragen. Der erste Datensatz ist dabei die Source, der Zweite das Target. 
+Es gibt dabei drei Stellschrauben, bei denen nicht klar ist, was besser ist: What, How und When to Transfer \cite{survey_transfer}. 
+Da es sowohl Klassifikation- als auch Regressionnetze ausgetestet werden, werden jeweils zwei Source- und Targetdatensätze benötigt. 
 Für Klassifikation wird die Source der Modified National Institute of Standards and Technology \cite{handwritten_digit} (MNIST) Datensatzes  
 und der 
-Street View House Numbers (SVHN) \cite{house_numbers} der Targetdatensatz sein. Beide müssen für das Transfer ein wenig 
+Street View House Numbers (SVHN) \cite{house_numbers} der Targetdatensatz sein. Beide müssen für das TF ein wenig 
 verändert werden. Der MNIST wird von 28x28 Pixel auf 32x32 erweitert, während der SVHN von farbig auf schwarz-weiß verändert wird. 
 Dies ist notwendig, da beide Datensätze als Input denselben Shape, also diegleichen Dimensionalitäten vorweisen, haben müssen. 
 Bei der Regression ist der Sourcedatensatz der Boston Housing Prices (Bost) \cite{Boston_housing} und der Targetdatensatz der 
 California Housing Prices (Cali) \cite{California_housing}. 
 
-Beide Datensätze müssen stark reduziert werden. Von den Acht beziehungsweise Dreizehn Spalten bleiben nur Drei übrig. Dies hat den Grund, dass 
-nur Spalten als Sinnvoll geachtet werden, die ein passendes gegenüber haben. Der Bost-Datensatz hat allerdings ein ethnisches Problem, da 
+Beide Datensätze müssen stark reduziert werden. Von den acht beziehungs-weise dreizehn Spalten bleiben nur drei übrig. Dies hat den Grund, dass 
+nur Spalten als sinnvoll geachtet werden, die ein passendes Gegenüber haben. Der Bost-Datensatz hat allerdings ein ethnisches Problem, da 
 dieser eine Spalte enthält, die diskriminierend ist. Diese wird entfernt. 
-Die einzigen Spalten des Bost-Datensatzes, die übrig bleiben sind: RM, AGE, LSTAT. RM ist die durchschnittliche Zimmeranzahl pro Wohnung, AGE 
+Die einzigen Spalten des Bost-Datensatzes, die übrig bleiben, sind: RM, AGE und LSTAT. RM ist die durchschnittliche Zimmeranzahl pro Wohnung, AGE 
 ist die Anzahl der Häuser, die vor 1940 bewohnt wurden und LSTAT ist der prozentuale Anteil der Bevölkerung mit niedrigerem Status. 
 Der Datensatz Cali behält nur die Spalten MedInc und HouseAge. MedInc ist das durchschnittliche Einkommen des Häuserblocks und HouseAge das 
-durchschnittliche Alter. Aus den Spalten AveRooms und Households wird die durchschnittliche Anzahl von Zimmers pro Haushalt berechnet. AveRooms 
+durchschnittliche Alter. Aus den Spalten AveRooms und Households wird die durchschnittliche Anzahl von Zimmer pro Haushalt berechnet. AveRooms 
 ist dabei die durchschnittliche Anzahl an Räumen innerhalb eines Häuserblocks, während Households die Anzahl der Haushalte innerhalb des 
 Häuserblocks ist. Dadurch ist die berechnete Spalte zu der RM-Spalte von Bost passend. 
-Da LSTAT und MedInc wahrscheinlich abhängig sind, da es vermutet wird, dass diejenigen Menschen, die einen niedrigeren Status vorweisen, weniger 
-Einnahmen haben. Deshalb dürfte es über diese beiden Spalten möglich zu sein TF zu nutzen. Allerdings sind sie zueinander antiproportional, 
+LSTAT und MedInc sind wahrscheinlich abhängig, da es vermutet wird, dass diejenigen Menschen, die einen niedrigeren Status vorweisen, weniger 
+Einnahmen haben. Deshalb dürfte es über diese beiden Spalten möglich sein TF zu nutzen. Allerdings sind sie zueinander antiproportional, 
 weshalb die LSTAT Spalte invertiert wird, damit es zur Proportionalität kommt. Komplexer ist die Berechnung des Alters der Häuser, da 
 AGE nur die Anzahl der Häuser, die vor 1940 gebaut wurden, beeinhaltet, aber HouseAge das durchschnittliche Alter des Häuserblocks ist. 
 Die Maximalanzahl der betrachteten Häuser im Bost-Datensatz ist einhundert und das Alter der Häuser vor 1940 ist 85, wenn man auf 2025 rechnet. 
@@ -35,10 +35,10 @@ Dadurch kann AGE auf die Art von HouseAge mit folgender Formel umgerechnet werde
 \end{equation}
 Dadurch sind alle Source- und Targetdatensätze zueinander kompatibel. Damit ist ausreichend geklärt, mit was TF verwendet wird. 
 
-Die nächste Frage, die geklärt werden muss ist das How to transfer. Dies wird jeweils ohne Veränderung der Weights der Netze gemacht. 
+Die nächste Frage, die geklärt werden muss, ist das How to transfer. Dies wird jeweils ohne Veränderung der Weights der Netze gemacht. 
 Es wird das neuronale Netz zuerst auf dem Sourcedatensatz trainiert und dann ohne irgendetwas zu tun auf den Targetdatensatz gewechselt, 
 welcher auf demselbem Netz oder einem gleichen Netz wie zuvor ist. Wenn es dasselbe Netz ist, dann verändert sich nur aus welchem 
-Datensatz der Input kommt, was bei Deep Cascade ist. Während bei dem gleichen Netz der Input immer vergrößert wird und das TF über diese 
-Vergrößerung passiert, was bei Direct Cascade ist. 
+Datensatz der Input kommt, was bei Deep Cascade ist. Hingegen wird bei dem gleichen Netz der Input immer vergrößert und das TF passiert über 
+diese Vergrößerung, was bei Direct Cascade ist. 
 
 Wann TF sinnvoll ist, ist nicht klar, weshalb es mal mit früherem und späteren TF probiert wird. 

@@ -1,19 +1,19 @@
 
-Liste aller hier vorkommenden Netze:
+Liste aller hier vorkommenden Netzen mit ihren Kürzeln:
 
 \begin{enumerate}
-    \item ConvMaxPool
-    \item 1DConv
-    \item 2DConv
-    \item ClassOneDense
-    \item RegressionTwo
-    \item OneLayer
+    \item ConvMaxPool (CMP)
+    \item 1DConv (1DC)
+    \item 2DConv (2DC)
+    \item ClassOneDense (COD)
+    \item RegressionTwo (Regr2)
+    \item OneLayer (1Lay)
 \end{enumerate}
 
 Davon sind ConvMaxPool und RegressionTwo Deep Cascade Netzwerke, während alle anderen Direct Cascade Netzwerke sind. 
 Ebenso sind nur RegressionTwo und OneLayer Regressionsnetze, während der Rest Klassifikationsnetze sind. 
 
-Alle Netze werden mit dem Adam-Optimizer mit der learningrate 1e-3 gelernt. Klassifikationsnetze haben als Loss den 
+Alle Netze werden mit dem Adam-Optimizer mit der Lernrate 1e-3 gelernt. Klassifikationsnetze haben als Loss den 
 CategoricalCrossEntropy und Softmax als Aktivierungsfunktion, während die Regressionsnetze MeanSquaredError und Linear als 
 Aktivierungsfunktion vorweisen. 
 
@@ -23,27 +23,29 @@ Für alle Klassifikationsnetze gilt, dass sie mit fünf verschiedenen Größen d
 2DConv-Netzwerk, welches nur mit sehr wenigen Source- und Targetdaten trainiert werden kann, da es technisch auf derselben Hardware mit mehr 
 Daten unmöglich ist. 
 
-Bei den Regressionsnetze jeweils einmal mit vielen und wenigen Targetdaten trainiert. 
+Bei den Regressionsnetzen wird jeweils einmal mit vielen und wenigen Targetdaten trainiert. 
 
 % Für fast alle Netze gilt, dass sie mit vielen, mittleren und wenigen Source- und Targetdaten durchgeführt wurden. Die 
 % einzige Ausnahme ist das 2DConv-Netzwerk, welches nur mit wenigen Daten durchgeführt wurde, da mit mehr Daten es 
 % technisch nicht mehr mit derselben Hardware möglich war. 
 
 Es wurde mit allen Netzwerken ein Vergleich sowohl zwischen mit TF und ohne als auch zwischen ohne TF und Kompletten angefertigt. 
+Komplett heißt hier, dass es ein Netzwerk ohne TF und ohne Kaskadierung ist und dieses deshalb in einem komplett trainiert wird. 
 
 Mit allen Netzwerken wurde der Zeitpunkt für das TF frei ausgetestet. 
 
-Alle Direct Cascade Networks haben jeweils nur ein Hidden Layer. In manchen Fällen noch mit einem Hilfslayer, um den Wechsel 
+Alle Direct Cascade Netzwerke haben jeweils nur ein Hidden Layer. In manchen Fällen sind sie noch mit einem Hilfslayer, um den Wechsel 
 zwischen Filterlayern und Linearlayern zu bewerkstelligen. 
 
-Für alle Direct Cascade Networks wurde derselbe Seed für die Initialisierung der Weights genutzt. 
+Für alle Netzwerke wurde derselbe Seed für die Initialisierung der Weights genutzt. 
 
 
-In Tabelle 2.1 sind die Tests, die sich mit der Zeitdauer befassen mit der Endung Time. Dabei gilt, dass CasTF Kaskadierung mit TF, CasTime 
+In Tabelle 2.1 sind die Tests, die sich mit der Zeitdauer befassen mit der Endung Time. Dabei gilt, dass CasTF Kaskadierung mit TF, Cas allein 
 Kaskadierung ohne TF und Comp bedeutet, dass es weder TF noch Kaskadierung gab. ACCM, LM und MAEM sind die Tests bezüglich der Early-Stopping 
 Metriken. 
-Vor dem ersten Schrägstrich steht, wann TF gemacht wurde. Wenn kein TF gemacht wurde, ist diese nicht existent. Dahinter steht die Datenmenge 
-des Targetdatensatzes und danach die Menge an Epochen üro Trainingsiteration. Wenn es noch etwas viertes gibt, dann zeigt dieses an, wieviele 
+Vor dem ersten Schrägstrich steht, wann TF gemacht wurde, welches mit TF im Eintrag gekennzeichnet ist. Wenn kein TF gemacht wurde, ist dieser 
+erste Bereich nicht existent. Dahinter steht die Datenmenge 
+des Targetdatensatzes und danach die Menge an Epochen pro Trainingsiteration. Wenn es noch etwas viertes gibt, dann zeigt dieses an, wieviele 
 Epochen in Zehnern es insgesamt gab. 
 
 

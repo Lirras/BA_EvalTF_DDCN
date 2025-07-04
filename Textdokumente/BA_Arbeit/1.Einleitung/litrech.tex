@@ -1,0 +1,82 @@
+Neural Networks werden für eine Reihe an Tasks genutzt, die ein, dem menschlichen Gehirn ähnlichem, Rechenwerk benötigen. 
+Es gibt neben den computer vision Tasks auch die control and planning Tasks, die für Spielecomputer für Strategiespiele wie Go dienen \cite{deep_neural_networks_scientific_models}.
+Genauso gibt es Netze, die eine Classification Task lösen \cite{handwritten_digit}. 
+Eine weitere Aufgabe von neural Networks ist es eine Funktion zu approximieren. Dies 
+wird mithilfe von Regression Networks gemacht \cite{Gen_Reg}.      
+
+Dabei kommt es aber vor, dass es zu wenig Daten für den Task gibt \cite{survey_transfer}. 
+Zudem gibt es noch das Problem, dass es viel Zeit kosten kann ein adäquates 
+neural Network zu trainineren \cite{cascor}. 
+Was bei allen Netzen vorkommt ist, dass sie nicht zu hundert Prozent korrekt sind \cite{EvoClassAndReg}.
+
+Transfer Learning (TF) ist, wenn bereits gelerntes Wissen angewendet oder genutzt wird, um etwas anderes zu erlernen \cite{transfer_learning}. 
+Das neural Network lernt etwas. Wenn es das kann, soll es etwas anderes lernen und das bereits gelernte Wissen dafür nutzen. 
+Dabei wird der Ursprung dieser Daten Source und das Ziel Target genannt \cite{phd_deep_cascade}. 
+Das ähnlichste Prinzip dieser Lernmethode ist es, wenn ein Mensch sich Sachen über Eselsbrücken 
+einprägt. Dort wird auch nicht nur direkt das gelernt, was eigentlich gelernt werden soll. 
+Ein Netzwerk, welches TF macht, muss also einen Wechsel vollziehen. 
+Es gibt dabei drei Research issues: 
+\begin{enumerate}
+    \item What to transfer
+    \item How to transfer
+    \item When to transfer
+\end{enumerate}
+\cite{survey_transfer}
+Das Erste davon ist die Frage mit was für anderen Daten die Eselsbrücke gebaut wird. 
+Die Lernalgorithmen entscheiden über den zweiten Punkt. Wann das TF 
+gemacht wird, wird meistens über Fehlermetriken entschieden. Sobald das Netz einen Threshold erreicht, 
+bei dem der Fehler gering genug ist, wird der Wechsel gemacht. Dies kann aber beliebig 
+ausgetestet werden, um einen optimalen Zeitpunkt zu finden. 
+TF besitzt aber eine Grenze bei der Verbesserung des Netzes. Des Weiteren wird das Netz durch TF nicht zwingend besser, 
+sondern kann auch schlechter werden, was Negative Transfer ist \cite{survey_transfer}. 
+
+% Welche Arten von TF gibt es?
+Dabei gibt es zwei Bereiche, in denen ein solcher Wechsel stattfinden kann. Damit TF gemacht wird, 
+muss es mindestens in einem dieser Bereiche einen Wechsel geben. Es gibt dort zum einen die Domain, was den Datensatz oder 
+den Shape der Daten ausmacht und zum anderen der Task, der sowas wie Bilderkennung oder Picture Segmentation ausmacht \cite{survey_transfer}. 
+Zusätzlich gibt es auch die Möglichkeit, dass der Wechsel 
+nicht direkt auf die Zieldomain gemacht wird, sondern es zwischendurch auf eine Zwischendomain 
+gewechselt wird und dann auf die Zieldomain \cite{bridge_transfer}. Dies wird 
+bridge Transferlearning genannt und wird angewendet, wenn sich der Shape des Feature Spaces ändert oder 
+es durch zu große Unterschiede zwischen Source und Target zu Negative Transfer kommt \cite{survey_transfer}.
+
+% Wieso wurde TF mit Deep Cascade Learning durchgeführt?
+Deep Learning kann komplexere Aufgaben lösen als Shallow Learning, allerdings benötigt das Trainieren relativ viel Zeit. 
+Wenn diese nicht vorhanden ist, wird Cascade Learning angewendet \cite{cascor}.
+Für gewöhnlich wird bei TF ein Pre-trained Network genutzt und als Ausgangspunkt des Transfers der letzte Feature Vector, da 
+angenommen wird, dass dieser die meisten Informationen enthält. Diese Art nennt man Feature-Representation-Transfer 
+\cite{survey_transfer}. Das ist bei Deep Transfer Learning erst spät der Fall. Bei einem Cascade Learning wird in jeder 
+Iteration der Feature Vector ins Transfer Learning gegeben. Dadurch wird herausgefunden, welcher Feature Vector tatsächlich 
+die meisten Informationen hat. 
+Das neural Network wird dabei effizienter und weniger komplex als es bei Deep Transfer Learning ist \cite{phd_deep_cascade}.
+        
+% Cascade Learning
+Cascade Networks werden während des Trainings erst gebaut. Dazu werden Constructive 
+Algorithms genutzt. Diese haben den Vorteil, dass es unwichtig ist, die genaue Größe 
+des Netzes vorher zu wissen \cite{Constructive_Cascade}. Damit wird das Netz groß 
+genug sein, um eine gute Lösung zu liefern, aber auch nicht so groß, dass das 
+Training von vornherein lange dauern muss. Gleichzeitig hat es den Vorteil, dass 
+die Trainingszeit geringer ist \cite{Constructive_Cascade}, \cite{cascor}. 
+Ein Beispiel dafür ist Cascade Correlation (CasCor). Hierbei wird immer ein Perceptron hinzugefügt. 
+Dieses wird dann auf die höchste Correlation trainiert, bis es keine Verbesserung mehr gibt. 
+Dann werden die Weights vom Perceptron gefreezt, sodass diese sich nicht mehr verändern können. 
+Danach gibt es eine Überprüfung, ob das neural Network gut genug ist und falls ja, dann 
+ist das Training beendet. Falls nein, wird ein weiteres Perceptron hinzugefügt und wieder 
+trainiert. Das wird solange wiederholt bis das Netzwerk einen so geringen Error hat, wie 
+es erwünscht ist \cite{cascor}. Es hat durch das Erschaffen der Perceptrons und dem 
+Freeze von den Weights den Vorteil, dass es schnell lernt und es kein Backpropagation 
+durch das ganze Netz geben muss. Das liegt daran, dass die einzigen Änderungen die Weights 
+des neuen Perceptrons sind und dieses mit dem Output des Netzes direkt verbunden ist \cite{cascor}. 
+Ein weiteres Prinzip ist das Direct Cascade Learning. Hierbei gibt es zwischen den trainierten 
+Perceptrons keinerlei Nachbearbeitung der Daten, sondern der Output des Vorherigen wird 
+als Input des Nächsten genutzt, wie es bei Cascade QEF und Cascade LLM der Fall ist \cite{cascade_network_architectures}, \cite{cascade_llm_networks}.\\
+
+TF wurde bereits mit traditionellen Lernmethoden durchgeführt und neben diesen 
+eher selten mit Cascade Learning. Ein Beispiel, bei dem es durchgeführt wurde ist Cascade Transfer 
+Learning (CTL) \cite{phd_deep_cascade}, 
+welches effektiv CasCor \cite{cascor} mit TF verband. Dies hatte den Effekt, dass die Performance von CTL 
+etwas schlechter als fine-tuning TF war, aber der große Unterschied darin bestand, dass CTL deutlich 
+weniger Speicherplatz benötigte \cite{phd_deep_cascade}. 
+Es gibt neben CasCor allerdings noch weitere Cascade Learning Algorithmen, die 
+bisher noch nicht für Transfer Learning benutzt worden sind, wie die, die Direct Cascade Learning 
+vollziehen. 

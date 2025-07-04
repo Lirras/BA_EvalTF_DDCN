@@ -1,6 +1,6 @@
 Anhand des ConvMaxPool-Netzwerks werden alle allgemeinen Resultate und Auffälligkeiten beschrieben. 
 Dies ist ein Deep Cascade Classification Netzwerk und wird deshalb iterativ aufgebaut. 
-Das Netz ist ein Convolution-Network mit Padding, sodass die Dimensionen während der Convolution-Layer sich nicht verringert. 
+Das Netz ist ein Convolution-Network mit Padding, sodass die Dimensionen während der Convolution-Layer nicht verringert werden. 
 Es wird die Aktivierungsfunktion relu genutzt. 
 
 \begin{figure}[htpb]
@@ -20,6 +20,6 @@ Es wird die Aktivierungsfunktion relu genutzt.
 \fi
 
 Alle Layer des ConvMaxPool Netzwerks sind in Figure 3.2 in korrekter Reihenfolge zu sehen. Dabei ist die erste Zahl eines Convolution Layer 
-die Anzahl der genutzten Filter, während das folgende Tuple die Kerngröße beschreibt. Ebenfalls die Kerngröße steht bei den MaxPool Layern dort. 
+die Anzahl der genutzten Filter, während das folgende Tuple die Kerngröße beschreibt. Ebenfalls steht die Kerngröße bei den MaxPool Layern dort. 
 Das Flatten- und das Linear-Layer sind der Output-Block. Das Linear-Layer benötigt zehn Nodes, da es zehn Klassen gibt. Jedes Hidden Layer wird 
 mit zehn Epochen trainiert. Es gibt keine Early-Stopping Metrik und es wird derselbe Seed für alle Tests genutzt. 

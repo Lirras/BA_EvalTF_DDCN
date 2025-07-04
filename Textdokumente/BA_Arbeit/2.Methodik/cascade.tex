@@ -1,9 +1,12 @@
 Hier wird erklärt, was ein Kaskadennetzwerk ist und welche Besonderheiten es dabei gibt. 
 Ein Kaskadennetzwerk ist ein Netzwerk, welches in Kaskaden, also Schrittweise, aufgebaut wird. Während bei einem klassischen Netz 
-vorher festgelegt wird, wieviele und welche Layer dieses haben wird, ist es bei einem Kaskadennetzwerk nicht so. Ein solches Netzwerk 
+vorher festgelegt wird, wieviele und welche Layer und Unternetzwerke dieses haben wird, ist es bei einem Kaskadennetzwerk nicht so. Ein solches 
+Netzwerk 
 wird erst während dem Training aufgebaut und immer erweitert. Deshalb werden, im Gegensatz zu den klassischen Netzen, nur der aktuelle neue 
-Teil trainiert, während der Rest nicht mehr verändert wird. Die vorher gelernten Layer werden nach dem Training gefreezt. Dadurch 
-werden die Gewichte mehr der gefreezten Layer nicht mehr verändert. Die Kaskadennetzwerke lernen dadurch das, was zwischen den Layern 
+Teil trainiert, während der Rest nicht mehr verändert wird. Die vorher gelernten Layer und Unternetzwerke werden nach dem Training gefreezt. 
+Dadurch 
+werden die Gewichte der gefreezten Layer und Unternetzwerke nicht mehr verändert. Die Kaskadennetzwerke lernen dadurch das, was zwischen den 
+Layern und Unternetzwerken 
 gelernt wird, nicht und sind deshalb etwas schlechter als die klassischen Netzwerke bei gleich vielen Daten. Aber, weil immer nur das 
-aktuelle gelernt wird, sind Kaskadennetzwerke im Training sehr viel schneller. Dies liegt daran, dass die Gewichte der vorherigen Layer 
+Aktuelle gelernt wird, sollten Kaskadennetzwerke im Training sehr viel schneller sein. Dies liegt daran, dass die Gewichte der vorherigen Layer 
 kein sich verändertes Bild von den nachfolgenden Gewichten in jeder Epoche haben und sich nicht aktualisieren müssen. 
