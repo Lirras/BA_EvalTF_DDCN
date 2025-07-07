@@ -1,7 +1,8 @@
 
-Klassifikation sollte nicht weiter in einem Cascade Verfahren ausgetestet werden, da es bei egal wie vielen Daten 
-immer schlechter ist als, wenn mit einem Kompletten gelernt wird. Wenn, dann nur mit einem anderen Loss als 
+Klassifikation sollte nicht weiter in einem Deep oder Direct Cascade Verfahren ausgetestet werden, da es bei egal wie vielen Daten 
+immer schlechter ist als, wenn mit einem kompletten Netzwerk gelernt wird. Wenn, dann nur mit einem anderen Loss als 
 CategoricalCrossEntropy oder einer anderen Art, wie die Augmented Vectors zwischen den Netzwerken gebaut werden. 
+Was sonst noch ginge, wäre ein anderes Kaskadierungsverfahren, aber es ist unwahrscheinlich, dass das besser klappt. 
 
 Für die Regressionsnetze kann ein anderer Loss als MeanSquaredError verwendet werden. 
 
@@ -9,7 +10,8 @@ Bei beiden Varianten können noch andere Early-Stopping Metriken genutzt werden,
 welche, die die Anzahl der Netziterationen anhand 
 einer solchen Metrik bestimmen. Genauso eine, die keine Maxmialanzahl an Epochen besitzt, aber dort kann es passieren, dass das Training nie endet. 
 
-Es kann auch noch ein anderer Optimizer als Adam genutzt werden und andere Datensätze als Source und Target. Sowie die aktuellen in einer anderen 
+Es kann auch noch ein anderer Optimizer als Adam genutzt werden und andere Datensätze als Source und Target. Sowie die aktuellen Datensätze 
+in einer anderen 
 Art für die Netze vorbereitet werden können. 
 
 Ebenso kann noch ausgetestet werden, wie sich TF bei einem Taskwechsel verhält, genauso wie bei Task- und Domainwechsel zugleich. 

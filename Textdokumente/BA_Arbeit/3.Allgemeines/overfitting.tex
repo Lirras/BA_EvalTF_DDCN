@@ -4,11 +4,14 @@ Das Ergebnis davon ist in Figure 3.5 zu sehen.
 
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/convmaxpool/wotr.png}
+    \includegraphics[height=5cm]{../../Plots/ba_plots/convmaxpool/epochTFtr.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/convmaxpool/1TFtr.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/convmaxpool/2TFtr.png}
-    \includegraphics[height=5cm]{../../Plots/ba_plots/convmaxpool/epochTFtr.png}
     % \includegraphics[height=5cm]{../../Plots/ba_plots/convmaxpool/4TFtr.png}
-    \caption{\label{fig:layertf} TF bei unterschiedlichen Layern}
+    \caption{\label{fig:layertf} 
+    \small{Hier sind von links oben nach rechts unten die Plots folgender Tests zu sehen: 
+    CMP:732/10, CMP:TF0/732/10, CMP:TF1/732/10, CMP:TF2/732/10. Alle Plots haben hier dasselbe Problem damit, dass der Unterschied 
+    zwischen der Trainings-Accuracy und der Validation-Accuracy immer größer wird.}}
 \end{figure}
 
 Auffällig ist es, dass hier die beste Performanz ohne TF ist. Bereits nach nur einer Epoche im ersten Layer, welches auf dem Sourcedatensatz 
@@ -25,7 +28,9 @@ Es kommt dazu weder auf dem Sourcedatensatz noch auf dem Targetdatensatz.
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/regr2/woregr2tr.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/regr2/1TFtr.png}
-    \caption{\label{fig:regr2tf} TF bei Regression}
+    \caption{\label{fig:regr2tf} 
+    \small{Hier ist links der Test Regr2:240/25 und rechts Regr2:TF1/240/25 zu sehen. Der MAE zwischen Trainingsset und Validationset hat kaum 
+    einen Unterschied. Hier ist kein Overfitting.}}
 \end{figure}
 
 Dieses Overfitting-Problem hat nur die Klassifikation. Dies muss an der Loss-Function oder der Activation-Function, die für Klassifikation 

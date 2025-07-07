@@ -9,8 +9,8 @@ wird auf eine Gesamtanzahl von 40 Epochen trainiert. Wenn TF gemacht wird, dann 
 trainiert. TF wird nach 30 Epochen gemacht. Tatsächliche Graphen werden hier nicht verwendet, da es zuviele sind und die meisten an 
 anderen Stellen in ähnlicher Form bereits vorkommen. Um diese Graphen zu kontrollieren, schaut bitte auf das GitHub Repo unter 
 \url{https://github.com/Lirras/BA_EvalTF_DDCN/tree/main/Plots/ba_plots/timing}. 
-Es wird hier keine Early-Stopping Metrik genutzt. 
 
+Es wird hier keine Early-Stopping Metrik genutzt. 
 Dabei werden alle Klassifikationsnetze mit denselben Inputdaten gespeist, ebenso wie bei allen Regressionsnetze, was zur besseren 
 Vergleichbarkeit jeweils untereinander führt. 
 Die jeweiligen Netzversionen zwischen Cascade TF, Cascade und Complete haben dieselben Layer, sowie diegleiche Anzahl. 
@@ -18,9 +18,7 @@ Die jeweiligen Netzversionen zwischen Cascade TF, Cascade und Complete haben die
 Hier nun die Tabelle mit allen Zeiten der Netze in einer vergleichbaren Variante: \newline
 
 \begin{table}[h!]
-    \begin{center}
-        \caption{Timingvergleich in Sekunden}
-        \label{tab:time}
+    \begin{center} 
         \begin{tabular}{l|l|l|l}
             \textbf{Netzwerk} & \textbf{Cascade TF} & \textbf{Cascade} & \textbf{Complete} \\
             \hline
@@ -31,6 +29,9 @@ Hier nun die Tabelle mit allen Zeiten der Netze in einer vergleichbaren Variante
             RegressionTwo & 11 & 12 & 17 \\
             OneLayer & 16 & 18 & 11
         \end{tabular}
+        \caption{
+            \small{Dies ist der Zeitdauervergleich zwischen den jeweiligen Netzen und ihren Varianten. Die Angaben sind in Sekunden.}}
+        \label{tab:time}
     \end{center}
 \end{table}
 
@@ -45,7 +46,9 @@ Ebenso brauchen alle Klassifikationsnetze länger mit TF als ohne, was daran lie
 48000 Trainingsdaten recht groß ausfällt, während die Anderen direkt auf dem kleinen Targetdatensatz, der mit 732 Datensamples klein ist, 
 trainieren. 
 
-Da Cascade TF mit dem Sourcedatensatz ist und die anderen Netze nur auf dem Targetdatensatz arbeiten, sind diese meist kürzer. Allerdings 
+Da Cascade TF mit dem Sourcedatensatz ist und die anderen Netze nur auf dem Targetdatensatz arbeiten, sind letztere meist kürzer. Allerdings 
 benötigen die Complete Netzwerke, die ohne Kaskadierung sind, noch weniger Zeit. Dies wird an der Implementierung der Netze liegen, da bei jedem 
 Kaskadennetzwerk das Outputlayer in jeder Kaskade mit berechnet wird, während bei den Complete Netzwerken nur ein einziges Outputlayer existiert. 
 Des Weiteren werden keine extra Predictions und keine Berechnung der Augmented Vectors gemacht. 
+Zudem sind die genutzten Netzwerke nur mäßig groß, sowie der betrachtete Targetdatensatz so klein, dass nicht das Training die meiste Zeit 
+benötigt, sondern die Berechnungen drum herum. 

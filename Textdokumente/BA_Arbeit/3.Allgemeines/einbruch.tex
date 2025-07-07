@@ -3,8 +3,11 @@ Der Graph, der die Trainings- und Validationdaten nutzt, hat immer einen Einbruc
 der TF gemacht wird. Dies ist in der Figure 3.3 deutlich bei Epoche zwanzig zu sehen.
 
 \begin{figure}[htpb]
+    \centering
     \includegraphics[height=5cm]{../../Plots/ba_plots/convmaxpool/convmaxpooltrain.png}
-    \caption{\label{fig:convmaxpooltrain} Einbruch bei TF}
+    \caption{\label{fig:convmaxpooltrain} 
+    \small{Hier zu sehen ist CMP:TF2/732/10. Der Hauptaugenmerk liegt hier bei Epoche 20, denn zu diesem Zeitpunkt wurde TF angewendet. 
+    Es kommt zum Einbruch der Performanz.}}
 \end{figure}
 
 Dieser Einbruch passiert jedes Mal nach TF. Dies liegt daran, dass das Netz bisher die Targetdaten noch nie gesehen hat und bisher 
@@ -12,9 +15,13 @@ auf eine andere Domain mit dem Sourcedatensatz trainiert hat. Das Netz kennt nur
 anwenden. Wenn man aber das Testset, welches nur über die Targetdaten geht auf das ganze Netzwerk betrachtet, kommt Figure 3.4 heraus. 
 
 \begin{figure}[htpb]
+    \centering
     \includegraphics[height=5cm]{../../Plots/ba_plots/convmaxpool/convmaxpooltest.png}
-    \caption{\label{fig:convmaxpooltest} Verbesserung auf Testdaten}
+    \caption{\label{fig:convmaxpooltest} 
+    \small{Dies ist der Testdatenplot von CMP:TF2/732/10. Dieser enthält die Targetdaten, die das Netz nicht 
+    während dem Training sieht. Immer nachdem ein Layer fertig trainiert wurde, werden einmal die Testdaten evaluiert. Deshalb ist der Punkt 
+    an dem TF gemacht wird, hier bei 2 Networks. Performanz wird zu dem Zeitpunkt besser.}}
 \end{figure}
 
 Der Wechsel ist hierbei bei Netzwerk 2. Es ist eindeutig zu erkennen, dass es nach TF besser wird. Dies hat den Grund, dass das Netzwerk 
-ab diesem Zeitpunkt auf den Trainingsdaten trainiert, die zum Testdatenset passen. 
+ab diesem Zeitpunkt auf den Trainingsdaten trainiert, die zum Testdatenset passen, da dieses seine Daten nur aus dem Targetdatensatz bezieht. 

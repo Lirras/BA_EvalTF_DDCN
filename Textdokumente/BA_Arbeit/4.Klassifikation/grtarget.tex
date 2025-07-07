@@ -1,8 +1,9 @@
 Hier wird auf die Änderungen der Performanz der Netze eingegangen, die dadurch entstehen, wenn der Targetdatensatz unterschiedliche Größen hat. 
 Die Vermutung ist, dass es schlechter wird, je weniger Daten vorhanden sind. 
 
-Um Vergleiche zu haben, werden wieder insgesamt 40 Epochen trainiert und nach zwanzig TF vollzogen. Dies wird mit den Netzwerken 
-ConvMaxPool, 1DConv und ClassOneDense vollzogen. Hier wird auch auf den Testdatensatz eingegangen. 
+Um Vergleiche zu haben, die zueinander passen, werden wieder insgesamt 40 Epochen trainiert und nach zwanzig TF vollzogen. Dies wird mit den 
+Netzwerken 
+CMP, 1DC und COD durchgeführt. Hier wird auch auf den Testdatensatz eingegangen. 
 
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/cmp_ts.png}
@@ -18,12 +19,15 @@ Ebenfalls zeigt sich, dass Deep Cascade etwas besser ist als Direct Cascade. Die
 die nur ein Hidden Layer haben, während es bei Deep Cascade mehrere sind. 
 
 \begin{figure}[htpb]
+    \centering
     \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/cod_ts.png}
     \caption{\label{fig:targetgroesselinear} Targetgrößenänderung bei nur Linearlayern}
 \end{figure}
 
 In Figure 4.2 ist das Deep Cascade Netzwerk, welches als Hidden Layer ausschließlich Linearlayer hat. Auffällig ist, dass dieses bei egal 
 wievielen Datensamples immer schlechter abschneidet als die anderen beiden Netzwerke, die Convolutionlayer besitzen. 
+Dies liegt daran, dass dieses Netzwerk die wichtigen Bilderkennungsfeatures nicht ausreichend herausfiltern kann, weil die Daten zu komplex und 
+nicht linear sind. 
 
 Generell ist es bei allen Testplots so, dass sie nie eine annehmbar hohe Accuracy besitzen und das auch dann nicht, wenn es genügend Daten 
 gibt, damit auf dem Targetdatensatz direkt gelernt werden könnte. Wenn dies mit dem Deep Cascade Netzwerk gemacht wird, kommt dabei eine 

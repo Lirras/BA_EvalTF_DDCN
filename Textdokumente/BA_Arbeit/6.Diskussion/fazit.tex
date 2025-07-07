@@ -1,7 +1,10 @@
 Klassifikation ist mit Direct Cascade mit TF mit den hier genutzten Augmented Vectors nicht machbar. 
+Deep Cascade läuft bei Klassifikation besser, ist aber auch nicht sinnvoll verwendbar. 
 
 Regression ist mit TF in der Direct Cascade Version sinnvoll, da es entweder gleich oder besser performt. Die einzige Möglichkeit, dass dies 
 nicht der Fall ist, ist bei sehr wenigen Daten verglichen mit der kompletten Version des Netzes. 
+Es funktioniert ebenso mit Deep Cascade und das auch in dem eben genannten Sonderfall bei einer mithaltenden Performanz. 
 
-Die kompletten Netzwerke sind schneller als Deep Cascade und diese als Direct Cascade. Dadurch ist es sinnvoller ab bereits sehr wenigen 
+Die kompletten Netzwerke sind mit insgesamt gleich vielen Hidden Layer und bei sehr wenigen Daten 
+schneller als Deep Cascade und diese als Direct Cascade. Dadurch ist es sinnvoller ab bereits sehr wenigen 
 Daten ein komplettes Netzwerk zu nutzen als eines mit Kaskadierung. 

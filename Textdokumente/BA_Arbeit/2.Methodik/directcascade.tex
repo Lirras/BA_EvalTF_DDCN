@@ -1,10 +1,14 @@
 Hier wird die Kaskadierungsvariante des Direct Cascade vorgestellt. 
 Das Netzwerk ist hier vorher vollständig und besteht aus einem einzigen Hidden Layer und einem Output Layer. 
-Es wird dasselbe Netz mehrfach trainiert und währenddessen wird das Wissen zwischen diesen Netzen weitergegeben. 
+Es wird dasselbe Netz mehrfach trainiert und während-dessen wird das Wissen zwischen diesen Netzen weitergegeben. 
 
 \begin{figure}[htpb]
+    \centering
     \includegraphics[height=10cm]{../../Graphiken/direct_cascade.png}
-    \caption{\label{fig:directcascade} Vorstellung Direct Cascade Aufbau}
+    \caption{\label{fig:directcascade} 
+    \small{Hier zu sehen ist das Direct Cascade Verfahren. Dieses benutzt mehrere Netzwerke (hier Models), die alle nur sehr wenige 
+    Hidden Layer haben, meistens nur eines. Danach wird dieses einmal ohne Training angewandt und dessen Ergebnis mit dem Input verknüpft. 
+    Diese Verknüpfung ist der neue Input des nächsten Netzwerkes. Dadurch lernt das Verfahren zwischen den Netzwerken. }}
 \end{figure}
 
 Es beginnt, wie in Figure 2.2 gezeigt mit dem präpariertem Sourcedatensatz, der in die Instanz des Netzes hineingegeben wird. 

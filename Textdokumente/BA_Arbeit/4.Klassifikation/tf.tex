@@ -8,7 +8,7 @@ wenig Targetdaten verwendet.
     \caption{\label{fig:1dc_tr} 1DConv TF Vergleich}
 \end{figure}
 
-Wie in Figure 4.4 zu sehen gibt es keinen Unterschied zwischen der Accuracy mit TF zu der ohne bei Convolutionlayern. In beiden Fällen ist diese 
+Wie in Figure 4.4 zu sehen gibt es keinen Unterschied zwischen der Accuracy mit TF zu der ohne bei Convolutional Layern. In beiden Fällen ist diese 
 extrem schlecht. Dies zeigt sich auch auf den Testdaten. 
 
 \begin{figure}[htpb]
@@ -17,7 +17,9 @@ extrem schlecht. Dies zeigt sich auch auf den Testdaten.
     \caption{\label{fig:cod_tr} ClassOneDense TF Vergleich}
 \end{figure}
 
-In Figure 4.5 zeigt sich dasselbe Bild nur auf Basis von Linearlayern. Dies kann zwei Gründe haben: Entweder funktioniert das Kaskadieren nicht 
+In Figure 4.5 zeigt sich dasselbe Bild nur auf Basis von Linear Layern. Dies kann zwei Gründe haben: Entweder funktioniert das Kaskadieren nicht 
 oder es sind nicht genügend Targetdaten vorhanden. Letzteres wurde oben ausgetestet und lieferte zwar bessere, aber trotzdem nur mäßige Ergebnisse. 
 Das Rauschen in den Plots kommt hier daher, dass alle zehn Epochen ein neues Netzwerk angefangen wird zu lernen. Dies hat zwar das Wissen aller 
 vorherigen Netze im Input, aber nicht in der Art, dass die Gewichte direkt gleich gut sind. 
+
+Daraus folgt also, dass es Probleme beim Kaskadieren geben muss. 

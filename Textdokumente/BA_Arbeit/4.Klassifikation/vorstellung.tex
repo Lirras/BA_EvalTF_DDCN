@@ -1,16 +1,17 @@
-Hier werden kurz die Direct Cascade Netze für die Klassifikation vorgestellt. Die Besonderheit eines solchen Netzwerkes ist es, dass es 
-immer nur ein einziges Hiddenlayer existiert und die Netze so iteriert werden, dass sie das Wissen der vorherigen mitnehmen. 
+Hier werden kurz die Direct Cascade Netze für die Klassifikation vorgestellt. Die Besonderheit eines solchen Netzwerkes ist es, dass 
+immer nur ein einziges Hiddenlayer existiert und die Netze so iteriert werden, dass sie das Wissen der Vorherigen mitnehmen. 
 
 \begin{table}[h!]
-    \caption{Direct Cascade Networks}
-        \label{tab:classvor}
+    \centering    
     \begin{tabular}{l|l|l|l|l}
         \textbf{Name} & \textbf{Hiddenlayer} & \textbf{Nodes/Filter} & \textbf{Aktivierung} & \textbf{Input} \\
         \hline
-        ClassOneDense & Linear & 512 & Relu & 1 \\
-        1DConv & 1DConv & 32 & Relu & 1 \\
-        2DConv & 2DConv & 32 & Relu & 2
+        COD & Linear & 512 & Relu & 1 \\
+        1DC & 1DConv & 32 & Relu & 1 \\
+        2DC & 2DConv & 32 & Relu & 2
     \end{tabular}
+    \caption{Direct Cascade Networks}
+        \label{tab:classvor}
 \end{table}
 
 Dabei ist der Input die Dimension in der die Bilddaten vorliegen und nur in der ersten Zeile sind es Nodes, sonst sind es die Filter. 
