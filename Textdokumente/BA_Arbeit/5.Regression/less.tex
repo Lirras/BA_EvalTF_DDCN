@@ -24,16 +24,30 @@ Es gibt aber deutliche Unterschiede zu Direct Cascade, weshalb beide Netze hier 
 \end{figure}
 
 Figure 5.5 bezieht sich auf das Direct Cascade Netzwerk. Es wird deutlich, dass in dieser Kaskadierungsvariante das Netz deutlich schlechter 
-ohne TF ist als mit. Die liegt daran, dass das TF über den Augmented Vector als veränderten Input funktioniert und nicht über Gewichte, die 
-von dem Sourcedatensatz fertig gelernt worden sind. Allerdings ist das Deep Cascade Netzwerk trotzdem besser. Dies kann aber auch 
-an dem dahinter liegenden Netz liegen, da sie nicht nur die gleichen Layer haben. Noch besser ist die Variante, 
-die weder Kaskadierung noch TF nutzt, wie in Figure 5.6 gezeigt. 
+ohne TF ist als mit. Daran wird erkannt, dass hier positive TF vorliegt. Die Predictions, die mithilfe des Sourcedatensatzes über die 
+zu dem Zeitpunkt nicht betrachteten Targetdaten, verbessern das Gesamtergebnis deutlich. Dadurch gibt es mehr Daten pro Sample, wenn auf dem 
+Targetdatensatz das Training begonnen wird. Diese Daten sind dabei nicht störend für die Performanz, weshalb es dann besser mit TF ist als ohne. 
 
-% Wieso ist die komplette Version trotz der wenigen Daten besser?
+Allerdings ist das Deep Cascade Netzwerk sowohl mit als auch ohne TF minimal besser. Dies kann aber auch 
+an dem dahinter liegenden Netz liegen, da sie nicht nur die exakt gleichen Layer haben. 
+Noch besser ist die Variante, 
+die weder Kaskadierung noch TF nutzt, sondern ein komplettes Netzwerk ist, wie in Figure 5.6 gezeigt. 
+
 \begin{figure}
     \centering
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_small/onelayer_complete.png}
     \caption{\label{fig:smallonlcomp} Komplettes OneLayer}
 \end{figure}
 
-Der MAE-Wert der Testdaten beläuft sich hier auf 53 Tausend Dollar, während dieser sonst bei so wenig Datensamples bei 60 bis 80 liegt. 
+Der MAE-Wert der Testdaten beläuft sich hier auf 53 Tausend Dollar, wäh-rend dieser sonst bei so wenig Datensamples bei 60 bis 80 liegt. 
+
+Also ist ein Netz gänzlich ohne Kaskadierung, aber mit vielen Hidden Layern und nur einem Trainingsaufruf bei 80 Epochen, auch bei wenigen 
+Daten besser als diejenigen mit Kaskadierung und kommt sogar an den Wert heran, der mit vielen Daten erreicht wird. 
+Dieses Netz hat im Gegensatz zu den Anderen die Möglichkeit zwischen den Layern zu lernen und mit den noch nicht fertig verarbeiteten Daten 
+des Inputs weiterzurechnen. Das dürfte dazu beitragen, dass es eine bessere Performanz gibt. 
+
+% Zudem erscheint der Targetdatensatz als 
+% verhältnismäßig einfach, da dieser mit so wenigen Daten so erfolgreich gelernt werden konnte. 
+
+Wenn diese Tests mit einem explizit großen Testdatensubset angewendet werden, dann ändert sich nur der tatsächliche MAE-Wert dahingehend, dass 
+dieser etwas schlechter wird. Die Verhältnisse zwischen den Netzen hingegen nicht. 

@@ -25,10 +25,6 @@ Daten unmöglich ist.
 
 Bei den Regressionsnetzen wird jeweils einmal mit vielen und wenigen Targetdaten trainiert. 
 
-% Für fast alle Netze gilt, dass sie mit vielen, mittleren und wenigen Source- und Targetdaten durchgeführt wurden. Die 
-% einzige Ausnahme ist das 2DConv-Netzwerk, welches nur mit wenigen Daten durchgeführt wurde, da mit mehr Daten es 
-% technisch nicht mehr mit derselben Hardware möglich war. 
-
 Es wurde mit allen Netzwerken ein Vergleich sowohl zwischen mit TF und ohne als auch zwischen ohne TF und Kompletten angefertigt. 
 Komplett heißt hier, dass es ein Netzwerk ohne TF und ohne Kaskadierung ist und dieses deshalb in einem komplett trainiert wird. 
 
@@ -39,138 +35,66 @@ zwischen Filterlayern und Linearlayern zu bewerkstelligen.
 
 Für alle Netzwerke wurde derselbe Seed für die Initialisierung der Weights genutzt. 
 
-
-In Tabelle 2.1 sind die Tests, die sich mit der Zeitdauer befassen mit der Endung Time. Dabei gilt, dass CasTF Kaskadierung mit TF, Cas allein 
-Kaska-dierung ohne TF und Comp bedeutet, dass es weder TF noch Kaskadierung gab. ACCM, LM und MAEM sind die Tests bezüglich der Early-Stopping 
+In Tabelle 2.1 sind die Tests bezüglich Klassifikation und in Tabelle 2.2 die für die Regression. 
+In beiden Tabellen sind die Tests, die sich mit der Zeitdauer befassen mit der Endung Time. Dabei gilt, dass CasTF Kaskadierung mit TF, Cas allein 
+Kaskadierung ohne TF und Comp bedeutet, dass es weder TF noch Kaskadierung gab. ACCM, LM und MAEM sind die Tests bezüglich der Early-Stopping 
 Metriken. 
 Vor dem ersten Schrägstrich steht, wann TF gemacht wurde, welches mit TF im Eintrag gekennzeichnet ist. Wenn kein TF gemacht wurde, ist dieser 
 erste Bereich nicht existent. Dahinter steht die Datenmenge 
 des Targetdatensatzes und danach die Menge an Epochen pro Trainingsiteration. Wenn es noch etwas viertes gibt, dann zeigt dieses an, wieviele 
 Epochen in Zehnern es insgesamt gab. 
 
-
-\begin{table}[h!]
+\begin{table}[!ht]
     \centering
-    \begin{tabular}{l|l|l|l|l|l}
-        \textbf{CMP} & \textbf{COD} & \textbf{1DC} & \textbf{2DC} & \textbf{Regr2} & \textbf{1Lay} \\
+    \begin{tabular}{l|l|l|l}
+        \textbf{CMP} & \textbf{COD} & \textbf{1DC} & \textbf{2DC} \\
         \hline
-        TF0/732/10 & CasTFTime & CasTFTime & CasTFTime & TF0/240/25 & CasTFTime \\
-        TF1/732/10 & CasTime & CasTime & CasTime & TF1/240/25 & CasTime \\
-        TF2/732/10 & CompTime & CompTime & CompTime & TF4/240/25 & CompTime \\
-        TF3/732/10 & TF2/732/10 & TF2/732/10 & TF2/732/10 & CasTFTime & TF11/8k/8 \\
-        TF4/732/10 & TF2/7k/10 & TF2/7k/10 & & CasTime & 8k/8 \\
-        TF5/732/10 & TF2/21k/10 & TF2/21k/10 & & CompTime & Comp/8k/8 \\
-        732/10 & TF2/36k/10 & TF2/36k/10 & & TF3/8k/8 & TF11/240/20 \\
-        CasTFTime & TF2/51k/10 & TF2/51k/10 & & 8k/8 & 240/10 \\
-        CasTime & TF10/732/10/30 & TF10/732/10/30 & & Comp/8k/8 & Comp/240/8 \\
-        CompTime & 732/10/30 & 732/10/30 & & TF3/240/8 & MAEM/240/10 \\
-        TF2/7k/10 & Comp/732//30 & Comp/732//30 & & 240/8 & LM/240/10 \\
-        TF2/21k/10 & ACCM/732/10 & ACCM/732/10 & & Comp/240/8 & \\
-        TF2/36k/10 & LM/732/10 & LM/732/10 & & & \\
-        TF2/51k/10 & & & & & 
+        TF0/732/10 & CasTFTime & CasTFTime & CasTFTime \\
+        TF1/732/10 & CasTime & CasTime & CasTime \\
+        TF2/732/10 & CompTime & CompTime & CompTime \\
+        TF3/732/10 & TF2/732/10 & TF2/732/10 & TF2/732/10 \\
+        TF4/732/10 & TF2/7k/10 & TF2/7k/10 & \\
+        TF5/732/10 & TF2/21k/10 & TF2/21k/10 & \\
+        732/10 & TF2/36k/10 & TF2/36k/10 & \\
+        CasTFTime & TF2/51k/10 & TF2/51k/10 & \\
+        CasTime & TF10/732/10/30 & TF10/732/10/30 & \\
+        CompTime & 732/10/30 & 732/10/30 & \\
+        TF2/7k/10 & Comp/732//30 & Comp/732//30 & \\
+        TF2/21k/10 & ACCM/732/10 & ACCM/732/10 & \\
+        TF2/36k/10 & LM/732/10 & LM/732/10 & \\
+        TF2/51k/10 & & & \\
+        & & & \\
     \end{tabular}
-    \caption{\label{tab:alltests} Liste aller Tests, die inhaltlich in dieser Arbeit vorkommen}
+    \caption{\label{tab:classtests} Liste aller Klassifikationstests}
 \end{table}
 
-Eine Referenz zu dieser Liste ist CMP:TF0/732/10. Diese bedeutet, dass es um den Test mit der Kennung TF0/732/10 des CMP-Netzwerkes geht. 
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{l|l}
+        \textbf{Regr2} & \textbf{1Lay} \\
+        \hline
+        TF0/240/25 & CasTFTime \\
+        TF1/240/25 & CasTime \\
+        TF4/240/25 & CompTime \\
+        CasTFTime & TF11/8k/10/8 \\
+        CasTime & 8k/10/8 \\
+        CompTime & Comp/8k/10/8 \\
+        TF3/8k/10/8 & TF11/240/10/20 \\
+        8k/10/8 & 240/10 \\
+        Comp/8k/8 & Comp/240/8 \\
+        TF3/240/8 & MAEM/240/10 \\
+        240/8 & LM/240/10 \\
+        Comp/240/8 & TF4/206/10/8/ts \\
+        TF4/206/10/8/ts & 206/10/8/ts \\
+        206/10/8/ts & Comp/206/10/8/ts \\
+        Comp/206/10/8/ts &
+    \end{tabular}
+    \caption{\label{tab:regrtests} Liste aller Regressionstests}
+\end{table}
+
+Eine Referenz zu einer dieser Listen ist CMP:TF0/732/10. Diese bedeutet, dass es um den Test mit der Kennung TF0/732/10 des CMP-Netzwerkes geht. 
 Bei diesem gibt es die Besonderheit, dass TF nach dem ersten Layer gemacht wird, dieses Layer jedoch im 
 Gegensatz zum restlichen Netzwerk nur mit einer Epoche trainiert wird.
 Selbiges gilt für Regr2:TF0/240/25.
 
-% Zudem wurde ein KFOLD 
-% verwendet und der Mean aller Läufe als Wert für den Plot genutzt.
-
-\iffalse
-% Es gibt einen Unterschied innerhalb der einzelnen Netze
-Alle mit und ohne TF durchgeführt. Beliebig viele Source- und Targetepochen. Mit MAEM, LM und ACCM als Early-Stopping. 
-Alle mit vielen, wenigen und sehr wenigen Source- und Targetdaten. 
-
-Die Direct Cascade Netze: 
-\begin{enumerate}
-    \item ClassConv1D
-    \item ClassConv2D
-    \item ClassDense
-    \item RegrDense
-    \item BigNet
-\end{enumerate}
-
-Was für Layer sind da enthalten, was sind die Loss-Functions? Anzahl Units. Long MNIST/Short MNIST
-
-Klassifikation: 
-
-Direct Cascade:
-Network: 
-Name: OneDLilConv
-Input: N, W*H, C
-TF: Ja/Nein
-Datensamples S/T: 100\%/1\%-100\%
-Sourcedaten Train/Valid/Test: 
-Targetdaten Train/Valid/Test: 732/
-Hidden Layer: 1 Conv1D mit 32 Filtern, kernelsize = 3, padding same -> Datenlänge unverändert
-Hidden Activation: Relu
-Output Layer: Linearlayer mit 10 Nodes und Softmax
-Max Networks S/T: 10/10
-Max Epochs: 10
-Stopping Metrics: non, LM, ACCM
-Optimizer: Adam mit learningrate 1e-3
-Loss: CategoricalCrossEntropy
-Augmentation: N, W*H, C/N, Lb -> N, (W*H).Lb, C  % N: Datensamples, W: Width, H:Height, C: Channel, Lb: Label
-
-
-Network: 
-Name: LittleConv
-Input: N, W, H, C
-TF: Ja/Nein
-Datensamples S/T: 1\%/1\%
-Sourcedaten Train/Valid/Test: 
-Targetdaten Train/Valid/Test: 732/
-Hidden Layer: 1 Conv2D mit 32 Filtern, kernelsize = (3, 3), padding same -> Datenlänge unverändert
-Hidden Activation: Relu
-Output Layer: Linearlayer mit 10 Nodes und Softmax
-Max Networks S/T: 10/50
-Max Epochs: 10
-Stopping Metrics: non, LM, ACCM
-Optimizer: Adam mit learningrate 1e-3
-Loss: CategoricalCrossEntropy
-Augmentation: N, W, H, C/N, Lb -> N, W, H, C+10 ((N, W, H)[0-9] = Lb[0-9] -> C Concat)
-
-
-Network:
-Name: oneDense
-Input: N, W*H
-TF: Ja/Nein
-Datensamples S/T: 100\%/1\%-100\%
-Sourcedaten Train/Valid/Test: 
-Targetdaten Train/Valid/Test: 
-Hidden Layer: 1 Linearlayer mit 512 Nodes
-Hidden Activation: Relu
-Output Layer: Linearlayer mit 10 Nodes und Softmax
-Max Networks S/T: 30/50
-Max Epochs: 10
-Stopping Metrics: non, LM, ACCM
-Optimizer: Adam mit learningrate 1e-3
-Loss: CategoricalCrossEntropy
-Augmentation: N, W*H/N, Lb -> N, W*H.Lb
-
-
-
-Regression:
-Direct Cascade:
-
-Network: 
-Name: oneLayer
-Input: N, Columns
-TF: Ja/Nein
-Datensamples S/T: 4800/600 (Full/Big,Small)
-Sourcedaten Train/Valid/Test: 
-Targetdaten Train/Valid/Test: 
-Hidden Layer: 1 Linearlayer mit 512 Nodes
-Hidden Activation: Relu
-Output Layer: Linearlayer mit 1 Node und Linear
-Max Networks S/T: 10/10
-Max Epochs: 10
-Stopping Metrics: non, LM, MAEM
-Optimizer: Adam mit learningrate 1e-3
-Loss: MeanSquaredError
-Augmentation: N, Columns/Target -> N, Columns+1
-\fi
+Die Tests mit der Endung ts sind diejenigen, die einen explizit großen Testdatensatz haben. 
