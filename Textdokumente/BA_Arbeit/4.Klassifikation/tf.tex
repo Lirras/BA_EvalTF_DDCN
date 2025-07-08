@@ -5,7 +5,9 @@ wenig Targetdaten verwendet.
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/classTF/1dc_tr.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/classTF/wo1dc_tr.png}
-    \caption{\label{fig:1dc_tr} 1DConv TF Vergleich}
+    \caption{\label{fig:1dc_tr} 
+    \small{Hier ist links der Test 1DC:TF10/732/10/30 und rechts 1DC:732/10/30. Das eine ist mit TF, das andere ohne. Der mit TF dauert viel länger, 
+    da der Sourcedatensatz groß ist. Bei beiden ist gut zu sehen, dass die Performanz des Netzes sehr schlecht ist. Egal ob mit oder ohne TF.}}
 \end{figure}
 
 Wie in Figure 4.4 zu sehen gibt es keinen Unterschied zwischen der Accuracy mit TF zu der ohne bei Convolutional Layern. In beiden Fällen ist diese 
@@ -14,7 +16,9 @@ extrem schlecht. Dies zeigt sich auch auf den Testdaten.
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/classTF/cod_tr.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/classTF/wocod_tr.png}
-    \caption{\label{fig:cod_tr} ClassOneDense TF Vergleich}
+    \caption{\label{fig:cod_tr} 
+    \small{Hier ist links der Test COD:TF10/732/10/30, der mit TF ist und rechts COD:732/10/30, der ohne ist. Auch bei dem anderen Fall mit 
+    anderen Hidden Layern im Netzwerk ist es sowohl mit als auch ohne TF schlecht.}}
 \end{figure}
 
 In Figure 4.5 zeigt sich dasselbe Bild nur auf Basis von Linear Layern. Dies kann zwei Gründe haben: Entweder funktioniert das Kaskadieren nicht 

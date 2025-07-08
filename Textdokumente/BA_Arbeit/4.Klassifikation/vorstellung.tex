@@ -4,13 +4,16 @@ immer nur ein einziges Hiddenlayer existiert und die Netze so iteriert werden, d
 \begin{table}[h!]
     \centering    
     \begin{tabular}{l|l|l|l|l}
-        \textbf{Name} & \textbf{Hiddenlayer} & \textbf{Nodes/Filter} & \textbf{Aktivierung} & \textbf{Input} \\
+        \textbf{Name} & \textbf{Hiddenlayer} & \textbf{N/F} & \textbf{Aktivierung} & \textbf{Inputdim} \\
         \hline
         COD & Linear & 512 & Relu & 1 \\
         1DC & 1DConv & 32 & Relu & 1 \\
         2DC & 2DConv & 32 & Relu & 2
     \end{tabular}
-    \caption{Direct Cascade Networks}
+    \caption{\small{Hier sind alle Direct Cascade Netzwerke für die Klassifikation mit den groben internen Daten. 
+    Hiddenlayer ist was für ein solches wurde genutzt. N/F ist Nodes/Filter bezüglich des Layers. Mit Aktivierung ist die 
+    Aktivierungsfunktion im Hiddenlayer gemeint und Inputdim ist in wievielen 
+    Dimensionen die Inputdaten vorliegen.}}
         \label{tab:classvor}
 \end{table}
 

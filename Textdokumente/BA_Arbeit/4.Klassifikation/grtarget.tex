@@ -7,9 +7,13 @@ CMP, 1DC und COD durchgeführt. Hier wird auch auf den Testdatensatz eingegangen
 
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/cmp_ts.png}
-    % \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/cod_ts.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/1dc_ts.png}
-    \caption{\label{fig:targetgroessedeepdir} Vergleich zwischen Deep und Direct Cascade}
+    \caption{\label{fig:targetgroessedeepdir} 
+    \small{Hier ist die Veränderung der Accuracy bei Convolution Netzen zu sehen, wenn die Größe des Targetdatensatzes verändert wird. 
+    Es sind jeweils die Plots über die Testdaten des Targetdatensatzes, wobei links CMP und rechts 1DC ist. 
+    Dahinter sind folgende Tests: CMP: und 
+    1DC:TF2/732/10, 1DC:TF2/7k/10, 1DC:TF2/21k/10, 1DC:TF2/36k/10, 1DC:TF2/51k/10 jeweils in den Farben gelb, grün, lila, blau und rot. 
+    }}
 \end{figure}
 
 In Figure 4.1 sieht man die Testdatenläufe bezüglich der Menge der Trainingsdaten. Dabei ist die erste Zahl in der Legende die Menge und die 
@@ -21,7 +25,10 @@ die nur ein Hidden Layer haben, während es bei Deep Cascade mehrere sind.
 \begin{figure}[htpb]
     \centering
     \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/cod_ts.png}
-    \caption{\label{fig:targetgroesselinear} Targetgrößenänderung bei nur Linearlayern}
+    \caption{\label{fig:targetgroesselinear} 
+    \small{Hier ist die Veränderung der Test-Accuracy bei Linearen Netzwerk zu sehen, wenn die Größe des Targetdatensatzes verändert wird. 
+    Es sind die Tests COD:TF2/732/10, COD:TF2/7k/10, COD:TF2/21k/10, COD:TF2/36k/10 und COD:TF2/51k/10 in den Farben gelb, grün, lila, blau und 
+    rot. }}
 \end{figure}
 
 In Figure 4.2 ist das Deep Cascade Netzwerk, welches als Hidden Layer ausschließlich Linearlayer hat. Auffällig ist, dass dieses bei egal 

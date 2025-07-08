@@ -5,11 +5,11 @@ Direct Cascade Verfahren vorkommen, zusammen haben. Es werden dabei auch gleich 
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/classnocascade/1dc.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/classnocascade/cod.png}
-    \caption{\label{fig:nocascade} Netze ohne Kaskadierung}
+    \caption{\label{fig:nocascade} 
+    \small{Hier sind Tests ohne Kaskadierung. Im genauen links: 1DC:Comp/732//30 und rechts: COD:Comp/732//30. Es ist zu sehen, wie der eine Plot 
+    in ein lokales Maximum geraten ist und welcher maximale Accuracywert mit so wenigen Daten erwartbar wäre. Dieser wird nur mit den kompletten 
+    hier aufgeführten Netzwerken erreicht.}}
 \end{figure}
-
-% Das dürfte daran liegen, dass zu diesem Zeitpunkt die Gewichte des Netzwerkes ausreichend aktualisiert worden sind, dass die Vordersten ebenfalls 
-% in die richtige Richtung verändert werden. 
 
 Was in der Figure 4.6 auffällt ist, dass es bei den meisten Epochen zu keinem Lerneffekt kommt. Ebenso kommt Overfitting vor, was bei so wenigen 
 Daten zu erwarten ist. Obwohl hier nicht TF angewendet wird, gibt es in der Mitte des einen Plot einen plötzlichen Anstieg der Accuracy. 

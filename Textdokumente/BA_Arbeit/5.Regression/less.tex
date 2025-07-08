@@ -8,7 +8,9 @@ im vorherigen Unterkapitel durchgeführt.
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_small/regr2_ts.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_small/woregr2_ts.png}
-    \caption{\label{fig:smallregr} Vergleich RegressionTwo Netzwerk}
+    \caption{\label{fig:smallregr} 
+    \small{Hier ist der Vergleich zwischen mit TF und ohne mit wenig Targetdaten auf dem Regr2-Netzwerk zu sehen. 
+    Die Tests sind: links Regr2:TF4/240/10/8 und rechts Regr2:240/10/8. Dabei ist zu sehen, dass dieses Netzwerk ohne TF besser läuft als mit.}}
 \end{figure}
 
 
@@ -20,7 +22,9 @@ Es gibt aber deutliche Unterschiede zu Direct Cascade, weshalb beide Netze hier 
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_small/onelayer_ts.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_small/woonelayer_ts.png}
-    \caption{\label{fig:smallonl} Vergleich OneLayer Netzwerk}
+    \caption{\label{fig:smallonl} 
+    \small{Dies ist der Vergleich im 1Lay-Netzwerk im Fall der wenigen Targetdaten zwischen TF und ohne. Die dahinter liegenden Tests sind: 
+    links 1Lay:TF11/240/10/21 und rechts 1Lay:240/10/11. Dabei auffällig ist, dass dieses Netzwekr mit TF besser ist als ohne.}}
 \end{figure}
 
 Figure 5.5 bezieht sich auf das Direct Cascade Netzwerk. Es wird deutlich, dass in dieser Kaskadierungsvariante das Netz deutlich schlechter 
@@ -36,7 +40,9 @@ die weder Kaskadierung noch TF nutzt, sondern ein komplettes Netzwerk ist, wie i
 \begin{figure}
     \centering
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_small/onelayer_complete.png}
-    \caption{\label{fig:smallonlcomp} Komplettes OneLayer}
+    \caption{\label{fig:smallonlcomp} 
+    \small{Hinter diesem Plot ist der Test 1Lay:Comp/240//8. Dieser ist trotz der wenigen Daten erfolgreicher 
+    als alle anderen Tests, obwohl dieser weder Kaskadierung noch TF besitzt.}}
 \end{figure}
 
 Der MAE-Wert der Testdaten beläuft sich hier auf 53 Tausend Dollar, wäh-rend dieser sonst bei so wenig Datensamples bei 60 bis 80 liegt. 
@@ -45,9 +51,6 @@ Also ist ein Netz gänzlich ohne Kaskadierung, aber mit vielen Hidden Layern und
 Daten besser als diejenigen mit Kaskadierung und kommt sogar an den Wert heran, der mit vielen Daten erreicht wird. 
 Dieses Netz hat im Gegensatz zu den Anderen die Möglichkeit zwischen den Layern zu lernen und mit den noch nicht fertig verarbeiteten Daten 
 des Inputs weiterzurechnen. Das dürfte dazu beitragen, dass es eine bessere Performanz gibt. 
-
-% Zudem erscheint der Targetdatensatz als 
-% verhältnismäßig einfach, da dieser mit so wenigen Daten so erfolgreich gelernt werden konnte. 
 
 Wenn diese Tests mit einem explizit großen Testdatensubset angewendet werden, dann ändert sich nur der tatsächliche MAE-Wert dahingehend, dass 
 dieser etwas schlechter wird. Die Verhältnisse zwischen den Netzen hingegen nicht. 

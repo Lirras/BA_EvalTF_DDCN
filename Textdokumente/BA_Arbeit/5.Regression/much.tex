@@ -9,7 +9,9 @@ Es wird sowohl der Vergleich zwischen Deep Cascade, Direct Cascade und dem Kompl
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_large/onelayer_ts.png}
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_large/woonelayer_ts.png}
-    \caption{\label{fig:largeregr2} Vergleich im OneLayer Netzwerk}
+    \caption{\label{fig:largeregr2} 
+    \small{Hier sind die Tests 1Lay:TF11/8k/10/21 und 1Lay:8k/10/11 zu sehen. Beide sind am Ende in etwa gleich gut, benötigen nur unterschiedlich 
+    viel Zeit, um dahin zu kommen.}}
 \end{figure}
 
 In Figure 5.2 ist das Ergebnis des Direct Cascade. Auf der linken Seite ist die Versioin mit TF. Dabei fällt auf, dass es bei vielen 
@@ -21,7 +23,9 @@ Ein komplettes Netzwerk, wie es für Figure 5.3 genutzt wurde, hat etwa dieselbe
 \begin{figure}[htpb]
     \centering
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_large/onelayer_complete.png}
-    \caption{\label{fig:largeregr2comp} Komplettes OneLayer}
+    \caption{\label{fig:largeregr2comp} 
+    \small{Dies hier ist der Test 1Lay:Comp/8k//8. Es ist mit vielen Targetdaten direkt durchgeführt worden, weshalb es bei den folgenden 
+    Betrachtungen als bestmöglicher Wert angesehen wird.}}
 \end{figure}
 
 Dies liegt daran, dass die lineare Aktivierungsfunktion und der Mean Squared Error Loss für die Kaskadierung nicht störend sind. 
