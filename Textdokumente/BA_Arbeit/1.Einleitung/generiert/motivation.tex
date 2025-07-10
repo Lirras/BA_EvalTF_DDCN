@@ -1,0 +1,15 @@
+In vielen Anwendungsfällen, für die der Einsatz Künstlicher Intelligenz (KI) grundsätzlich sinnvoll wäre, stehen lediglich sehr kleine Datensätze 
+zur Verfügung. Diese Datenmengen sind oft so begrenzt, dass ein neuronales Netzwerk nicht ausreichend Informationen erhält, um ein robustes und 
+generalisierbares Modell zu erlernen – selbst bei verlängerter Trainingsdauer bleibt die Modellleistung unzureichend.
+
+Zusätzlich stellt die lange Trainingszeit klassischer neuronaler Netzwerke eine weitere Herausforderung dar. Beide Probleme – unzureichende 
+Datenverfügbarkeit und hoher Trainingsaufwand – sollen in dieser Arbeit adressiert und verbessert werden.
+
+Zur Bewältigung der Problematik kleiner Datensätze wird ein auf dem Transferlernen basierender Ansatz verfolgt. Dabei lernt das Modell zunächst 
+auf einer verwandten, aber besser verfügbaren Datenbasis, um dieses Vorwissen anschließend auf die eigentliche Zielaufgabe zu übertragen. Dieses 
+Vorgehen orientiert sich an kognitiven Lernprozessen beim Menschen, bei denen bereits erlernte Konzepte genutzt werden, um neue, ähnliche 
+Inhalte zu erschließen – vergleichbar mit der Funktionsweise von Eselsbrücken.
+
+Die Netzwerkarchitektur wird derart gestaltet, dass jeweils nur ein geringer Teil des Modells gleichzeitig trainiert wird. Dadurch soll der 
+Trainingsaufwand reduziert und eine signifikante zeitliche Effizienzsteigerung erzielt werden. Zur Umsetzung dieses Ansatzes kommen die 
+Kaskadierungsverfahren Deep Cascade und Direct Cascade zum Einsatz.

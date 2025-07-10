@@ -1,0 +1,36 @@
+In diesem Abschnitt wird die Kaskadierungsvariante des Direct Cascade Netzwerks vorgestellt. Das Netzwerk ist hierbei vollständig vorab 
+definiert und besteht aus einem einzelnen Hidden Layer sowie einem Output Layer. Die Gesamtstruktur setzt sich aus mehreren identischen 
+Subnetzwerken zusammen, zwischen denen während des Trainings ein Wissenstransfer stattfindet.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[height=10cm]{../../Graphiken/direct_cascade.png}
+    \caption{\label{fig:directcascade} 
+    \small{Hier wird das Direct Cascade Verfahren dargestellt. Dieses Verfahren verwendet mehrere einzelne Netzwerke 
+    (hier als Modelle bezeichnet), die jeweils nur wenige Hidden Layer aufweisen, in der Regel lediglich einen. Nach der 
+    Initialisierung wird jedes Modell einmal ohne weiteres Training angewendet, und dessen Ausgangssignal wird mit dem ursprünglichen 
+    Eingabesignal kombiniert. Diese Kombination bildet den neuen Eingabedatensatz für das nachfolgende Modell. Durch diese sukzessive 
+    Verknüpfung der Ausgaben mit den Eingaben kann das Verfahren eine Wissensweitergabe und -integration zwischen den einzelnen Modellen 
+    realisieren.}}
+\end{figure}
+
+Der Ablauf beginnt, wie in Abbildung \ref{fig:directcascade} dargestellt, mit dem vorbereiteten Quell-Datensatz (Sourcedatensatz), der als 
+Eingabe in die erste Instanz des Netzwerks gegeben wird. Diese Netzwerkinstanz wird anschließend trainiert. Nach Abschluss des Trainings 
+erfolgt eine einmalige Anwendung des fixierten Netzwerks, deren Ergebnis die Vorhersage (Prediction) darstellt. Diese Prediction wird mit 
+dem ursprünglichen Eingabesignal desselben Netzwerks kombiniert, wodurch ein sogenannter Augmented Vector entsteht. Die genaue Bildung dieses 
+Augmented Vectors variiert dabei leicht je nach spezifischer Implementierung des jeweiligen Direct Cascade Netzwerks und wird an späterer 
+Stelle detaillierter erläutert.
+
+Der Augmented Vector dient als Input für die nächste Instanz des Netzwerks. Dieser Zyklus aus Netzwerkinstanz, Training, Prediction und 
+Augmented Vector Berechnung wird beliebig oft wiederholt. Durch die Einbindung der Prediction in den Augmented Vector kann das Netzwerk 
+Wissen aus den zuvor trainierten Instanzen übernehmen und integrieren.
+
+Eine Transfer-Learning-Phase (TF) kann jederzeit innerhalb eines Trainingsschritts durchgeführt werden, indem anstelle des Quell-Datensatzes 
+ein Ziel-Datensatz (Targetdatensatz) als Input verwendet wird. Dabei können beliebig viele Netzwerkinstanzen vor und nach der 
+Transfer-Learning-Phase genutzt werden. Der einzige Unterschied besteht darin, dass der Augmented Vector mit jedem weiteren Netzwerk etwas 
+größer wird, da er sowohl das Wissen aller bisher trainierten Netzwerke als auch die ursprünglichen Eingabedaten enthält.
+
+Für die Implementierung bedeutet dies, dass von Beginn an sowohl der Quell- als auch der Ziel-Datensatz in das feste Netzwerk eingespeist 
+werden müssen. Dies ist notwendig, um die Prediction auf dem Ziel-Datensatz – die während der Trainingsphase mit dem Quell-Datensatz generiert 
+wurde – im Augmented Vector zu integrieren. Somit wird sichergestellt, dass die während des Trainings auf dem Quell-Datensatz gelernten 
+Netzwerkkomponenten auch bei der Anpassung an den Ziel-Datensatz berücksichtigt werden.

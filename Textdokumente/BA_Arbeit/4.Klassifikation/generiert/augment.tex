@@ -1,0 +1,51 @@
+In diesem Abschnitt wird die Erstellung der Augmented Vectors für die Direct Cascade Netzwerke im Klassifikationskontext beschrieben. Jedes der 
+drei betrachteten Netzwerke – COD, 1DC und 2DC – verwendet dabei eine eigene Methode zur Generierung dieser Vektoren. Die Darstellung erfolgt in 
+der genannten Reihenfolge: zunächst das COD-, anschließend das 1DC- und abschließend das 2DC-Netzwerk.
+
+Allen Netzwerken gemeinsam ist, dass sowohl der Input des Netzwerks als auch dessen Vorhersage (Prediction) zur Berechnung des Augmented Vectors 
+herangezogen werden. Als Input dient entweder der ursprüngliche Datensatz oder – ab der zweiten Iteration – der jeweils zuletzt erzeugte Augmented 
+Vector. Nur bei der ersten Iteration wird der originale Datensatz verwendet, da zu diesem Zeitpunkt noch kein Augmented Vector existiert.
+
+Mit jeder weiteren Iteration wächst der Augmented Vector, da er Informationen aus allen vorhergehenden Netzwerken integriert und so das Wissen 
+schrittweise an das nächste Netzwerk weitergibt. Die Prediction entspricht dabei dem Ausgabeverhalten des trainierten Netzwerks auf Basis der 
+jeweils aktuellen Eingabe.
+
+Im Folgenden bezeichnen die Variablen N, W, H und C die Anzahl der Datensamples, die Bildbreite, die Bildhöhe sowie die Anzahl der Kanäle 
+(Channels).
+
+Für das COD-Netzwerk gilt: Der Input liegt in der Form (N,WxH) vor, d.h., die Bilddaten wurden vorab flach in ein Vektorformat 
+überführt. Die Prediction hat die Form (N,10), entsprechend der zehn Klassenzugehörigkeiten. Beide Matrizen werden entlang der zweiten 
+Dimension (Feature-Dimension) miteinander konkateniert, was zur Definition des Augmented Vectors gemäß Gleichung 4.1 führt.
+
+\begin{equation}
+    AugVec(Input(N, W*H), Prediction(N, 10)) = (N, (W*H).10)
+\end{equation}
+
+Beim 1DC-Netzwerk liegt der Input in der Form (N,WxH,C) vor. Da der Kanal in diesem Fall eindimensional ist, wird die Channel-Dimension 
+zunächst entfernt. Anschließend erfolgt die Berechnung des Augmented Vectors gemäß Gleichung 4.1. Nach der Berechnung wird die Channel-Dimension 
+wieder ergänzt, um die ursprüngliche Struktur beizubehalten. In beiden bisher betrachteten Netzwerken (COD und 1DC) wächst der Augmented Vector 
+mit jeder Iteration linear um $N * 10$ Einträge.
+
+Das 2DC-Netzwerk hingegen arbeitet mit einem komplexeren Eingabeformat: (N,W,H,C). Die Prediction liegt auch hier in der 
+Form (N,10) vor. Zur Fusion von Input und Prediction werden für jedes Sample NN zehn zusätzliche Arrays erzeugt, jeweils in der 
+Form (W,H,C). Diese Arrays enthalten jeweils die Werte der zehn Klassenwahrscheinlichkeiten der Prediction, wobei jeder Kanal mit 
+dem entsprechenden Skalarwert befüllt wird. Anschließend erfolgt eine Konkatenation entlang der Channel-Dimension. Dieses Verfahren führt zur 
+Definition des Augmented Vectors gemäß Gleichung 4.2.
+
+\begin{multline}
+    AugVec(Input(N, W, H, C), Prediction(N, 10)) = Input(N, W, H, C.ConVec)\\
+    ConVec(W, H, C)[0-9] = Prediction(10)[0-9]
+\end{multline}
+
+Der sogenannte ConVec bezeichnet den Vektor, in dem die einzelnen Werte der Prediction – entsprechend den Klassen eins bis zehn – jeweils in 
+Form eines Arrays der Dimension (W,H,C) abgelegt sind. Bei jeder Iteration des Netzwerks führt dieses Verfahren jedoch zu einem 
+speicherintensiven Wachstum des Augmented Vectors. Die Skalierung des Speicherbedarfs erfolgt gemäß der in Gleichung 4.3 dargestellten Beziehung.
+
+\begin{equation}
+    AugVecNew = N*W*H*C_{old} + N*W*H*10
+\end{equation}
+
+Daraus ergibt sich, dass der Arbeitsspeicherbedarf bei jeder Iteration mit einer Steigerungsrate wächst, die dem Zehnfachen der Größe des 
+jeweiligen Datensatzes entspricht. Bei Datensamples, die bereits im Ausgangszustand eine Größe von 8192 Bytes pro Datenpunkt aufweisen, führt 
+dieses Vorgehen zu einem sehr stark linear ansteigenden Speicherverbrauch. Daher ist die hier beschriebene Methode zur Erstellung des Augmented Vectors aus 
+praktischer Sicht nicht sinnvoll einsetzbar. Aus diesem Grund wird das 2DC-Netzwerk im weiteren Verlauf der Arbeit nicht mehr berücksichtigt.

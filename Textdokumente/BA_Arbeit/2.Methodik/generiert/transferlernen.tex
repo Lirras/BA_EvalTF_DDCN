@@ -1,0 +1,85 @@
+Transferlernen (Transfer Learning, TL) basiert auf dem Prinzip der Wissensübertragung zwischen unterschiedlichen, jedoch verwandten 
+Lernsituationen – vergleichbar mit dem Konzept einer "Eselsbrücke". Es existieren verschiedene Formen des Transferlernens, wobei 
+insbesondere zwischen Task Transfer (Aufgabenwechsel) und Domain Transfer (Domänenwechsel) unterschieden wird. Wird keine dieser Varianten 
+angewendet, handelt es sich nicht um Transferlernen im engeren Sinne.
+
+In dieser Arbeit wird ausschließlich der Domain Transfer betrachtet, da ausschließlich dieser zum Einsatz kommt. Dabei wird ein Modell, das auf 
+einem bestimmten Datensatz (Source-Domain) trainiert wurde, zur Verbesserung der Leistung auf einem anderen, inhaltlich verwandten Datensatz 
+(Target-Domain) genutzt – unter Beibehaltung der gleichen Modellarchitektur. Dieser Ansatz wird als Transductive Transfer Learning bezeichnet 
+\cite{survey_transfer}. Ziel ist es, das in der Source-Domain erworbene Wissen auf die Target-Domain zu übertragen.
+
+Ein zentrales Problem des Transferlernens besteht darin, geeignete Antworten auf die drei grundlegenden Fragen zu finden: What to transfer, How 
+to transfer und When to transfer \cite{survey_transfer}. Diese Aspekte sind bislang nicht abschließend geklärt und stellen weiterhin offene 
+Forschungsfragen dar.
+
+Da sowohl Klassifikations- als auch Regressionsmodelle evaluiert werden, kommen jeweils zwei Datensätze als Source und Target zum Einsatz:
+
+\textbf{Klassifikation:}
+\begin{enumerate}
+    \item Source-Datensatz: Modified National Institute of Standards and Technology (MNIST) \cite{handwritten_digit}
+    \item Target-Datensatz: Street View House Numbers (SVHN) \cite{house_numbers}
+\end{enumerate}
+
+Beide Datensätze müssen zur strukturellen Kompatibilität für das Transferlernen angepasst werden. MNIST-Bilder (ursprünglich 28x28 Pixel, 
+einfarbig) werden auf 32x32 Pixel skaliert. Der SVHN-Datensatz, ursprünglich in Farbe (RGB), wird in Graustufen konvertiert. Dies gewährleistet, 
+dass beide Eingabedatensätze die gleiche Dimensionalität aufweisen und somit als Input für dasselbe neuronale Netz genutzt werden können.
+
+\textbf{Regression:}
+\begin{enumerate}
+    \item Source-Datensatz: Boston Housing Prices (BOST) \cite{Boston_housing}
+    \item Target-Datensatz: California Housing Prices (CALI) \cite{California_housing}
+\end{enumerate}
+
+Beide Regressionsdatensätze müssen inhaltlich reduziert werden, da nur solche Merkmale berücksichtigt werden sollen, die eine semantisch und 
+strukturell sinnvolle Entsprechung in beiden Domänen aufweisen. Im BOST-Datensatz verbleiben nur die drei Merkmale:
+
+\begin{enumerate}
+    \item RM: durchschnittliche Anzahl von Zimmern pro Wohnung
+    \item AGE: Anteil der vor 1940 erbauten Häuser
+    \item LSTAT: Anteil der Bevölkerung mit niedrigem sozioökonomischem Status
+\end{enumerate}
+
+Hinweis: Die ursprünglich im BOST-Datensatz enthaltene Variable mit ethnisch diskriminierendem Inhalt wird vollständig entfernt.
+
+Im CALI-Datensatz verbleiben:
+\begin{enumerate}
+    \item MedInc: mittleres Einkommen pro Häuserblock
+    \item HouseAge: durchschnittliches Alter der Gebäude
+    \item RoomsPerHousehold: abgeleitet durch Division von AveRooms (durchschnittliche Zimmeranzahl im Block) durch Households (Anzahl der Haushalte)
+\end{enumerate}
+
+Diese Ableitung stellt die strukturelle Entsprechung zur RM-Variable im BOST-Datensatz dar.
+
+Eine inhaltliche Verbindung besteht voraussichtlich zwischen LSTAT (BOST) und MedInc (CALI), da sozioökonomischer Status und Einkommen 
+erfahrungsgemäß korrelieren. Da LSTAT jedoch antiproportional zur Einkommenshöhe ist, wird diese Variable invertiert, um eine proportionale 
+Beziehung zur MedInc-Variable herzustellen – eine Voraussetzung für effektives Transferlernen.
+
+Die Harmonisierung der Altersvariablen gestaltet sich komplexer: AGE im BOST-Datensatz beschreibt den Anteil der vor 1940 erbauten Häuser, 
+während HouseAge im CALI-Datensatz das durchschnittliche Alter der Gebäude angibt. Um AGE in eine vergleichbare Form zu bringen, wird auf 
+Basis einer angenommenen maximalen Anzahl von 100 Häusern pro Block und einem maximalen Alter von 85 Jahren (bezogen auf das Jahr 2025) eine 
+Umrechnung vorgenommen. Die entsprechende Formel lautet:
+\begin{equation}
+    \frac{AGE * 85}{Maximalanzahl}
+\end{equation}
+
+Durch die beschriebenen Anpassungen weisen alle verwendeten Source- und Target-Datensätze strukturelle Kompatibilität zueinander auf. Damit ist 
+die Frage "Was wird transferiert?" im Sinne des Transferlernens hinreichend beantwortet.
+
+Die nächste zu klärende Dimension ist das "How to Transfer". Der Transfer erfolgt in allen Fällen ohne Modifikation der Gewichtungen zuvor 
+trainierter Netzwerkschichten. Das neuronale Netzwerk wird zunächst vollständig auf dem Source-Datensatz trainiert. Anschließend erfolgt der 
+Übergang zum Target-Datensatz, ohne dass das Modell selbst oder dessen Gewichtungen verändert werden.
+
+Dabei unterscheiden sich die beiden eingesetzten Kaskadierungsansätze hinsichtlich der Art des Transfers:
+\begin{enumerate}
+    \item Beim Deep Cascade-Verfahren bleibt die Netzinputgröße unverändert, und lediglich die Eingabedatenquelle (Source → Target) wird gewechselt. 
+    Der Transfer vollzieht sich somit ausschließlich über die Änderung des Input-Datensatzes bei gleichbleibender Architektur und 
+    Parameterbelegung. Dabei ist zu bedenken, dass dieses Netz immer größer wird.
+    \item Beim Direct Cascade-Verfahren erfolgt der Transfer implizit über die kontinuierliche Erweiterung des Eingaberaums. Der sogenannte 
+    Augmented Input wird bei jedem Schritt vergrößert, sodass die auf dem Source-Datensatz erlernten Repräsentationen in den nachfolgenden 
+    Stufen weiterhin einfließen.
+\end{enumerate}
+    
+    
+Die Frage "Wann ist Transfer Learning sinnvoll?" (When to Transfer) kann bislang nicht eindeutig beantwortet werden. Aus diesem Grund wird in 
+den Experimenten mit unterschiedlichen Zeitpunkten für den Transfer gearbeitet – sowohl mit einem frühen als auch mit einem späteren Übergang 
+zum Target-Datensatz.

@@ -1,0 +1,90 @@
+Von den betrachteten Netzwerken sind ConvMaxPool und RegressionTwo Varianten des Deep Cascade Netzwerks, während alle weiteren Modelle als 
+Direct Cascade Netzwerke klassifiziert werden. Zudem handelt es sich bei RegressionTwo und OneLayer um Regressionsnetzwerke, während die übrigen 
+Modelle Klassifikationsnetzwerke darstellen.
+
+Alle Netzwerke wurden mit dem Adam-Optimierer bei einer Lernrate von $1*10^{-3}$ trainiert. Für die Klassifikationsnetzwerke wurde die 
+Verlustfunktion Categorical Cross-Entropy verwendet, kombiniert mit einer Softmax-Aktivierungsfunktion im Ausgangs-Layer. Die 
+Regressionsnetzwerke hingegen verwenden die Mean Squared Error (MSE) als Verlustfunktion und eine lineare Aktivierungsfunktion.
+
+Zusätzlich wurden bei allen Direct Cascade Netzwerken Early-Stopping-Kriterien basierend auf den Metriken MAEM (Mean Absolute Error Metric), 
+LM (Loss Metric) und ACCM (Accuracy Metric) angewandt.
+
+Für die Klassifikationsnetzwerke erfolgte das Training mit fünf unterschiedlichen Größen des Ziel-Datensatzes (Targetdatensatz). Eine 
+Ausnahme bildet das 2DC-Netzwerk, das aufgrund technischer Einschränkungen der verwendeten Hardware nur mit sehr kleinen Mengen von Quell- 
+(Source) und Ziel-Daten trainiert werden kann.
+
+Bei den Regressionsnetzwerken wurde jeweils ein Training mit großer sowie mit kleiner Menge an Ziel-Daten durchgeführt.
+
+Darüber hinaus wurden mit allen Netzwerken Vergleiche zwischen Trainingsläufen mit Transfer Learning (TF) und ohne sowie zwischen Trainings 
+ohne TF und sogenannten Komplett-Netzwerken durchgeführt. Ein Komplett-Netzwerk bezeichnet hierbei ein Modell, das ohne Transfer Learning und 
+ohne Kaskadierung in einem einzigen vollständigen Training trainiert wird.
+
+Der Zeitpunkt des Einsatzes von Transfer Learning wurde für alle Netzwerke experimentell frei gewählt.
+
+Alle Direct Cascade Netzwerke verfügen jeweils über genau einen Hidden Layer. In einigen Fällen wird zusätzlich ein Hilfslayer verwendet, um 
+den Übergang zwischen Filter-Layern (Convolutional Layers) und linearen Layern zu ermöglichen.
+
+Für alle Experimente wurde derselbe Initialisierungs-Seed für die Gewichtungen verwendet, um Reproduzierbarkeit sicherzustellen.
+
+Die Ergebnisse der Klassifikationstests sind in Tabelle \ref{tab:classtests} zusammengefasst, die Regressionstests in Tabelle \ref{tab:regrtests}. 
+In beiden Tabellen sind Tests, die sich auf die Trainingsdauer beziehen, mit dem Suffix "Time" gekennzeichnet. Dabei steht CasTF für Kaskadierung 
+mit Transfer Learning, Cas für Kaskadierung ohne Transfer Learning und Comp für Trainings ohne Kaskadierung und ohne Transfer Learning.
+
+Die Bezeichnungen vor dem ersten Schrägstrich geben den Zeitpunkt des Transfer Learning an, wobei dies mit "TF" explizit markiert ist. Fehlt dieser 
+Eintrag, wurde kein Transfer Learning durchgeführt. Anschließend folgt die Datenmenge des Ziel-Datensatzes sowie die Anzahl der Epochen pro 
+Trainingsiteration. Optional enthält die Bezeichnung eine weitere Angabe, die die Gesamtanzahl der Epochen in Zehner-Schritten angibt.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{l|l|l|l}
+        \textbf{CMP} & \textbf{COD} & \textbf{1DC} & \textbf{2DC} \\
+        \hline
+        TF0/732/10 & CasTFTime & CasTFTime & CasTFTime \\
+        TF1/732/10 & CasTime & CasTime & CasTime \\
+        TF2/732/10 & CompTime & CompTime & CompTime \\
+        TF3/732/10 & TF2/732/10 & TF2/732/10 & TF2/732/10 \\
+        TF4/732/10 & TF2/7k/10 & TF2/7k/10 & \\
+        TF5/732/10 & TF2/21k/10 & TF2/21k/10 & \\
+        732/10 & TF2/36k/10 & TF2/36k/10 & \\
+        CasTFTime & TF2/51k/10 & TF2/51k/10 & \\
+        CasTime & TF10/732/10/30 & TF10/732/10/30 & \\
+        CompTime & 732/10/30 & 732/10/30 & \\
+        TF2/7k/10 & Comp/732//30 & Comp/732//30 & \\
+        TF2/21k/10 & ACCM/732/10 & ACCM/732/10 & \\
+        TF2/36k/10 & LM/732/10 & LM/732/10 & \\
+        TF2/51k/10 & & & \\
+        & & & \\
+    \end{tabular}
+    \caption{\label{tab:classtests} Liste aller Klassifikationstests}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{l|l}
+        \textbf{Regr2} & \textbf{1Lay} \\
+        \hline
+        TF0/240/25 & CasTFTime \\
+        TF1/240/25 & CasTime \\
+        TF4/240/25 & CompTime \\
+        CasTFTime & TF11/8k/10/21 \\
+        CasTime & 8k/10/11 \\
+        CompTime & Comp/8k//8 \\
+        TF4/8k/10/8 & TF11/240/10/21 \\
+        8k/10/8 & 240/10/11 \\
+        Comp/8k//8 & Comp/240//8 \\
+        TF4/240/10/8 & MAEM/240/10 \\
+        240/10/8 & LM/240/10 \\
+        Comp/240//8 & TF4/206/10/8/ts \\
+        TF4/206/10/8/ts & 206/10/8/ts \\
+        206/10/8/ts & Comp/206//8/ts \\
+        Comp/206//8/ts &
+    \end{tabular}
+    \caption{\label{tab:regrtests} Liste aller Regressionstests}
+\end{table}
+
+Ein Beispiel für eine Referenz auf einen spezifischen Testeintrag ist CMP:TF0/732/10. Diese Kennzeichnung verweist auf den Test des 
+CMP-Netzwerks mit Transfer Learning, das unmittelbar nach dem ersten Layer erfolgt (TF0). In diesem speziellen Fall wird das erste Layer 
+lediglich über eine einzige Epoche trainiert, während alle weiteren Layer nach dem üblichen Trainingsschema optimiert werden. Das gleiche 
+Vorgehen gilt für den Test Regr2:TF0/240/25, bei dem analog das erste Layer nur eine Epoche lang trainiert wird.
+
+Testeinträge mit dem Suffix "ts" kennzeichnen solche Experimente, bei denen ein gezielt großer Testdatensatz verwendet wurde.

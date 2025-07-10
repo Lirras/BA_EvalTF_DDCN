@@ -1,0 +1,13 @@
+Die Klassifikation ist in Kombination mit Direct Cascade und TF unter Verwendung der hier eingesetzten Augmented Vektoren nicht praktikabel. 
+Deep Cascade Architekturen erzielen zwar eine bessere Klassifikationsleistung, sind jedoch ebenfalls nicht sinnvoll einsetzbar.
+
+Für die Regression erweist sich der Einsatz von TF in der Direct Cascade Variante als zielführend, da die Performanz entweder gleichwertig oder 
+überlegen im Vergleich zu vollständig trainierten Netzwerken ist. Einzig bei sehr kleinen Datenmengen kann es zu Leistungseinbußen gegenüber dem 
+vollständigen Netzwerk kommen.
+
+Das Verfahren funktioniert auch mit Deep Cascade Netzwerken und zeigt selbst in diesem Ausnahmefall eine mit dem vollständigen Netzwerk 
+vergleichbaren Performanz.
+
+Vollständig trainierte Netzwerke mit der gleichen Gesamtanzahl an Hidden Layer sind insbesondere bei sehr kleinen Datensätzen schneller als Deep 
+Cascade Modelle, welche wiederum schneller als Direct Cascade Architekturen sind. Aus diesem Grund ist es bereits bei geringen Datenmengen 
+sinnvoller, ein vollständiges Netzwerk anstelle einer kaskadierten Architektur zu verwenden.

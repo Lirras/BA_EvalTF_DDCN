@@ -1,0 +1,29 @@
+In diesem Kapitel werden die Eigenschaften und Erkenntnisse im Bereich der Klassifikation detailliert untersucht. Zunächst werden die Direct 
+Cascade Netzwerke vorgestellt und gemeinsam mit dem Deep Cascade Netzwerk analysiert. Dabei wird untersucht, wie sich die Menge der verfügbaren 
+Target-Daten auf das Trainingsergebnis auswirkt. Zudem wird erläutert, weshalb das 2DC-Netzwerk trotz potenziell besserer Ergebnisse nicht weiter 
+betrachtet wird. Ein weiterer Schwerpunkt liegt auf der detaillierten Analyse der Augmented Vectors bei den Direct Cascade Netzwerken. 
+Abschließend werden die Unterschiede und Auswirkungen beim Wechsel zwischen Cascade TF, Cascade und Complete Netzwerken diskutiert.
+
+Die Direct Cascade Netzwerke für die Klassifikation zeichnen sich dadurch aus, dass jeweils nur ein einzelnes Hidden Layer verwendet wird und die 
+Netzwerke iterativ aufgebaut sind, wobei das Wissen der vorherigen Iterationen übernommen wird.
+
+\begin{table}[h!]
+    \centering    
+    \begin{tabular}{l|l|l|l|l}
+        \textbf{Name} & \textbf{Hiddenlayer} & \textbf{N/F} & \textbf{Aktivierung} & \textbf{Inputdim} \\
+        \hline
+        COD & Linear & 512 & Relu & 1 \\
+        1DC & 1DConv & 32 & Relu & 1 \\
+        2DC & 2DConv & 32 & Relu & 2
+    \end{tabular}
+    \caption{\small{In dieser Übersicht sind alle Direct Cascade Netzwerke für die Klassifikation mit den wesentlichen internen Parametern 
+    dargestellt. "Hidden Layer" bezeichnet die Art des verwendeten versteckten Layers. "N/F" gibt die Anzahl der Neuronen (Nodes) beziehungsweise 
+    Filter im jeweiligen Layer an. Unter "Aktivierung" ist die im Hidden Layer eingesetzte Aktivierungsfunktion zu verstehen, und "Inputdim" 
+    beschreibt die Dimensionalität der Eingabedaten.}}
+        \label{tab:classvor}
+\end{table}
+
+Der Input entspricht der Dimensionalität, in der die Bilddaten vorliegen. Lediglich in der ersten Zeile wird die Anzahl der Neuronen (Nodes) 
+angegeben, während in den übrigen Zeilen die Anzahl der Filter angegeben ist. Bei beiden Convolutional-Netzwerken wird ein Kernel der Größe 3 
+bzw. 3x3 verwendet, wobei durch entsprechendes Padding die räumlichen Dimensionen der Daten erhalten bleiben. Für das Training wird in diesen 
+Netzwerken eine Batch-Größe von jeweils 128 Datensamples verwendet.

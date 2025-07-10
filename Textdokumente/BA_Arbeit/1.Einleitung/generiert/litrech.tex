@@ -1,0 +1,88 @@
+Neuronale Netzwerke werden für eine Vielzahl von Aufgaben eingesetzt, die ein rechenintensives Vorgehen erfordern und dabei eine Architektur 
+nutzen, die dem menschlichen Gehirn nachempfunden ist. Neben klassischen Anwendungen im Bereich der Computer Vision existieren auch 
+Einsatzgebiete in der Steuerung und Planung, wie sie beispielsweise bei strategischen Spielen wie Go relevant sind 
+\cite{deep_neural_networks_scientific_models}.
+
+Ein weiteres Anwendungsfeld stellt die Klassifikation dar, etwa bei der Erkennung handgeschriebener Ziffern \cite{handwritten_digit}. 
+Zudem werden neuronale Netzwerke zur Approximation von Funktionen eingesetzt, typischerweise im Rahmen von Regressionsaufgaben \cite{Gen_Reg}.
+
+In der Praxis ergeben sich jedoch verschiedene Herausforderungen. Eine häufige Problematik ist die unzureichende Verfügbarkeit großer, 
+qualitativ hochwertiger Datensätze für bestimmte Aufgabenstellungen \cite{survey_transfer}. Darüber hinaus kann das Training eines 
+leistungsfähigen neuronalen Netzwerks äußerst zeitintensiv sein \cite{cascor}. Generell gilt für alle neuronalen Modelle, dass ihre 
+Vorhersagen mit einer gewissen Fehlerrate behaftet sind und somit nicht vollständig korrekt sind \cite{EvoClassAndReg}.
+
+Transfer Learning (TF) bezeichnet ein maschinelles Lernparadigma, bei dem bereits erworbenes Wissen aus einer Quellaufgabe (Source) genutzt 
+wird, um die Lernleistung auf einer Zielaufgabe (Target) zu verbessern \cite{transfer_learning}. Dabei erlernt ein neuronales Netzwerk 
+zunächst eine Aufgabe und überträgt anschließend relevante Erkenntnisse auf eine andere, meist verwandte Aufgabe \cite{phd_deep_cascade}.
+
+Dieses Vorgehen lässt sich mit dem menschlichen Lernverhalten vergleichen, bei dem über Eselsbrücken bereits bestehendes Wissen herangezogen 
+wird, um neues Wissen effizienter zu erwerben. Ein Netzwerk, das Transfer Learning betreibt, vollzieht folglich einen kontextuellen Wechsel 
+zwischen verschiedenen Lernaufgaben. Dabei ergeben sich insbesondere drei zentrale Forschungsfragen:
+
+\begin{enumerate}
+    \item What to transfer
+    \item How to transfer
+    \item When to transfer
+\end{enumerate}
+\cite{survey_transfer}
+
+Die erste zentrale Forschungsfrage im Transfer Learning betrifft die Beschaffenheit und Auswahl der Quelldaten, also jener Datenbasis, auf der 
+das übertragbare Wissen – bildlich gesprochen die "Eselsbrücke" – aufgebaut wird.
+
+Die zweite Fragestellung bezieht sich auf die Rolle der Lernalgorithmen, insbesondere darauf, wann der Übergang vom Lernen auf der Quell- zur 
+Zielaufgabe erfolgen soll. In der Praxis wird dieser Übergang häufig durch Fehlermetriken gesteuert: Sobald das Modell einen bestimmten 
+Schwellenwert (Threshold) unterschreitet und die Fehlerquote als ausreichend niedrig eingestuft wird, erfolgt der Transfer. Der optimale 
+Zeitpunkt für diesen Wechsel kann jedoch experimentell bestimmt und variiert werden, um maximale Leistung zu erzielen. Es ist jedoch wichtig 
+zu beachten, dass Transfer Learning nicht zwangsläufig zu einer Leistungssteigerung führt. In bestimmten Fällen kann die Übertragung von Wissen 
+sogar zu einer Verschlechterung der Modellleistung führen – ein Phänomen, das als Negative Transfer bezeichnet wird \cite{survey_transfer}.
+
+Transfer Learning setzt in mindestens einem von zwei Bereichen einen Wechsel voraus: der Domain und/oder dem Task. Die Domain umfasst Merkmale 
+wie die Verteilung, Repräsentation oder den strukturellen Aufbau der Daten (z.B. Formate, Dimensionen), während der Task sich auf die konkrete 
+Lernaufgabe bezieht, wie beispielsweise Bildklassifikation oder Segmentierung \cite{survey_transfer}.
+
+In komplexeren Szenarien kann der Transfer nicht direkt von der Quell- zur Zieldomain erfolgen. Stattdessen wird eine intermediäre, sogenannte 
+Brückendomain (Bridge Domain) eingeführt, über die der Wissenstransfer schrittweise erfolgt. Dieses Vorgehen wird als Bridge Transfer Learning 
+bezeichnet und findet Anwendung, wenn die Unterschiede im Feature Space zwischen Quelle und Ziel zu groß sind oder die direkte Übertragung zu 
+negativem Transfer führen würde \cite{bridge_transfer, survey_transfer}.
+
+Während Deep Learning grundsätzlich in der Lage ist, komplexere Aufgaben zu lösen als sogenanntes Shallow Learning, ist es gleichzeitig durch 
+einen erheblich höheren Trainingsaufwand gekennzeichnet. Wenn dieser hohe Rechenaufwand nicht praktikabel ist, kommt Cascade Learning zum 
+Einsatz \cite{cascor}.
+
+Im klassischen Deep Transfer Learning wird in der Regel ein vortrainiertes Netzwerk genutzt, wobei der finale Feature-Vektor als Ausgangspunkt 
+für den Transfer dient. Dies beruht auf der Annahme, dass in dieser Repräsentation die bedeutendsten Informationen verdichtet vorliegen – ein 
+Ansatz, der als Feature Representation Transfer bezeichnet wird \cite{survey_transfer}.
+
+Im Gegensatz dazu verfolgt das Cascade Learning einen iterativen Ansatz: In jeder Trainingsiteration wird der aktuell generierte Feature-Vektor 
+in den Transferprozess einbezogen, um herauszufinden, welcher Repräsentationsvektor tatsächlich den größten Informationsgehalt besitzt. Dieser 
+Ansatz führt in der Regel zu einer effizienteren und weniger komplexen Netzwerkstruktur im Vergleich zum klassischen Deep Transfer Learning 
+\cite{phd_deep_cascade}.
+
+Cascade-Netzwerke zeichnen sich dadurch aus, dass ihre Architektur nicht vor Beginn des Trainings vollständig definiert ist, sondern 
+schrittweise während des Trainingsprozesses aufgebaut wird. Hierfür kommen sogenannte Constructive Algorithms zum Einsatz, deren wesentlicher 
+Vorteil darin liegt, dass keine exakte Festlegung der Netzwerkgröße im Vorfeld erforderlich ist \cite{Constructive_Cascade}. Das Netzwerk wächst 
+lediglich so weit, wie es zur Lösung der jeweiligen Aufgabe notwendig ist, wodurch eine übermäßige Modellkomplexität vermieden und gleichzeitig 
+die Trainingszeit reduziert wird \cite{Constructive_Cascade, cascor}.
+
+Ein prominentes Beispiel für einen solchen Ansatz ist das Cascade Correlation (CasCor). Bei diesem Verfahren wird das Netzwerk schrittweise 
+durch das Hinzufügen einzelner Neuronen (Perzeptrons) erweitert. Jedes neue Perzeptron wird so trainiert, dass es eine möglichst hohe 
+Korrelation mit dem verbleibenden Fehler aufweist. Nach Abschluss des Trainings wird das betreffende Neuron fixiert, das heißt, seine 
+Gewichtungen werden eingefroren und bleiben im weiteren Verlauf unverändert. Anschließend wird überprüft, ob das Netzwerk die angestrebte 
+Fehlergrenze erreicht hat. Ist dies nicht der Fall, wird ein weiteres Perzeptron ergänzt und der Prozess wiederholt sich, bis die gewünschte 
+Modellgüte erreicht ist \cite{cascor}.
+
+Dieser iterative Aufbau sowie das Einfrieren bereits gelernter Gewichtungen ermöglichen ein effizientes Training, bei dem keine Backpropagation 
+durch das gesamte Netzwerk erforderlich ist. Lediglich die Gewichte des neu hinzugefügten Neurons werden jeweils angepasst. Da jedes neue 
+Neuron direkt mit dem Ausgang des Netzwerks verbunden ist, trägt es unmittelbar zur Fehlerkorrektur bei \cite{cascor}.
+
+Ein verwandtes Konzept stellt das Direct Cascade Learning dar. Hierbei erfolgt keine Zwischenverarbeitung der Ausgaben bereits trainierter 
+Neuronen. Stattdessen dient der Output eines Perzeptrons direkt als Input für das nachfolgende, wie es beispielsweise in den Architekturen 
+Cascade QEF und Cascade LLM umgesetzt ist \cite{cascade_network_architectures,cascade_llm_networks}.
+
+Obwohl Transfer Learning (TF) bislang vorrangig mit klassischen tiefen Lernverfahren kombiniert wurde, existieren erste Ansätze, die TF mit 
+Cascade Learning verknüpfen. Ein Beispiel hierfür ist das Cascade Transfer Learning (CTL), das Cascade Correlation mit Transfer Learning 
+kombiniert \cite{phd_deep_cascade}. Zwar blieb die Leistung von CTL leicht hinter der von klassischen Fine-Tuning-Verfahren zurück, jedoch 
+zeichnete sich CTL durch eine deutlich geringere Speicheranforderung aus \cite{phd_deep_cascade}.
+
+Neben CasCor existieren weitere Cascade-Lernalgorithmen – insbesondere solche, die dem Direct Cascade-Prinzip folgen –, die bislang noch nicht 
+im Kontext von Transfer Learning eingesetzt wurden und somit Potenzial für zukünftige Forschung bieten.

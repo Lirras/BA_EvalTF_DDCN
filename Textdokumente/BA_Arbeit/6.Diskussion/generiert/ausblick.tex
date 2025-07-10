@@ -1,0 +1,19 @@
+Die Klassifikation sollte nicht weiter im Rahmen von Deep- oder Direct-Cascade-Architekturen untersucht werden, da die Performanz unabhängig von 
+der Datenmenge konstant schlechter ist als bei einem vollständig trainierten Netzwerk. Eine potenzielle Verbesserung könnte nur durch die 
+Verwendung alternativer Loss-Funktionen anstelle von Categorical Cross-Entropy oder durch eine modifizierte Konstruktion der Augmented Vektoren 
+zwischen den Netzwerkmodulen erzielt werden. Ebenso wäre die Erprobung anderer Kaskadierungsverfahren denkbar, wobei deren Erfolgsaussichten 
+jedoch als gering eingeschätzt werden.
+
+Für die Regressionsnetzwerke besteht die Möglichkeit, alternative Loss-Funktionen anstelle des Mean Squared Error (MSE) einzusetzen.
+
+In beiden Anwendungsfällen könnten zudem andere Early-Stopping-Kriterien angewandt werden, die auch geringfügige Verschlechterungen im 
+Validierungsmaß tolerieren. Zusätzlich sind Metriken denkbar, die die Anzahl der Trainingsiterationen adaptiv steuern. Des Weiteren können 
+Trainingsverfahren ohne feste Maximalanzahl an Epochen implementiert werden, wobei hier das Risiko besteht, dass das Training unendlich lange 
+andauert.
+
+Darüber hinaus kann die Verwendung alternativer Optimierungsalgorithmen anstelle von Adam evaluiert werden, ebenso wie der Einsatz 
+unterschiedlicher Source- und Target-Datensätze. Ebenso ist eine veränderte Vorverarbeitung der bestehenden Datensätze für die Netzwerke 
+denkbar.
+
+Weiterhin sollte untersucht werden, wie sich TF bei einem Wechsel der Aufgabenstellung (Taskwechsel) verhält, ebenso wie bei einem 
+kombinierten Task- und Domainwechsel.
