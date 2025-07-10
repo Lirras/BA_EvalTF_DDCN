@@ -1,4 +1,4 @@
-Neural Networks werden für eine Reihe an Tasks genutzt, die ein, dem menschlichen Gehirn ähnlichem, Rechenwerk benötigen. 
+Neuronale Netzwerke werden für eine Reihe an Tasks genutzt, die ein, dem menschlichen Gehirn ähnlichem, Rechenwerk benötigen. 
 Es gibt neben den computer vision Tasks auch die control and planning Tasks, die für Spielecomputer für Strategiespiele wie Go dienen \cite{deep_neural_networks_scientific_models}.
 Genauso gibt es Netze, die eine Classification Task lösen \cite{handwritten_digit}. 
 Eine weitere Aufgabe von neural Networks ist es eine Funktion zu approximieren. Dies 
@@ -30,7 +30,6 @@ ausgetestet werden, um einen optimalen Zeitpunkt zu finden.
 TF besitzt aber eine Grenze bei der Verbesserung des Netzes. Des Weiteren wird das Netz durch TF nicht zwingend besser, 
 sondern kann auch schlechter werden, was Negative Transfer ist \cite{survey_transfer}. 
 
-% Welche Arten von TF gibt es?
 Dabei gibt es zwei Bereiche, in denen ein solcher Wechsel stattfinden kann. Damit TF gemacht wird, 
 muss es mindestens in einem dieser Bereiche einen Wechsel geben. Es gibt dort zum einen die Domain, was den Datensatz oder 
 den Shape der Daten ausmacht und zum anderen der Task, der sowas wie Bilderkennung oder Picture Segmentation ausmacht \cite{survey_transfer}. 
@@ -40,7 +39,6 @@ gewechselt wird und dann auf die Zieldomain \cite{bridge_transfer}. Dies wird
 bridge Transferlearning genannt und wird angewendet, wenn sich der Shape des Feature Spaces ändert oder 
 es durch zu große Unterschiede zwischen Source und Target zu Negative Transfer kommt \cite{survey_transfer}.
 
-% Wieso wurde TF mit Deep Cascade Learning durchgeführt?
 Deep Learning kann komplexere Aufgaben lösen als Shallow Learning, allerdings benötigt das Trainieren relativ viel Zeit. 
 Wenn diese nicht vorhanden ist, wird Cascade Learning angewendet \cite{cascor}.
 Für gewöhnlich wird bei TF ein Pre-trained Network genutzt und als Ausgangspunkt des Transfers der letzte Feature Vector, da 
@@ -51,7 +49,7 @@ die meisten Informationen hat.
 Das neural Network wird dabei effizienter und weniger komplex als es bei Deep Transfer Learning ist \cite{phd_deep_cascade}.
         
 % Cascade Learning
-Cascade Networks werden während des Trainings erst gebaut. Dazu werden Constructive 
+Cascade Netzwerke werden während des Trainings erst gebaut. Dazu werden Constructive 
 Algorithms genutzt. Diese haben den Vorteil, dass es unwichtig ist, die genaue Größe 
 des Netzes vorher zu wissen \cite{Constructive_Cascade}. Damit wird das Netz groß 
 genug sein, um eine gute Lösung zu liefern, aber auch nicht so groß, dass das 

@@ -35,7 +35,7 @@ zwischen Filterlayern und Linearlayern zu bewerkstelligen.
 
 Für alle Netzwerke wurde derselbe Seed für die Initialisierung der Weights genutzt. 
 
-In Tabelle 2.1 sind die Tests bezüglich Klassifikation und in Tabelle 2.2 die für die Regression. 
+In Tabelle \ref{tab:classtests} sind die Tests bezüglich Klassifikation und in Tabelle \ref{tab:regrtests} die für die Regression. 
 In beiden Tabellen sind die Tests, die sich mit der Zeitdauer befassen mit der Endung Time. Dabei gilt, dass CasTF Kaskadierung mit TF, Cas allein 
 Kaskadierung ohne TF und Comp bedeutet, dass es weder TF noch Kaskadierung gab. ACCM, LM und MAEM sind die Tests bezüglich der Early-Stopping 
 Metriken. 
@@ -82,8 +82,8 @@ Epochen in Zehnern es insgesamt gab.
         TF4/8k/10/8 & TF11/240/10/21 \\
         8k/10/8 & 240/10/11 \\
         Comp/8k//8 & Comp/240//8 \\
-        TF4/240/10/8 & MAEM/240/10 \\
-        240/10/8 & LM/240/10 \\
+        TF4/240/10/8 & MAEM/120/10 \\
+        240/10/8 & LM/120/10 \\
         Comp/240//8 & TF4/206/10/8/ts \\
         TF4/206/10/8/ts & 206/10/8/ts \\
         206/10/8/ts & Comp/206//8/ts \\

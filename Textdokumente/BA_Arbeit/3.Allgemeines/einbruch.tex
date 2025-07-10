@@ -1,6 +1,6 @@
 Hier wird etwas sehr offensichtliches betrachtet. Dies passiert jedes Mal, wenn TF verwendet wird. 
 Der Graph, der die Trainings- und Validationdaten nutzt, hat immer einen Einbruch in der Performanz an der Stelle an 
-der TF gemacht wird. Dies ist in der Figure 3.3 deutlich bei Epoche zwanzig zu sehen.
+der TF gemacht wird. Dies ist in der Figure \ref{fig:convmaxpooltrain} deutlich bei Epoche zwanzig zu sehen.
 
 \begin{figure}[htpb]
     \centering
@@ -12,7 +12,7 @@ der TF gemacht wird. Dies ist in der Figure 3.3 deutlich bei Epoche zwanzig zu s
 
 Dieser Einbruch passiert jedes Mal nach TF. Dies liegt daran, dass das Netz bisher die Targetdaten noch nie gesehen hat und bisher 
 auf eine andere Domain mit dem Sourcedatensatz trainiert hat. Das Netz kennt nur das Wissen aus dem Sourcedatensatz und kann nur dieses 
-anwenden. Wenn man aber das Testset, welches nur über die Targetdaten geht auf das ganze Netzwerk betrachtet, kommt Figure 3.4 heraus. 
+anwenden. Wenn man aber das Testset, welches nur über die Targetdaten geht auf das ganze Netzwerk betrachtet, kommt Figure \ref{fig:convmaxpooltest} heraus. 
 
 \begin{figure}[htpb]
     \centering

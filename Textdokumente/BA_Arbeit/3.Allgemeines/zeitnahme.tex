@@ -3,7 +3,7 @@ Diese wird in jedem Plot angezeigt. Sie ist generell stark abhängig davon, wiev
 wieviele maximale Epochen erlaubt sind. Deshalb werden hier jeweils gleich viele Datensamples für die Klassifikationsnetze und 
 Regressionsnetze verwendet, sowie eine gleiche Gesamtepochenanzahl. 
 
-Dazu wird jedes Mal der kleinste Targetdatensatz und der größte Sourcedatensatz genutzt, bis auf das 2DConv-Netzwerk, wenn TF verwendet wird. 
+Dazu wird jedes Mal der kleinste Targetdatensatz und der größte Sourcedatensatz genutzt, wenn TF verwendet wird. 
 Solange nicht TF verwendet wird, wird nur der kleinste Targetdatensatz genommen. Jedes Klassifikationsnetz 
 wird auf eine Gesamtanzahl von 40 Epochen trainiert. Wenn TF gemacht wird, dann nach 20 Epochen. Bei Regressionsnetzen wird auf 80 Epochen 
 trainiert. TF wird nach 30 Epochen gemacht. Tatsächliche Graphen werden hier nicht verwendet, da es zuviele sind und die meisten an 
@@ -13,7 +13,7 @@ anderen Stellen in ähnlicher Form bereits vorkommen. Um diese Graphen zu kontro
 Es wird hier keine Early-Stopping Metrik genutzt. 
 Dabei werden alle Klassifikationsnetze mit denselben Inputdaten gespeist, ebenso wie bei allen Regressionsnetze, was zur besseren 
 Vergleichbarkeit jeweils untereinander führt. 
-Die jeweiligen Netzversionen zwischen Cascade TF, Cascade und Complete haben dieselben Layer, sowie diegleiche Anzahl. 
+Die jeweiligen Netzversionen zwischen Cascade TF, Cascade und Complete haben dieselben Layer, sowie die gleiche Anzahl. 
 
 Hier nun die Tabelle mit allen Zeiten der Netze in einer vergleichbaren Variante: \newline
 
@@ -24,7 +24,7 @@ Hier nun die Tabelle mit allen Zeiten der Netze in einer vergleichbaren Variante
             \hline
             ConvMaxPool & 78 & 25 & 20 \\
             1DConv & 207 & 34 & 30 \\
-            2DConv & 23 & 24 & 40 \\
+            % 2DConv & 23 & 24 & 40 \\
             ClassOneDense & 79 & 28 & 13 \\
             RegressionTwo & 11 & 12 & 17 \\
             OneLayer & 16 & 18 & 11
@@ -35,7 +35,7 @@ Hier nun die Tabelle mit allen Zeiten der Netze in einer vergleichbaren Variante
     \end{center}
 \end{table}
 
-In Table 3.1 ist die Spalte Cascade TF, die Kaskadennetzwerke mit TF beeinhaltet. Die Spalte Cascade ist diejenige, in der die Netze nur auf dem 
+In Tabelle \ref{tab:time} ist die Spalte Cascade TF, die Kaskadennetzwerke mit TF beinhaltet. Die Spalte Cascade ist diejenige, in der die Netze nur auf dem 
 Targetdatensatz gelernt haben, aber Kaskadennetzwerke sind und die Spalte Complete sind die Lernzeiten der Netze, die weder TF machen noch 
 Kaskadennetzwerke sind, sondern dessen Layer vor dem Training bereits feststanden und komplett in einem auf dem Targetdatensatz gelernt wurden. 
 

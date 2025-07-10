@@ -36,6 +36,6 @@ den Netziterationen im Speicherplatz aber in der Form, wie es in Formel 4.3 zu s
     AugVecNew = N*W*H*C_{old} + N*W*H*10
 \end{equation}
 
-Daraus ergibt sich, dass der Arbeitsspeicherplatz mit einer Steigung von dem Zehnfachen des Datensatzes zunimmt. Bei Daten, die in einem Sample 
+Daraus ergibt sich, dass der Arbeitsspeicherplatzbedarf mit einer Steigung von dem Zehnfachen des Datensatzes zunimmt. Bei Daten, die in einem Sample 
 bereits 8192 Bytes benötigen, ist klar, dass diese Variante des Bauens des Augmented Vectors nicht durchgeführt werden sollte, da dieser zu 
 schnell zu groß wird. Aus diesem Grund wird das 2DC-Netzwerk im Folgenden nicht mehr verwendet. 

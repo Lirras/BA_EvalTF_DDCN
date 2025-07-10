@@ -1,6 +1,7 @@
 Hier wird die Kaskadierungsvariante des Direct Cascade vorgestellt. 
 Das Netzwerk ist hier vorher vollständig und besteht aus einem einzigen Hidden Layer und einem Output Layer. 
-Es wird dasselbe Netz mehrfach trainiert und während-dessen wird das Wissen zwischen diesen Netzen weitergegeben. 
+Dabei besteht die Netzstruktur hier aus mehreren gleichen Subnetzwerken und zwischen diesen wird das Wissen weitergegeben. 
+% Es wird dasselbe Netz mehrfach trainiert und während-dessen wird das Wissen zwischen diesen Netzen weitergegeben. 
 
 \begin{figure}[htpb]
     \centering
@@ -11,7 +12,7 @@ Es wird dasselbe Netz mehrfach trainiert und während-dessen wird das Wissen zwi
     Diese Verknüpfung ist der neue Input des nächsten Netzwerkes. Dadurch lernt das Verfahren zwischen den Netzwerken. }}
 \end{figure}
 
-Es beginnt, wie in Figure 2.2 gezeigt mit dem präpariertem Sourcedatensatz, der in die Instanz des Netzes hineingegeben wird. 
+Es beginnt, wie in Figure \ref{fig:directcascade} gezeigt mit dem präpariertem Sourcedatensatz, der in die Instanz des Netzes hineingegeben wird. 
 Damit wird diese Instanz trainiert und sobald dies beendet ist, wird einmal das fixe Netzwerk angewendet. Das Ergebnis davon ist 
 die Prediction. Diese wird mit dem Input desselben Netzes verbunden und es entsteht der Augmented Vector. Darauf, wie dieser Augmented 
 Vector genau entsteht, wird später nochmal eingegangen, da es bei jedem Direct Cascade Netzwerk ein wenig anders ist. Der Augmented 

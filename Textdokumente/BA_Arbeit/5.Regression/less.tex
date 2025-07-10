@@ -13,8 +13,7 @@ im vorherigen Unterkapitel durchgeführt.
     Die Tests sind: links Regr2:TF4/240/10/8 und rechts Regr2:240/10/8. Dabei ist zu sehen, dass dieses Netzwerk ohne TF besser läuft als mit.}}
 \end{figure}
 
-
-In Figure 5.4 sind die Ergebnisse des Deep Cascade Netzwerks. Es ist ohne TF tatsächlich besser als mit. Dies liegt daran, dass die Gewichte der 
+In Figure \ref{fig:smallregr} sind die Ergebnisse des Deep Cascade Netzwerks. Es ist ohne TF tatsächlich besser als mit. Dies liegt daran, dass die Gewichte der 
 ersten Hälfte des Netzes nur auf dem Sourcedatensatz passend gelernt haben. 
 
 Es gibt aber deutliche Unterschiede zu Direct Cascade, weshalb beide Netze hier gezeigt werden. 
@@ -27,7 +26,7 @@ Es gibt aber deutliche Unterschiede zu Direct Cascade, weshalb beide Netze hier 
     links 1Lay:TF11/240/10/21 und rechts 1Lay:240/10/11. Dabei auffällig ist, dass dieses Netzwekr mit TF besser ist als ohne.}}
 \end{figure}
 
-Figure 5.5 bezieht sich auf das Direct Cascade Netzwerk. Es wird deutlich, dass in dieser Kaskadierungsvariante das Netz deutlich schlechter 
+Figure \ref{fig:smallonl} bezieht sich auf das Direct Cascade Netzwerk. Es wird deutlich, dass in dieser Kaskadierungsvariante das Netz deutlich schlechter 
 ohne TF ist als mit. Daran wird erkannt, dass hier positive TF vorliegt. Die Predictions, die mithilfe des Sourcedatensatzes über die 
 zu dem Zeitpunkt nicht betrachteten Targetdaten, verbessern das Gesamtergebnis deutlich. Dadurch gibt es mehr Daten pro Sample, wenn auf dem 
 Targetdatensatz das Training begonnen wird. Diese Daten sind dabei nicht störend für die Performanz, weshalb es dann besser mit TF ist als ohne. 
@@ -35,7 +34,7 @@ Targetdatensatz das Training begonnen wird. Diese Daten sind dabei nicht stören
 Allerdings ist das Deep Cascade Netzwerk sowohl mit als auch ohne TF minimal besser. Dies kann aber auch 
 an dem dahinter liegenden Netz liegen, da sie nicht nur die exakt gleichen Layer haben. 
 Noch besser ist die Variante, 
-die weder Kaskadierung noch TF nutzt, sondern ein komplettes Netzwerk ist, wie in Figure 5.6 gezeigt. 
+die weder Kaskadierung noch TF nutzt, sondern ein komplettes Netzwerk ist, wie in Figure \ref{fig:smallonlcomp} gezeigt. 
 
 \begin{figure}
     \centering

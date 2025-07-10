@@ -10,7 +10,7 @@ wenig Targetdaten verwendet.
     da der Sourcedatensatz groß ist. Bei beiden ist gut zu sehen, dass die Performanz des Netzes sehr schlecht ist. Egal ob mit oder ohne TF.}}
 \end{figure}
 
-Wie in Figure 4.4 zu sehen gibt es keinen Unterschied zwischen der Accuracy mit TF zu der ohne bei Convolutional Layern. In beiden Fällen ist diese 
+Wie in Figure \ref{fig:1dc_tr} zu sehen gibt es keinen Unterschied zwischen der Accuracy mit TF zu der ohne bei Convolutional Layern. In beiden Fällen ist diese 
 extrem schlecht. Dies zeigt sich auch auf den Testdaten. 
 
 \begin{figure}[htpb]
@@ -21,7 +21,7 @@ extrem schlecht. Dies zeigt sich auch auf den Testdaten.
     anderen Hidden Layern im Netzwerk ist es sowohl mit als auch ohne TF schlecht.}}
 \end{figure}
 
-In Figure 4.5 zeigt sich dasselbe Bild nur auf Basis von Linear Layern. Dies kann zwei Gründe haben: Entweder funktioniert das Kaskadieren nicht 
+In Figure \ref{fig:cod_tr} zeigt sich dasselbe Bild nur auf Basis von Linear Layern. Dies kann zwei Gründe haben: Entweder funktioniert das Kaskadieren nicht 
 oder es sind nicht genügend Targetdaten vorhanden. Letzteres wurde oben ausgetestet und lieferte zwar bessere, aber trotzdem nur mäßige Ergebnisse. 
 Das Rauschen in den Plots kommt hier daher, dass alle zehn Epochen ein neues Netzwerk angefangen wird zu lernen. Dies hat zwar das Wissen aller 
 vorherigen Netze im Input, aber nicht in der Art, dass die Gewichte direkt gleich gut sind. 

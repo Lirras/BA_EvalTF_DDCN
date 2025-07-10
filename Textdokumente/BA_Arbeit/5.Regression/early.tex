@@ -7,12 +7,14 @@ Zudem für Regression noch MAEM und für Klassifikation ACCM.
 Bei der Klassifikation kommt es nur manchmal zu einem Abbruch der Epochen über das ACCM, aber es wird dadurch nicht besser. Mit LM kommt 
 dieser Abbruch öfter vor und das Training geht somit 
 zwar schneller, jedoch bleibt Klassifikation mit Kaskadierung so schlecht, dass es nicht genutzt werden kann. Dass weder LM noch ACCM 
-funktioniert sieht man deutlich in Figure 5.7. ACCM ist die einzige der hier vorkommenden Metriken, dessen Ziel ein Maximum ist. 
+funktioniert sieht man deutlich in Figure \ref{fig:1dconvmetrics}. ACCM ist die einzige der hier vorkommenden Metriken, dessen Ziel ein Maximum ist. 
 
 \begin{figure}[htpb]
     \includegraphics[height=4.5cm]{../../Plots/ba_plots/earlystopping/lossmetric/1dconv_ts.png}
     \includegraphics[height=4.5cm]{../../Plots/ba_plots/earlystopping/intermetric/1dconv_ts.png}
-    \caption{\label{fig:1dconvmetrics} LM und ACCM mit 1DConv}
+    \caption{\label{fig:1dconvmetrics} 
+    \small{Hier sind die Tests für 1DC mit Early-Stopping. Es ist eindeutig zu sehen, dass es selbst mit Early-Stopping nicht besser wird. 
+    Die exakten Testnamen: links: 1DC:LM/732/10 und rechts 1DC:ACCM/732/10}}
 \end{figure}
 
 Deshalb wird sich hier eingehender mit dem Regressionsnetz OneLayer befasst. Die Metriken LM und MAEM suchen dabei ein Minimum. 
@@ -20,11 +22,14 @@ Deshalb wird sich hier eingehender mit dem Regressionsnetz OneLayer befasst. Die
 \begin{figure}[htpb]
     \includegraphics[height=4.5cm]{../../Plots/ba_plots/earlystopping/lossmetric/onelayer_ts.png}
     \includegraphics[height=4.5cm]{../../Plots/ba_plots/earlystopping/intermetric/onelayer_ts.png}
-    \caption{\label{fig:onelayermetrics} LM und MAEM mit OneLayer}
+    \caption{\label{fig:onelayermetrics} 
+    \small{Hier werden die Tests für 1Lay mit Early-Stopping betrachtet. Dabei fällt auf, dass sie in der Performanz schlechter sind als ohne. 
+    Obwohl es hier zu Abbrüchen kam, dauerte es zudem länger. Die angewandten Metriken sind sinnlos. Die Testnamen sind im genauen: 
+    links 1Lay:LM/120/10 und rechts 1Lay:MAEM/120/10}}
 \end{figure}
 
 Dieses liefert mit den beiden Early-Stopping Metriken LM und MAEM 
-halbwegs brauchbare Ergebnisse, jedoch sind diese deutlich schlechter als ein Training ohne diese, wie an den Werten von Figure 5.8 abgelesen 
+halbwegs brauchbare Ergebnisse, jedoch sind diese deutlich schlechter als ein Training ohne diese, wie an den Werten von Figure \ref{fig:onelayermetrics} abgelesen 
 werden kann. 
 
 Diese Werte sind so schlecht als hätte man das OneLayer Netzwerk mit wenigen Targetdaten direkt auf diesen Datensatz lernen lassen. 

@@ -21,7 +21,7 @@ Es wird die Aktivierungsfunktion relu genutzt.
 \end{enumerate}
 \fi
 
-Alle Layer des ConvMaxPool Netzwerks sind in Figure 3.2 in korrekter Reihenfolge zu sehen. Dabei ist die erste Zahl eines Convolution Layer 
+Alle Layer des ConvMaxPool Netzwerks sind in Figure \ref{fig:convmaxpool} in korrekter Reihenfolge zu sehen. Dabei ist die erste Zahl eines Convolution Layer 
 die Anzahl der genutzten Filter, während das folgende Tuple die Kerngröße beschreibt. Ebenfalls steht die Kerngröße bei den MaxPool Layern dort. 
 Das Flatten- und das Linear-Layer sind der Output-Block. Das Linear-Layer benötigt zehn Nodes, da es zehn Klassen gibt. Jedes Hidden Layer wird 
 mit zehn Epochen trainiert. Es gibt keine Early-Stopping Metrik und es wird derselbe Seed für alle Tests genutzt. 

@@ -13,11 +13,12 @@
 \pagestyle{scrheadings}
 
 \setlength{\footheight}{24.0pt}
+\setlength{\headheight}{12.8064pt}
 
 \ihead{\headmark}
 \automark{section}
 
-\cfoot{Der hier hinterliegende Code, die Plots und die Textausarbeitung ist zu finden unter: 
+\cfoot{Der hinterliegende Code, die Plots und die Textausarbeitung ist zu finden unter: 
     \url{https://github.com/Lirras/BA_EvalTF_DDCN}.}
 
 \bibliography{bibliography}
@@ -32,17 +33,18 @@
 
     \chapter{Einleitung}  % 1.Einleitung
     \section{Einführung}
-    % Ausblick auf die Arbeit selbst
     \input{1.Einleitung/einfuehrung.tex}
     \section{Motivation}
     \input{1.Einleitung/motivation.tex}
-    % Evtl. Übersicht
     \section{Related Work}
-    % Literaturrecherche
     \input{1.Einleitung/relatedwork.tex}
     \input{1.Einleitung/litrech.tex}
+    % Übersicht
+    \section{Ausblick in diese Arbeit}
+    \input{1.Einleitung/ausblick.tex}
 
     \chapter{Methodik}  % 2.Methodik
+    \input{2.Methodik/methodik.tex}
     \section{Transferlernen}  % Irgendwo hier hin schreiben, dass es ohne Normalisierung ist!
     \input{2.Methodik/transferlernen.tex}
     \section{Kaskadierung}
@@ -60,7 +62,8 @@
     \section{Liste der Tests}
     \input{2.Methodik/testliste.tex}
 
-    \chapter{Allgemeine Resultate}  % 3.Allgemeines
+    \chapter{Konsistente Auffälligkeiten}  % 3.Allgemeines  Titel überarbeiten
+    \input{3.Allgemeines/allgemein.tex}
     \section{Ploterklärung}
     \input{3.Allgemeines/ploterklaerung.tex}
     \section{ConvMaxPool}
@@ -104,14 +107,16 @@
     \section{Early Stopping}
     \input{5.Regression/early.tex}
     
-    \chapter{Weiterführendes}  % 6.Diskussion
+    \chapter{Zusammenfassung}  % 6.Diskussion
     % Wenn ich alle Ergebnisse direkt erläutere und erkläre, warum was wie ist, dann kann das hier weg.
-    % \section{Erkenntnisse}
-    % \input{6.Diskussion/erkenntnisse.tex}
+    \section{Erkenntnisse}
+    \input{6.Diskussion/erkenntnisse.tex}
     \section{Ausblick}
     \input{6.Diskussion/ausblick.tex}
     \section{Fazit}
     \input{6.Diskussion/fazit.tex}
 
+    \listoffigures
+    \listoftables
     \printbibliography
 \end{document}

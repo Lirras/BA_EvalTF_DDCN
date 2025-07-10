@@ -1,6 +1,6 @@
 Wenn unterschiedlich lang auf dem Sourcedatensatz trainiert wird, fällt auf, dass das Netz unterschiedlich gut auf dem Targetdatensatz ist. 
 Da es sowieso ausgestestet werden muss, wann TF genutzt wird, wird nun das ConvMaxPool-Netzwerk genommen und nach jedem Layer TF angewandt. 
-Das Ergebnis davon ist in Figure 3.5 zu sehen. 
+Das Ergebnis davon ist in Figure \ref{fig:layertf} zu sehen. 
 
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/convmaxpool/wotr.png}
@@ -18,11 +18,11 @@ Auffällig ist es, dass hier die beste Performanz ohne TF ist. Bereits nach nur 
 trainiert wird, bricht die Accuracy ein. Dies zeigt, dass TF bei Klassifikation und Deep Cascade Netzwerken sinnfrei ist. Das 
 Trainingsset der Trainingsdaten kommt bei TF nie auch nur annähernd an den Bereich heran, in dem es ohne TF ist. Daraus folgt, dass es 
 bereits zu Overfitting auf dem Sourcedatensatz gekommen ist. Dadurch kann nicht mehr so gut auf dem Targetdatensatz gelernt werden. Dieses 
-Overfitting passiert sogar bereits, wenn nur eine Epoche auf dem Sourcedatensatz gelernt wird, was die letzte Graphik von Figure 3.4 zeigt. 
+Overfitting passiert sogar bereits, wenn nur eine Epoche auf dem Sourcedatensatz gelernt wird, was die Graphik oben rechts von Figure \ref{fig:layertf} zeigt. 
 Ebenso ist es offensichtlich, dass es bei jedem Graph zu Overfitting auf dem Trainingsset des Targetdatensatzes kam, da dieser um 60\% höhere 
 Accuracy als das Validationset und dem Testdatenset vorweist. 
 
-Bei einem Regressionsnetzwerk, wie dem Deep Cascade Netzwerk RegressionTwo kommt es, wie in Figure 3.6 zu sehen, nicht so schnell zu Overfitting. 
+Bei einem Regressionsnetzwerk, wie dem Deep Cascade Netzwerk RegressionTwo kommt es, wie in Figure \ref{fig:regr2tf} zu sehen, nicht so schnell zu Overfitting. 
 Es kommt dazu weder auf dem Sourcedatensatz noch auf dem Targetdatensatz. 
 
 \begin{figure}[htpb]
