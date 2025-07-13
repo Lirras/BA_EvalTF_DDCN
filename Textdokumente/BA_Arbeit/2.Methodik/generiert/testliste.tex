@@ -1,37 +1,38 @@
-Von den betrachteten Netzwerken sind ConvMaxPool und RegressionTwo Varianten des Deep Cascade Netzwerks, während alle weiteren Modelle als 
+Von den betrachteten Netzwerken sind ConvMaxPool und RegressionTwo Deep Cascade Netzwerke, während alle weiteren Modelle als 
 Direct Cascade Netzwerke klassifiziert werden. Zudem handelt es sich bei RegressionTwo und OneLayer um Regressionsnetzwerke, während die übrigen 
 Modelle Klassifikationsnetzwerke darstellen.
 
 Alle Netzwerke wurden mit dem Adam-Optimierer bei einer Lernrate von $1*10^{-3}$ trainiert. Für die Klassifikationsnetzwerke wurde die 
 Verlustfunktion Categorical Cross-Entropy verwendet, kombiniert mit einer Softmax-Aktivierungsfunktion im Ausgangs-Layer. Die 
-Regressionsnetzwerke hingegen verwenden die Mean Squared Error (MSE) als Verlustfunktion und eine lineare Aktivierungsfunktion.
+Regressionsnetzwerke hingegen verwenden Mean Squared Error (MSE) als Verlustfunktion und eine lineare Aktivierungsfunktion.
 
-Zusätzlich wurden bei allen Direct Cascade Netzwerken Early-Stopping-Kriterien basierend auf den Metriken MAEM (Mean Absolute Error Metric), 
-LM (Loss Metric) und ACCM (Accuracy Metric) angewandt.
+Zusätzlich wurden bei allen Direct Cascade Netzwerken Early-Stopping-Kriterien basierend auf den Metriken MAEM, 
+LM und ACCM angewandt.
 
-Für die Klassifikationsnetzwerke erfolgte das Training mit fünf unterschiedlichen Größen des Ziel-Datensatzes (Targetdatensatz). Eine 
-Ausnahme bildet das 2DC-Netzwerk, das aufgrund technischer Einschränkungen der verwendeten Hardware nur mit sehr kleinen Mengen von Quell- 
-(Source) und Ziel-Daten trainiert werden kann.
+Für die Klassifikationsnetzwerke erfolgte das Training mit fünf unterschiedlichen Größen des Target-Datensatzes. Eine 
+Ausnahme bildet das 2DC-Netzwerk, das aufgrund technischer Einschränkungen der verwendeten Hardware nur mit sehr kleinen Mengen von Source- 
+und Target-Daten trainiert werden kann.
 
-Bei den Regressionsnetzwerken wurde jeweils ein Training mit großer sowie mit kleiner Menge an Ziel-Daten durchgeführt.
+Bei den Regressionsnetzwerken wurde jeweils ein Training mit großer sowie mit kleiner Menge an Target-Daten durchgeführt.
 
-Darüber hinaus wurden mit allen Netzwerken Vergleiche zwischen Trainingsläufen mit Transfer Learning (TF) und ohne sowie zwischen Trainings 
-ohne TF und sogenannten Komplett-Netzwerken durchgeführt. Ein Komplett-Netzwerk bezeichnet hierbei ein Modell, das ohne Transfer Learning und 
-ohne Kaskadierung in einem einzigen vollständigen Training trainiert wird.
+Darüber hinaus wurden mit allen Netzwerken Vergleiche zwischen Trainingsläufen mit TF und ohne sowie zwischen Trainings 
+ohne TF und sogenannten vollständigen Netzwerken durchgeführt. Ein vollständiges Netzwerk bezeichnet hierbei ein Modell, das ohne TF 
+und ohne Kaskadierung in einem einzigen vollständigen Training trainiert wird. Dies ist das klassische Training neuronaler Netzwerke. 
 
-Der Zeitpunkt des Einsatzes von Transfer Learning wurde für alle Netzwerke experimentell frei gewählt.
+Der Zeitpunkt des Einsatzes von TF wurde für alle Netzwerke experimentell frei gewählt.
 
 Alle Direct Cascade Netzwerke verfügen jeweils über genau einen Hidden Layer. In einigen Fällen wird zusätzlich ein Hilfslayer verwendet, um 
-den Übergang zwischen Filter-Layern (Convolutional Layers) und linearen Layern zu ermöglichen.
+den Übergang zwischen Filter-Layern (Convolutional Layer) und linearen Layern zu ermöglichen.
 
 Für alle Experimente wurde derselbe Initialisierungs-Seed für die Gewichtungen verwendet, um Reproduzierbarkeit sicherzustellen.
 
 Die Ergebnisse der Klassifikationstests sind in Tabelle \ref{tab:classtests} zusammengefasst, die Regressionstests in Tabelle \ref{tab:regrtests}. 
 In beiden Tabellen sind Tests, die sich auf die Trainingsdauer beziehen, mit dem Suffix "Time" gekennzeichnet. Dabei steht CasTF für Kaskadierung 
-mit Transfer Learning, Cas für Kaskadierung ohne Transfer Learning und Comp für Trainings ohne Kaskadierung und ohne Transfer Learning.
+mit TF, Cas für Kaskadierung ohne TF und Comp für Trainings ohne Kaskadierung und ohne TF - 
+also den sogenannten vollständigen Netzen. 
 
-Die Bezeichnungen vor dem ersten Schrägstrich geben den Zeitpunkt des Transfer Learning an, wobei dies mit "TF" explizit markiert ist. Fehlt dieser 
-Eintrag, wurde kein Transfer Learning durchgeführt. Anschließend folgt die Datenmenge des Ziel-Datensatzes sowie die Anzahl der Epochen pro 
+Die Bezeichnungen vor dem ersten Schrägstrich geben den Zeitpunkt des TF an, wobei dies mit "TF" explizit markiert ist. Fehlt dieser 
+Eintrag, wurde kein TF durchgeführt. Anschließend folgt die Datenmenge des Target-Datensatzes sowie die Anzahl der Epochen pro 
 Trainingsiteration. Optional enthält die Bezeichnung eine weitere Angabe, die die Gesamtanzahl der Epochen in Zehner-Schritten angibt.
 
 \begin{table}[!ht]
@@ -83,8 +84,16 @@ Trainingsiteration. Optional enthält die Bezeichnung eine weitere Angabe, die d
 \end{table}
 
 Ein Beispiel für eine Referenz auf einen spezifischen Testeintrag ist CMP:TF0/732/10. Diese Kennzeichnung verweist auf den Test des 
-CMP-Netzwerks mit Transfer Learning, das unmittelbar nach dem ersten Layer erfolgt (TF0). In diesem speziellen Fall wird das erste Layer 
+CMP-Netzwerks mit TF, das unmittelbar nach dem ersten Layer erfolgt. In diesem speziellen Fall wird das erste Layer 
 lediglich über eine einzige Epoche trainiert, während alle weiteren Layer nach dem üblichen Trainingsschema optimiert werden. Das gleiche 
 Vorgehen gilt für den Test Regr2:TF0/240/25, bei dem analog das erste Layer nur eine Epoche lang trainiert wird.
 
 Testeinträge mit dem Suffix "ts" kennzeichnen solche Experimente, bei denen ein gezielt großer Testdatensatz verwendet wurde.
+
+Die Tests mit unterschiedlichen TF-Layern dienen dazu, den sinnvollen Einsatz von TF zu evaluieren. Alle Tests mit dem Zusatz "Time" verfolgen 
+das Ziel, die Trainingsdauer zu vergleichen. Die Untersuchungen mit variierenden Target-Datenmengen analysieren das Verhalten 
+von TF bei unterschiedlichen Datenvolumina sowie die generelle Leistungsfähigkeit der Netzwerke. Tests mit einer erhöhten Anzahl an 
+Gesamtepochen und tieferer Netzstruktur ermöglichen eine detaillierte Betrachtung des Einflusses von TF auf tiefe Netze. Die Versuche, bei denen 
+verschiedene Metriken zum Einsatz kommen, prüfen, inwiefern diese Early-Stopping-Metriken zu einer Leistungsverbesserung führen. Schließlich 
+dienen die Tests mit umfangreichen Testdatensätzen der Überprüfung der Generalisierungsfähigkeit der Netzwerke und der Validierung bisheriger 
+Erkenntnisse.

@@ -3,10 +3,10 @@ eine spezielle Architekturform neuronaler Netzwerke, bei der das Netzwerk schrit
 konventionellen neuronalen Netzwerken, bei denen die gesamte Netzwerkstruktur (Anzahl und Art der Layer sowie der Subnetzwerke) im Vorfeld 
 vollständig definiert ist, erfolgt die Konstruktion eines Kaskadennetzwerks iterativ während des Trainingsprozesses.
 
-Dabei wird jeweils nur der neu hinzugefügte Netzwerkabschnitt trainiert, während die zuvor trainierten Komponenten eingefroren (gefreezt) werden. 
+Dabei wird jeweils nur der neu hinzugefügte Netzwerkabschnitt trainiert, während die zuvor trainierten Komponenten eingefroren werden. 
 Das bedeutet, dass die Gewichtungen dieser eingefrorenen Layer und Subnetzwerke nach ihrer Trainingsphase nicht mehr angepasst werden. Diese 
 Vorgehensweise führt dazu, dass Interaktionen zwischen den verschiedenen Netzwerkstufen – insbesondere zwischen bereits trainierten und neu 
-hinzukommenden Komponenten – nicht explizit erlernt werden können. Daher erzielen Kaskadennetzwerke bei gleicher Datenbasis in der Regel eine 
+hinzukommenden Komponenten – nicht erlernt werden können. Daher erzielen Kaskadennetzwerke bei gleicher Datenbasis in der Regel eine 
 geringere Modellgüte als klassische Netzwerke mit vollständig trainierbarer Struktur.
 
 Ein wesentlicher Vorteil der Kaskadenarchitektur liegt jedoch in der Trainingsgeschwindigkeit. Da jeweils nur ein Teil des Netzwerks aktiv 

@@ -1,14 +1,14 @@
-Transferlernen (Transfer Learning, TL) basiert auf dem Prinzip der Wissensübertragung zwischen unterschiedlichen, jedoch verwandten 
-Lernsituationen – vergleichbar mit dem Konzept einer "Eselsbrücke". Es existieren verschiedene Formen des Transferlernens, wobei 
-insbesondere zwischen Task Transfer (Aufgabenwechsel) und Domain Transfer (Domänenwechsel) unterschieden wird. Wird keine dieser Varianten 
-angewendet, handelt es sich nicht um Transferlernen im engeren Sinne.
+TF basiert auf dem Prinzip der Wissensübertragung zwischen unterschiedlichen, jedoch verwandten 
+Lernsituationen – vergleichbar mit dem Konzept einer "Eselsbrücke". Es existieren verschiedene Formen des TFs, wobei 
+insbesondere zwischen Task Transfer und Domain Transfer (Domänenwechsel) unterschieden wird. Wird keine dieser Varianten 
+angewendet, handelt es sich nicht um TF im engeren Sinne.
 
 In dieser Arbeit wird ausschließlich der Domain Transfer betrachtet, da ausschließlich dieser zum Einsatz kommt. Dabei wird ein Modell, das auf 
 einem bestimmten Datensatz (Source-Domain) trainiert wurde, zur Verbesserung der Leistung auf einem anderen, inhaltlich verwandten Datensatz 
 (Target-Domain) genutzt – unter Beibehaltung der gleichen Modellarchitektur. Dieser Ansatz wird als Transductive Transfer Learning bezeichnet 
 \cite{survey_transfer}. Ziel ist es, das in der Source-Domain erworbene Wissen auf die Target-Domain zu übertragen.
 
-Ein zentrales Problem des Transferlernens besteht darin, geeignete Antworten auf die drei grundlegenden Fragen zu finden: What to transfer, How 
+Ein zentrales Problem des TFs besteht darin, geeignete Antworten auf die drei grundlegenden Fragen zu finden: What to transfer, How 
 to transfer und When to transfer \cite{survey_transfer}. Diese Aspekte sind bislang nicht abschließend geklärt und stellen weiterhin offene 
 Forschungsfragen dar.
 
@@ -20,7 +20,7 @@ Da sowohl Klassifikations- als auch Regressionsmodelle evaluiert werden, kommen 
     \item Target-Datensatz: Street View House Numbers (SVHN) \cite{house_numbers}
 \end{enumerate}
 
-Beide Datensätze müssen zur strukturellen Kompatibilität für das Transferlernen angepasst werden. MNIST-Bilder (ursprünglich 28x28 Pixel, 
+Beide Datensätze müssen zur strukturellen Kompatibilität für das TF angepasst werden. MNIST-Bilder (ursprünglich 28x28 Pixel, 
 einfarbig) werden auf 32x32 Pixel skaliert. Der SVHN-Datensatz, ursprünglich in Farbe (RGB), wird in Graustufen konvertiert. Dies gewährleistet, 
 dass beide Eingabedatensätze die gleiche Dimensionalität aufweisen und somit als Input für dasselbe neuronale Netz genutzt werden können.
 
@@ -52,18 +52,18 @@ Diese Ableitung stellt die strukturelle Entsprechung zur RM-Variable im BOST-Dat
 
 Eine inhaltliche Verbindung besteht voraussichtlich zwischen LSTAT (BOST) und MedInc (CALI), da sozioökonomischer Status und Einkommen 
 erfahrungsgemäß korrelieren. Da LSTAT jedoch antiproportional zur Einkommenshöhe ist, wird diese Variable invertiert, um eine proportionale 
-Beziehung zur MedInc-Variable herzustellen – eine Voraussetzung für effektives Transferlernen.
+Beziehung zur MedInc-Variable herzustellen – eine Voraussetzung für effektives TF.
 
 Die Harmonisierung der Altersvariablen gestaltet sich komplexer: AGE im BOST-Datensatz beschreibt den Anteil der vor 1940 erbauten Häuser, 
 während HouseAge im CALI-Datensatz das durchschnittliche Alter der Gebäude angibt. Um AGE in eine vergleichbare Form zu bringen, wird auf 
 Basis einer angenommenen maximalen Anzahl von 100 Häusern pro Block und einem maximalen Alter von 85 Jahren (bezogen auf das Jahr 2025) eine 
 Umrechnung vorgenommen. Die entsprechende Formel lautet:
 \begin{equation}
-    \frac{AGE * 85}{Maximalanzahl}
+    \frac{AGE * 85}{100}
 \end{equation}
 
 Durch die beschriebenen Anpassungen weisen alle verwendeten Source- und Target-Datensätze strukturelle Kompatibilität zueinander auf. Damit ist 
-die Frage "Was wird transferiert?" im Sinne des Transferlernens hinreichend beantwortet.
+die Frage "Was wird transferiert?" im Sinne des TFs hinreichend beantwortet.
 
 Die nächste zu klärende Dimension ist das "How to Transfer". Der Transfer erfolgt in allen Fällen ohne Modifikation der Gewichtungen zuvor 
 trainierter Netzwerkschichten. Das neuronale Netzwerk wird zunächst vollständig auf dem Source-Datensatz trainiert. Anschließend erfolgt der 
@@ -80,6 +80,6 @@ Dabei unterscheiden sich die beiden eingesetzten Kaskadierungsansätze hinsichtl
 \end{enumerate}
     
     
-Die Frage "Wann ist Transfer Learning sinnvoll?" (When to Transfer) kann bislang nicht eindeutig beantwortet werden. Aus diesem Grund wird in 
+Die Frage "Wann ist TF sinnvoll?" (When to Transfer) kann bislang nicht eindeutig beantwortet werden. Aus diesem Grund wird in 
 den Experimenten mit unterschiedlichen Zeitpunkten für den Transfer gearbeitet – sowohl mit einem frühen als auch mit einem späteren Übergang 
 zum Target-Datensatz.

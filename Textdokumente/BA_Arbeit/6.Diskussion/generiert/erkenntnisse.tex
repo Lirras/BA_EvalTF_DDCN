@@ -1,31 +1,37 @@
 \textbf{Bei Klassifikation und Regression:}\\
-Es zeigt sich ein relativ schneller Overfitting-Effekt auf dem Sourcedatensatz.
+Es zeigt sich ein relativ schneller Overfitting-Effekt auf dem Source-Datensatz.
 
-An der Stelle des TF bricht die Performanz des Netzes deutlich ein. Anschließend kommt es zwar zu einer teilweisen Erholung, 
+An der Stelle des TFs bricht die Performanz des Netzes deutlich ein. Anschließend kommt es zwar zu einer teilweisen Erholung, 
 jedoch erreicht die Leistung nicht mehr das vorherige Niveau.
 
-In der vorliegenden Implementierung sind die herkömmlichen Netzwerke bei kleinen Datensätzen schneller als die Direct Cascade Netzwerke, welche 
-wiederum schneller trainieren als die Deep Cascade Architekturen. Die Performanz variiert jedoch signifikant zwischen den einzelnen Netzwerktypen.
+In der vorliegenden Implementierung sind die herkömmlichen Netzwerke bei kleinen Datensätzen und flacher Netzstruktur schneller als die Direct 
+Cascade Netzwerke, welche wiederum schneller trainieren als die Deep Cascade Architekturen. Die Performanz variiert jedoch signifikant 
+zwischen den einzelnen Netzwerktypen. 
+
+Bei zunehmender Netzwerktiefe und einer hohen Anzahl an Trainingsepochen kehrt sich das Zeitverhältnis zwischen den Kaskadenversionen des 
+Netzwerks und dem vollständigen Netzwerk um, sodass Letzteres im Vergleich deutlich langsamer ist als beide Kaskadenvarianten.
 
 \textbf{Klassifikation:}\\
-Bei der Klassifikation ist der Accuracy-Wert primär von der Größe des Targetdatensatzes abhängig: Je geringer die Datenmenge, desto 
+Bei der Klassifikation ist der Accuracy-Wert primär von der Größe des Target-Datensatzes abhängig: Je geringer die Datenmenge, desto 
 schlechter fällt die Klassifikationsgenauigkeit aus.
 
 Die Klassifikationsleistung ist derart unzureichend, dass ein Einsatz in diesem Kontext nicht sinnvoll erscheint, insbesondere wenn die 
-Genauigkeit nur bei etwa 20\% liegt.
+Accuracy nur bei etwa 20\% liegt.
 
-Bei TF zeigt sich eine leicht schlechtere Performance im Vergleich zum Training ohne TF.
+Bei TF zeigt sich eine leicht schlechtere Performanz im Vergleich zum Training ohne TF.
 
 Ein Cascade-Netzwerk erzielt eine schlechtere Leistung als ein vollständig trainiertes Netzwerk ohne Kaskadierung.
 
-Die Verarbeitung mehrdimensionaler Augmented Vektoren kann zu Problemen mit dem Arbeitsspeicher führen.
+Die Verarbeitung mehrdimensionaler Augmented Vectors kann zu Problemen mit dem Arbeitsspeicher führen.
 
-Die eindimensionale Klassifikation ist geringfügig schlechter als die zweidimensionale, dieser Unterschied ist jedoch minimal und kann 
+Die eindimensionale Klassifikation ist geringfügig schlechter als die zweidimensionale; dieser Unterschied ist jedoch minimal und kann 
 vernachlässigt werden.
 
 \textbf{Regression:}\\
 Bei der Regression führt der Einsatz von TF bei wenigen Trainingsdaten zu besseren Ergebnissen als ein Training des Netzwerks ausschließlich 
-auf dem Targetdatensatz von Grund auf — dies gilt jedoch nur für Direct Cascade Netzwerke.
+auf dem Target-Datensatz von Grund auf — dies gilt jedoch nur für Direct Cascade Netzwerke.
+
+Die Leistungsfähigkeit der Regressionsnetzwerke mit eingesetztem TF ist ausreichend, um eine praktische Anwendbarkeit zu gewährleisten.
 
 Der Performanz-Abfall bei der Regression fällt insgesamt deutlich geringer aus als bei der Klassifikation.
 

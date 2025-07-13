@@ -1,6 +1,6 @@
 Im Folgenden wird untersucht, welche Auswirkungen auftreten, wenn auf das Kaskadieren verzichtet wird. Da ein zufriedenstellendes Ergebnis 
 nur ohne Verwendung von TF zu erwarten ist, erfolgt das Training direkt auf dem Target-Datensatz. Die Architektur der 
-Netzwerke wird so angepasst, dass die Gesamtanzahl der Hidden Layer der Summe der Hidden Layer aller einzelnen Netzwerke im 
+vollständigen Netzwerke wird so angepasst, dass die Gesamtanzahl der Hidden Layer der Summe der Hidden Layer aller einzelnen Netzwerke im 
 Direct-Cascade-Verfahren entspricht. Dabei wird die Gesamtanzahl der Trainings-Epochen beibehalten, um eine vergleichbare Trainingsdauer 
 sicherzustellen.
 
@@ -22,12 +22,16 @@ Zehntelprozenten. Dies deutet auf das Erreichen eines lokalen Maximums im Traini
 
 Im Vergleich dazu bleibt das andere Netzwerk dauerhaft auf dem Niveau dieses lokalen Maximums – beide Resultate zeigen exakt identische Werte. 
 Aus Abbildung \ref{fig:nocascade} lässt sich zudem ableiten, dass unter den gegebenen Bedingungen eine maximale Accuracy von etwa 40\% erreichbar 
-ist. Dieser Wert stellt das globale Maximum dar, da er die bestmögliche Performance auf den Trainingsdaten widerspiegelt.
+ist. Dieser Wert stellt das globale Maximum dar, da er die bestmögliche Performanz auf den Trainingsdaten widerspiegelt.
 
-Weder das reine Kaskadieren noch die Kombination aus Kaskadierung und Transferlernen (TF) erreichen vergleichbare Ergebnisse – beide Varianten 
+Weder das reine Kaskadieren noch die Kombination aus Kaskadierung und TF erreichen vergleichbare Ergebnisse – beide Varianten 
 erreichen lediglich eine maximale Accuracy von etwa 20\% und damit nur etwa die Hälfte der möglichen Leistung.
 
 Diese Beobachtungen legen nahe, dass die Ursache für die stark eingeschränkte Klassifikationsleistung im Direct-Cascade-Verfahren mit 
-Transferlernen bereits in der Art der Kaskadierung selbst zu suchen ist. Mögliche Gründe hierfür könnten in der wiederholten Anwendung der 
+TF bereits in der Art der Kaskadierung selbst zu suchen ist. Mögliche Gründe hierfür könnten in der wiederholten Anwendung der 
 Categorical-Crossentropy-Verlustfunktion liegen, die sich gegenseitig negativ beeinflussen könnte. Alternativ könnte auch die 
 Softmax-Aktivierungsfunktion oder das konkrete Vorgehen beim Kaskadieren die Ursache darstellen.
+
+Letztlich erweist sich der Einsatz von TF in Kombination mit dem Direct-Cascade-Verfahren unter Verwendung der in dieser Arbeit 
+genutzten Datensätze und der beschriebenen Augmented Vectors als nicht zielführend, da die erzielten Accuracy-Werte selbst bei umfangreichen 
+Trainingsdaten 60\% nicht überschreiten und im Vergleich zu einem vollständig trainierten Netzwerk signifikant schlechter ausfallen.

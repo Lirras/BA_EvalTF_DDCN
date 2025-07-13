@@ -1,10 +1,11 @@
 Es wurden drei Evaluationsmetriken definiert: die Accuracy-Metrik (ACCM), die Loss-Metrik (LM) sowie die Mean Absolute Error-Metrik (MAEM). 
 Diese Metriken dienen als Kriterien für das Early Stopping und bestimmen die Anzahl der Trainings-Epochen.
 
-Das Early Stopping anhand der Accuracy-Metrik erfolgt, sobald die Validierungsgenauigkeit (Validation Accuracy) um mindestens 10\% unter der 
-Trainingsgenauigkeit (Training Accuracy) liegt, was auf Overfitting im Netzwerk hinweist.
+Das Early Stopping anhand der ACCM erfolgt, sobald die Validierungsgenauigkeit um mindestens 10\% unter der 
+Trainingsgenauigkeit liegt, was auf Overfitting im Netzwerk hinweist.
 
-Für die Loss- und MAE-Metrik wird das Training beendet, wenn der Validierungswert in der aktuellen Epoche schlechter ausfällt als in der 
+Bei der LM und MAEM wird das Training beendet, wenn der Validierungswert in der aktuellen Epoche schlechter ausfällt als in der 
 vorherigen. Dieses Verhalten verursacht, dass das Netzwerk in einem lokalen Minimum konvergiert, aus dem es nicht mehr herausfindet.
 
-Für die Anzahl der Netzwerke im Direct Cascade Verfahren wird keine dieser Metriken zur Steuerung des Trainings eingesetzt.
+Für die Anzahl der Netzwerke im Direct Cascade Verfahren wird keine dieser Metriken zur Steuerung des Trainings eingesetzt. 
+Ihre Anwendung besteht darin, den Trainingsprozess vorzeitig zu beenden, noch bevor die vorgesehene maximale Anzahl an Epochen erreicht wird. 

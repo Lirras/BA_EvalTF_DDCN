@@ -1,9 +1,12 @@
-Diese Arbeit basiert auf dem Cascade-Correlation-Algorithmus (CasCor) \cite{cascor}, der ursprünglich entwickelt wurde, um der hohen 
+Diese Arbeit basiert auf dem CasCor-Algorithmus \cite{cascor}, der ursprünglich entwickelt wurde, um der hohen 
 Trainingsdauer klassischer neuronaler Netze entgegenzuwirken. Aufbauend auf diesem Verfahren wird die Methode Direct Cascade implementiert, 
-wie sie unter anderem in der Dissertation von Marquez \cite{phd_deep_cascade} beschrieben ist und auf Ansätzen aus 
-\cite{cascade_network_architectures} beruht. Als Vergleichsmodell dient das Verfahren Deep Cascade \cite{deep_cascade_learning}, bei dem 
-Netzwerke schrittweise und iterativ erweitert werden \cite{Constructive_Cascade}.
+wie sie unter anderem in mehreren Papern von Ritter und Littmann \cite{cascade_llm_networks,cascade_network_architectures} beschrieben ist. 
+% \cite{phd_deep_cascade} beschrieben ist und auf Ansätzen aus \cite{cascade_network_architectures} beruht. 
+Als Vergleichsmodell dient das Verfahren Deep Cascade \cite{deep_cascade_learning}, bei dem 
+Netzwerke schrittweise und iterativ erweitert werden \cite{Constructive_Cascade}. Dieses wurde mit TF bereits in der Dissertation 
+von Marquez \cite{phd_deep_cascade} verwendet. 
 
 Im Rahmen dieser Arbeit wird ausschließlich der Domänenwechsel betrachtet, während der Aufgabenwechsel (Task Transfer) \cite{transfer_learning} 
-unberücksichtigt bleibt. Darüber hinaus werden drei zentrale Herausforderungen des Transferlernens behandelt, wie sie in \cite{survey_transfer} 
-identifiziert wurden. \\
+unberücksichtigt bleibt. Darüber hinaus werden drei zentrale Herausforderungen des TFs behandelt, wie sie in \cite{survey_transfer} 
+identifiziert wurden.
+\newline

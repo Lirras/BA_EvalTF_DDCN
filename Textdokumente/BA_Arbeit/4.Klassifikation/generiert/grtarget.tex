@@ -1,8 +1,8 @@
 In diesem Abschnitt wird die Auswirkung unterschiedlicher Größen des Target-Datensatzes auf die Performanz der Netzwerke untersucht. Es wird 
 die Hypothese überprüft, dass die Leistung mit abnehmender Datenmenge schlechter wird.
 
-Für eine vergleichbare Basis werden alle Netzwerke jeweils über insgesamt 40 Epochen trainiert, wobei nach 20 Epochen ein Transfer Learning (TF) 
-durchgeführt wird. Diese Untersuchung erfolgt anhand der Netzwerke CMP, 1DC und COD. Zusätzlich wird auch die Performance auf dem Testdatensatz 
+Für eine vergleichbare Basis werden alle Netzwerke jeweils über insgesamt 40 Epochen trainiert, wobei nach 20 Epochen ein TF 
+durchgeführt wird. Diese Untersuchung erfolgt anhand der Netzwerke CMP, 1DC und COD. Zusätzlich wird auch die Performanz auf dem Testdatensatz 
 betrachtet.
 
 \begin{figure}[htpb]
@@ -21,9 +21,10 @@ betrachtet.
 In Abbildung \ref{fig:targetgroessedeepdir} sind die Testläufe in Abhängigkeit von der Größe des Trainingsdatensatzes dargestellt. Die erste 
 Zahl in der Legende bezeichnet die Datenmenge, die zweite Zahl die Trainingsdauer. Die Datenmenge bezieht sich ausschließlich auf den 
 Target-Datensatz. Es zeigt sich, dass die Trainingsdauer mit zunehmender Datenmenge ansteigt. Zudem bestätigt sich die Annahme, dass die 
-Performanz bei Kaskadennetzwerken mit Transfer Learning (TF) mit wachsender Datenmenge verbessert wird. Darüber hinaus weist das Deep Cascade 
+Performanz bei Kaskadennetzwerken mit TF mit wachsender Datenmenge verbessert wird. Darüber hinaus weist das Deep Cascade 
 Netzwerk eine leicht bessere Performanz auf als das Direct Cascade Netzwerk, was vermutlich darauf zurückzuführen ist, dass Direct Cascade 
-Netzwerke lediglich ein Hidden Layer besitzen, während Deep Cascade Netzwerke aus mehreren Hidden Layern bestehen.
+Netzwerke lediglich ein Hidden Layer besitzen, während Deep Cascade Netzwerke aus mehreren Hidden Layern bestehen und daher in der Lage sind, 
+komplexere Problemstellungen effizienter zu erlernen. 
 
 \begin{figure}[htpb]
     \centering
@@ -39,7 +40,8 @@ Auffällig ist, dass dieses Netzwerk unabhängig von der Anzahl der Trainingsdat
 anderen Netzwerke, welche Convolutional Layer enthalten. Dies ist darauf zurückzuführen, dass das lineare Netzwerk die relevanten Merkmale für 
 die Bilderkennung nicht adäquat extrahieren kann, da die Daten eine komplexe und nicht-lineare Struktur aufweisen.
 
-Generell zeigt sich in allen Testplots, dass die erzielte Accuracy selbst bei ausreichender Datenmenge, die ein direktes Training auf dem 
-Target-Datensatz ermöglichen würde, nie eine zufriedenstellend hohe Genauigkeit erreicht. Das direkte Training auf dem Target-Datensatz mit dem 
+Generell zeigt sich in allen Testplots, dass die erzielte Accuracy der Netzwerke mit TF selbst bei ausreichender Datenmenge, die ein direktes 
+Training auf dem 
+Target-Datensatz ermöglichen würde, nie eine zufriedenstellend hohe Accuracy erreicht. Das direkte Training auf dem Target-Datensatz mit dem 
 Deep Cascade Netzwerk mit sehr vielen Trainingsbeispielen hingegen erzielt eine Accuracy von etwa 70\%, was deutlich über den Ergebnissen der 
-Transfer Learning Netzwerke liegt.
+TF Netzwerke liegt.

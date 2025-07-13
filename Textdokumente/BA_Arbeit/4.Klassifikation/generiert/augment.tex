@@ -2,20 +2,20 @@ In diesem Abschnitt wird die Erstellung der Augmented Vectors für die Direct Ca
 drei betrachteten Netzwerke – COD, 1DC und 2DC – verwendet dabei eine eigene Methode zur Generierung dieser Vektoren. Die Darstellung erfolgt in 
 der genannten Reihenfolge: zunächst das COD-, anschließend das 1DC- und abschließend das 2DC-Netzwerk.
 
-Allen Netzwerken gemeinsam ist, dass sowohl der Input des Netzwerks als auch dessen Vorhersage (Prediction) zur Berechnung des Augmented Vectors 
+Allen Netzwerken gemeinsam ist, dass sowohl der Input des Netzwerks als auch dessen Prediction zur Berechnung des Augmented Vectors 
 herangezogen werden. Als Input dient entweder der ursprüngliche Datensatz oder – ab der zweiten Iteration – der jeweils zuletzt erzeugte Augmented 
 Vector. Nur bei der ersten Iteration wird der originale Datensatz verwendet, da zu diesem Zeitpunkt noch kein Augmented Vector existiert.
 
-Mit jeder weiteren Iteration wächst der Augmented Vector, da er Informationen aus allen vorhergehenden Netzwerken integriert und so das Wissen 
-schrittweise an das nächste Netzwerk weitergibt. Die Prediction entspricht dabei dem Ausgabeverhalten des trainierten Netzwerks auf Basis der 
+Mit jeder weiteren Iteration wächst der Augmented Vector, da er Informationen aus allen vorhergehenden Netzwerken integriert und so das bisherige 
+Wissen an das nächste Netzwerk weitergibt. Die Prediction entspricht dabei der Ausgabe des trainierten Netzwerks auf Basis der 
 jeweils aktuellen Eingabe.
 
 Im Folgenden bezeichnen die Variablen N, W, H und C die Anzahl der Datensamples, die Bildbreite, die Bildhöhe sowie die Anzahl der Kanäle 
 (Channels).
 
-Für das COD-Netzwerk gilt: Der Input liegt in der Form (N,WxH) vor, d.h., die Bilddaten wurden vorab flach in ein Vektorformat 
+Für das COD-Netzwerk gilt: Der Input liegt in der Form (N,WxH) vor, d.h., die Bilddaten wurden vorab in ein Vektorformat 
 überführt. Die Prediction hat die Form (N,10), entsprechend der zehn Klassenzugehörigkeiten. Beide Matrizen werden entlang der zweiten 
-Dimension (Feature-Dimension) miteinander konkateniert, was zur Definition des Augmented Vectors gemäß Gleichung 4.1 führt.
+Dimension miteinander konkateniert, was zur Definition des Augmented Vectors gemäß Gleichung 4.1 führt.
 
 \begin{equation}
     AugVec(Input(N, W*H), Prediction(N, 10)) = (N, (W*H).10)
@@ -27,10 +27,11 @@ wieder ergänzt, um die ursprüngliche Struktur beizubehalten. In beiden bisher 
 mit jeder Iteration linear um $N * 10$ Einträge.
 
 Das 2DC-Netzwerk hingegen arbeitet mit einem komplexeren Eingabeformat: (N,W,H,C). Die Prediction liegt auch hier in der 
-Form (N,10) vor. Zur Fusion von Input und Prediction werden für jedes Sample NN zehn zusätzliche Arrays erzeugt, jeweils in der 
-Form (W,H,C). Diese Arrays enthalten jeweils die Werte der zehn Klassenwahrscheinlichkeiten der Prediction, wobei jeder Kanal mit 
-dem entsprechenden Skalarwert befüllt wird. Anschließend erfolgt eine Konkatenation entlang der Channel-Dimension. Dieses Verfahren führt zur 
-Definition des Augmented Vectors gemäß Gleichung 4.2.
+Form (N,10) vor. Zur Fusion von Input und Prediction werden für jedes Sample N zehn zusätzliche Arrays erzeugt, jeweils in der 
+Form (W,H,C). Diese Arrays enthalten in jedem Eintrag die Wahrscheinlichkeitswerte der Prediction für jede der zehn Klassen in Bezug auf N. 
+Anschließend erfolgt eine Konkatenation entlang der Channel-Dimension, wodurch für jedes N sowohl die Eingangsdaten als auch die 
+Vorhersagewahrscheinlichkeiten aller zehn Klassen kanalweise zusammengeführt werden. Dieses Verfahren 
+führt zur Definition des Augmented Vectors gemäß Gleichung 4.2.
 
 \begin{multline}
     AugVec(Input(N, W, H, C), Prediction(N, 10)) = Input(N, W, H, C.ConVec)\\

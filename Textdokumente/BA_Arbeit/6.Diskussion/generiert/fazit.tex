@@ -1,13 +1,15 @@
-Die Klassifikation ist in Kombination mit Direct Cascade und TF unter Verwendung der hier eingesetzten Augmented Vektoren nicht praktikabel. 
+Die Klassifikation ist in Kombination mit Direct Cascade und TF unter Verwendung der hier eingesetzten Augmented Vectors nicht praktikabel. 
 Deep Cascade Architekturen erzielen zwar eine bessere Klassifikationsleistung, sind jedoch ebenfalls nicht sinnvoll einsetzbar.
 
-Für die Regression erweist sich der Einsatz von TF in der Direct Cascade Variante als zielführend, da die Performanz entweder gleichwertig oder 
-überlegen im Vergleich zu vollständig trainierten Netzwerken ist. Einzig bei sehr kleinen Datenmengen kann es zu Leistungseinbußen gegenüber dem 
-vollständigen Netzwerk kommen.
+Im Regressionskontext ist der Einsatz von Direct Cascade-Netzwerken mit aktiviertem TF grundsätzlich möglich, da die resultierende Performanz 
+lediglich geringfügig unter der vollständiger Netzwerke liegt und vergleichbar mit derjenigen von Deep Cascade-Netzwerken unter Verwendung von 
+TF ist.
 
 Das Verfahren funktioniert auch mit Deep Cascade Netzwerken und zeigt selbst in diesem Ausnahmefall eine mit dem vollständigen Netzwerk 
 vergleichbaren Performanz.
 
-Vollständig trainierte Netzwerke mit der gleichen Gesamtanzahl an Hidden Layer sind insbesondere bei sehr kleinen Datensätzen schneller als Deep 
-Cascade Modelle, welche wiederum schneller als Direct Cascade Architekturen sind. Aus diesem Grund ist es bereits bei geringen Datenmengen 
-sinnvoller, ein vollständiges Netzwerk anstelle einer kaskadierten Architektur zu verwenden.
+Vollständig trainierte Netzwerke mit der gleichen Gesamtanzahl an Hidden Layer sind insbesondere bei sehr kleinen Datensätzen und flacher 
+Netzstruktur schneller als Deep Cascade Modelle, welche wiederum schneller als Direct Cascade Architekturen sind. 
+
+Bei tiefen Netzwerkarchitekturen und einer großen Anzahl an Trainingsepochen verändert sich das Bild dahingehend, dass vollständige Netzwerke 
+deutlich langsamer sind als sämtliche Kaskadierungsvarianten. Dieser Effekt tritt unabhängig davon auf, ob TF verwendet wird oder nicht.

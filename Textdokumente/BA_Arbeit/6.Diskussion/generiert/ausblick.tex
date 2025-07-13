@@ -1,13 +1,15 @@
 Die Klassifikation sollte nicht weiter im Rahmen von Deep- oder Direct-Cascade-Architekturen untersucht werden, da die Performanz unabhängig von 
 der Datenmenge konstant schlechter ist als bei einem vollständig trainierten Netzwerk. Eine potenzielle Verbesserung könnte nur durch die 
-Verwendung alternativer Loss-Funktionen anstelle von Categorical Cross-Entropy oder durch eine modifizierte Konstruktion der Augmented Vektoren 
+Verwendung alternativer Loss-Funktionen anstelle von Categorical Cross-Entropy oder durch eine modifizierte Konstruktion der Augmented Vectors 
 zwischen den Netzwerkmodulen erzielt werden. Ebenso wäre die Erprobung anderer Kaskadierungsverfahren denkbar, wobei deren Erfolgsaussichten 
 jedoch als gering eingeschätzt werden.
 
-Für die Regressionsnetzwerke besteht die Möglichkeit, alternative Loss-Funktionen anstelle des Mean Squared Error (MSE) einzusetzen.
+Für die Regressionsnetzwerke besteht die Möglichkeit, alternative Loss-Funktionen anstelle des MSEs einzusetzen. 
+Darüber hinaus sollten auch Target-Datensätze mit weniger als einhundert Instanzen als Eingabe untersucht werden, um die Leistungsfähigkeit 
+der Modelle unter noch limitierteren Bedingungen zu evaluieren.
 
 In beiden Anwendungsfällen könnten zudem andere Early-Stopping-Kriterien angewandt werden, die auch geringfügige Verschlechterungen im 
-Validierungsmaß tolerieren. Zusätzlich sind Metriken denkbar, die die Anzahl der Trainingsiterationen adaptiv steuern. Des Weiteren können 
+Validierungsmaß tolerieren. Zusätzlich sind Metriken denkbar, die die Anzahl der Netziterationen adaptiv steuern. Des Weiteren können 
 Trainingsverfahren ohne feste Maximalanzahl an Epochen implementiert werden, wobei hier das Risiko besteht, dass das Training unendlich lange 
 andauert.
 
@@ -15,5 +17,5 @@ Darüber hinaus kann die Verwendung alternativer Optimierungsalgorithmen anstell
 unterschiedlicher Source- und Target-Datensätze. Ebenso ist eine veränderte Vorverarbeitung der bestehenden Datensätze für die Netzwerke 
 denkbar.
 
-Weiterhin sollte untersucht werden, wie sich TF bei einem Wechsel der Aufgabenstellung (Taskwechsel) verhält, ebenso wie bei einem 
+Weiterhin sollte untersucht werden, wie sich TF bei einem Wechsel der Aufgabenstellung verhält, ebenso wie bei einem 
 kombinierten Task- und Domainwechsel.
