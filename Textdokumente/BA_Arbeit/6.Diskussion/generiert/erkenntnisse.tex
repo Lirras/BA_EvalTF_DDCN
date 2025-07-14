@@ -4,23 +4,26 @@ Es zeigt sich ein relativ schneller Overfitting-Effekt auf dem Source-Datensatz.
 An der Stelle des TFs bricht die Performanz des Netzes deutlich ein. Anschließend kommt es zwar zu einer teilweisen Erholung, 
 jedoch erreicht die Leistung nicht mehr das vorherige Niveau.
 
+Die Deep Cascade Architektur zeigt durchgängig eine mindestens vergleichbare, in vielen Fällen jedoch leicht überlegene Leistungsfähigkeit im 
+Vergleich zur Direct Cascade Variante.
+
 In der vorliegenden Implementierung sind die herkömmlichen Netzwerke bei kleinen Datensätzen und flacher Netzstruktur schneller als die Direct 
 Cascade Netzwerke, welche wiederum schneller trainieren als die Deep Cascade Architekturen. Die Performanz variiert jedoch signifikant 
-zwischen den einzelnen Netzwerktypen. 
+zwischen den einzelnen Netz-werktypen. 
 
-Bei zunehmender Netzwerktiefe und einer hohen Anzahl an Trainingsepochen kehrt sich das Zeitverhältnis zwischen den Kaskadenversionen des 
-Netzwerks und dem vollständigen Netzwerk um, sodass Letzteres im Vergleich deutlich langsamer ist als beide Kaskadenvarianten.
+Bei zunehmender Netzwerktiefe und einer hohen Anzahl an Trainingsepo-chen kehrt sich das Zeitverhältnis zwischen den Kaskadenversionen des 
+Netz-werks und dem vollständigen Netzwerk um, sodass Letzteres im Vergleich deutlich langsamer ist als beide Kaskadenvarianten.
 
 \textbf{Klassifikation:}\\
 Bei der Klassifikation ist der Accuracy-Wert primär von der Größe des Target-Datensatzes abhängig: Je geringer die Datenmenge, desto 
 schlechter fällt die Klassifikationsgenauigkeit aus.
 
-Die Klassifikationsleistung ist derart unzureichend, dass ein Einsatz in diesem Kontext nicht sinnvoll erscheint, insbesondere wenn die 
+Die Klassifikationsleistung ist derart unzureichend, dass ein Einsatz in die-sem Kontext nicht sinnvoll erscheint, insbesondere wenn die 
 Accuracy nur bei etwa 20\% liegt.
 
-Bei TF zeigt sich eine leicht schlechtere Performanz im Vergleich zum Training ohne TF.
+Bei TF zeigt sich eine leicht schlechtere Performanz im Vergleich zum Trai-ning ohne TF.
 
-Ein Cascade-Netzwerk erzielt eine schlechtere Leistung als ein vollständig trainiertes Netzwerk ohne Kaskadierung.
+Ein Cascade-Netzwerk erzielt eine deutlich schlechtere Leistung als ein voll-ständig trainiertes Netzwerk ohne Kaskadierung.
 
 Die Verarbeitung mehrdimensionaler Augmented Vectors kann zu Problemen mit dem Arbeitsspeicher führen.
 

@@ -8,7 +8,7 @@ Ein weiteres Anwendungsfeld stellt die Klassifikation dar, etwa bei der Erkennun
 Zudem werden neuronale Netzwerke zur Approximation von Funktionen eingesetzt, typischerweise im Rahmen von Regressionsaufgaben \cite{Gen_Reg}.
 
 In der Praxis ergeben sich jedoch verschiedene Herausforderungen. Eine häufige Problematik ist die unzureichende Verfügbarkeit großer, 
-qualitativ hochwertiger Datensätze für bestimmte Aufgabenstellungen \cite{survey_transfer}. Darüber hinaus kann das Training eines 
+qualitativ hoch-wertiger Datensätze für bestimmte Aufgabenstellungen \cite{survey_transfer}. Darüber hinaus kann das Training eines 
 leistungsfähigen neuronalen Netzwerks äußerst zeitintensiv sein \cite{cascor}. Generell gilt für alle neuronalen Modelle, dass ihre 
 Vorhersagen mit einer gewissen Fehlerrate behaftet sind und somit nicht vollständig korrekt sind \cite{EvoClassAndReg}.
 
@@ -19,7 +19,7 @@ zunächst eine Aufgabe und überträgt anschließend relevante Erkenntnisse auf 
 
 Dieses Vorgehen lässt sich mit dem menschlichen Lernverhalten vergleichen, bei dem über Eselsbrücken bereits bestehendes Wissen herangezogen 
 wird, um neues Wissen effizienter zu erwerben. Ein Netzwerk, das TF betreibt, vollzieht folglich einen kontextuellen Wechsel 
-zwischen verschiedenen Lernaufgaben. Dabei ergeben sich insbesondere drei zentrale Forschungsfragen:
+zwischen verschiedenen Lernaufgaben. Da-bei ergeben sich insbesondere drei zentrale Forschungsfragen:
 
 \begin{enumerate}
     \item What to transfer
@@ -37,8 +37,8 @@ Die zweite Fragestellung bezieht sich auf die konkrete Umsetzung des TF in der P
 das Wissen aus den Source-Daten extrahieren und wie dieses Wissen im weiteren Verlauf verarbeitet und genutzt wird.
 
 Die letzte Fragestellung bezieht sich darauf, wann der Übergang vom Lernen auf der Source- zur 
-Target-Aufgabe erfolgen soll. In der Praxis wird dieser Übergang häufig durch Fehlermetriken gesteuert: Sobald das Modell einen bestimmten 
-Schwellenwert unterschreitet und die Fehlerquote als ausreichend niedrig eingestuft wird, erfolgt der Transfer. Der optimale 
+Target-Aufgabe erfolgen soll. In der Praxis wird dieser Übergang häufig durch Fehlermetriken gesteuert: Sobald das Modell einen be-stimmten 
+Schwellenwert unterschreitet und die Fehlerquote als ausreichend nied-rig eingestuft wird, erfolgt der Transfer. Der optimale 
 Zeitpunkt für diesen Wechsel kann jedoch experimentell bestimmt und variiert werden, um maximale Leistung zu erzielen. Es ist jedoch wichtig 
 zu beachten, dass TF nicht zwangsläufig zu einer Leistungssteigerung führt. In bestimmten Fällen kann die Übertragung von Wissen 
 sogar zu einer Verschlechterung der Modellleistung führen – ein Phänomen, das als Negative Transfer bezeichnet wird \cite{survey_transfer}.
@@ -53,7 +53,7 @@ bezeichnet und findet Anwendung, wenn die Unterschiede zwischen Source und Targe
 negativem Transfer führen würde \cite{bridge_transfer, survey_transfer}.
 
 Während Deep Learning grundsätzlich in der Lage ist, komplexere Aufgaben zu lösen als sogenanntes Shallow Learning, ist es gleichzeitig durch 
-einen erheblich höheren Trainingsaufwand gekennzeichnet. Wenn dieser hohe Rechenaufwand nicht praktikabel ist, kommt Cascade Learning zum 
+einen erheb-lich höheren Trainingsaufwand gekennzeichnet. Wenn dieser hohe Rechenauf-wand nicht praktikabel ist, kommt Cascade Learning zum 
 Einsatz \cite{cascor}.
 
 Im klassischen Deep Transfer Learning wird in der Regel ein vortrainiertes Netzwerk genutzt, wobei der finale Feature-Vektor als Ausgangspunkt 
@@ -68,10 +68,10 @@ Ansatz führt in der Regel zu einer effizienteren und weniger komplexen Netzwerk
 Cascade-Netzwerke zeichnen sich dadurch aus, dass ihre Architektur nicht vor Beginn des Trainings vollständig definiert ist, sondern 
 schrittweise während des Trainingsprozesses aufgebaut wird. Hierfür kommen sogenannte Constructive Algorithms zum Einsatz, deren wesentlicher 
 Vorteil darin liegt, dass keine exakte Festlegung der Netzwerkgröße im Vorfeld erforderlich ist \cite{Constructive_Cascade}. Das Netzwerk wächst 
-lediglich so weit, wie es zur Lösung der jeweiligen Aufgabe notwendig ist, wodurch eine übermäßige Modellkomplexität vermieden und gleichzeitig 
+lediglich so weit, wie es zur Lösung der jeweiligen Aufgabe notwendig ist, wodurch eine übermäßige Modellkomplexität vermieden und \\gleichzeitig 
 die Trainingszeit reduziert wird \cite{Constructive_Cascade, cascor}.
 
-Ein prominentes Beispiel für einen solchen Ansatz ist der Cascade Correlation Algorithmus (CasCor). Bei diesem Verfahren wird das Netzwerk schrittweise 
+Ein prominentes Beispiel für einen solchen Ansatz ist der Cascade Correlation Algorithmus (CasCor). Bei diesem Verfahren wird das Netzwerk schritt-weise 
 durch das Hinzufügen einzelner Neuronen (Perzeptrons) erweitert. Jedes neue Perzeptron wird so trainiert, dass es eine möglichst hohe 
 Korrelation mit dem verbleibenden Fehler aufweist. Nach Abschluss des Trainings wird das betreffende Neuron fixiert, das heißt, seine 
 Gewichtungen werden eingefroren und bleiben im weiteren Verlauf unverändert. Anschließend wird überprüft, ob das Netzwerk die angestrebte 

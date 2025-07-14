@@ -1,5 +1,5 @@
 In diesem Unterkapitel wird die Größe des Target-Datensatzes signifikant reduziert, sodass lediglich noch 240 Stichproben zur Verfügung stehen. 
-Die gleichen Tests wie im vorherigen Abschnitt werden erneut durchgeführt.
+Die glei-chen Tests wie im vorherigen Abschnitt werden erneut durchgeführt.
 
 \begin{figure}[htpb]
     \includegraphics[height=5cm]{../../Plots/ba_plots/regression_small/regr2_ts.png}
@@ -32,13 +32,13 @@ signifikant schlechtere Leistung erzielt als mit TF. Dies weist auf einen positi
 Source-Datensatzes auf bisher unberücksichtigte Target-Daten generiert werden, tragen zur Verbesserung der Gesamtergebnisse bei. Dadurch steht zu 
 Beginn des Trainings auf dem Target-Datensatz eine größere Menge an Daten pro Stichprobe zur Verfügung. Diese zusätzlichen Informationen wirken 
 sich nicht negativ auf die Modellleistung aus, sodass das Training mit TF insgesamt bessere Resultate liefert. 
-Das Direct Cascade Netzwerk zeigt mit aktiviertem TF eine mit dem vollständigen Netzwerk etwas schlechtere, aber vergleichbare Performanz und 
+Das Direct Cascade Netz-werk zeigt mit aktiviertem TF eine mit dem vollständigen Netzwerk etwas schlechtere, aber vergleichbare Performanz und 
 erfüllt somit die Anforderungen für eine praxisnahe Anwendung.
 
 Das Deep Cascade Netzwerk erreicht hingegen unabhängig vom Einsatz von TF eine leicht bessere Performanz. Dieser Unterschied könnte jedoch auch 
 auf die abweichende Netzwerkarchitektur zurückzuführen sein, da die Layer-Strukturen nicht vollständig identisch sind. 
-Dies könnte jedoch darauf zurückzuführen sein, dass die Gewichtungen der initialen Layer das Lernen auf dem Target-Datensatz nur geringfügig 
-beeinflussen und die relevanten Merkmalsrepräsentationen primär in den nachfolgenden Hidden Layers erlernt werden können.
+Dies könnte jedoch davon resultieren, dass die Gewichtungen der initialen Layer das Lernen auf dem Target-Datensatz nur geringfügig 
+beeinflussen und die relevanten Merkmalsrepräsenta-tionen primär in den nachfolgenden Hidden Layers erlernt werden können.
 
 Die besten Ergebnisse liefert schließlich die Variante ohne Kaskadierung und ohne TF, bei der ein vollständiges Netzwerk direkt 
 auf dem Ziel-Datensatz trainiert wurde, wie in Abbildung \ref{fig:smallonlcomp} dargestellt.
@@ -59,7 +59,7 @@ zeigt selbst bei geringer Datenmenge eine bessere Leistung als Netzwerke mit Kas
 einem deutlich größeren Trainingsdatensatz erzielt wird.
 
 Im Gegensatz zu den anderen Netzarchitekturen besitzt dieses Modell die Fähigkeit, zwischen den Layern zu lernen und unvollständig verarbeitete 
-Eingabedaten für die weitere Verarbeitung heranzuziehen. Dies dürfte maßgeblich zur verbesserten Modellperformanz beitragen.
+Einga-bedaten für die weitere Verarbeitung heranzuziehen. Dies dürfte maßgeblich zur verbesserten Modellperformanz beitragen.
 
 Wird die Evaluation mit einem explizit großen Testdatensubset durchgeführt, so verschlechtert sich der absolute MAE-Wert bei allen Tests 
 geringfügig. Die relativen Leistungsunterschiede zwischen den verschiedenen Netzarchitekturen bleiben jedoch unverändert.

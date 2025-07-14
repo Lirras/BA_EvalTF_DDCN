@@ -1,5 +1,5 @@
-In diesem Abschnitt wird die Kaskadierungsvariante des Direct Cascade Netzwerks vorgestellt. Das Netzwerk ist hierbei vollständig vorab 
-definiert und besteht aus einem einzelnen Hidden Layer sowie einem Output Layer. Die Gesamtstruktur setzt sich aus mehreren identischen 
+In diesem Abschnitt wird die Kaskadierungsvariante des Direct Cascade Netz-werks vorgestellt. Das Netzwerk ist hierbei vollständig vorab 
+definiert und besteht aus einem einzelnen Hidden Layer sowie einem Output-Layer. Die Gesamtstruktur setzt sich aus mehreren identischen 
 Subnetzwerken zusammen, zwischen denen während des Trainings ein Wissenstransfer stattfindet.
 
 \begin{figure}[htpb]
@@ -14,7 +14,7 @@ Subnetzwerken zusammen, zwischen denen während des Trainings ein Wissenstransfe
     realisieren. Darüber kann an beliebiger Stelle TF verwendet werden.}}
 \end{figure}
 
-Der Ablauf beginnt, wie in Abbildung \ref{fig:directcascade} dargestellt, mit dem vorbereiteten Source-Datensatz, der als 
+Der Ablauf beginnt, wie in Abbildung \ref{fig:directcascade} dargestellt, mit dem vorberei-teten Source-Datensatz, der als 
 Eingabe in die erste Instanz des Netzwerks gegeben wird. Diese Netzwerkinstanz wird anschließend trainiert. Nach Abschluss des Trainings 
 erfolgt eine einmalige Anwendung des fixierten Netzwerks, deren Ergebnis die Vorhersage (Prediction) darstellt. Diese Prediction wird mit 
 dem ursprünglichen Eingabesignal desselben Netzwerks kombiniert, wodurch ein sogenannter Augmented Vector entsteht. Die genaue Bildung dieses 

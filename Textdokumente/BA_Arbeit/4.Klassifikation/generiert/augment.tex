@@ -1,6 +1,6 @@
 In diesem Abschnitt wird die Erstellung der Augmented Vectors für die Direct Cascade Netzwerke im Klassifikationskontext beschrieben. Jedes der 
 drei betrachteten Netzwerke – COD, 1DC und 2DC – verwendet dabei eine eigene Methode zur Generierung dieser Vektoren. Die Darstellung erfolgt in 
-der genannten Reihenfolge: zunächst das COD-, anschließend das 1DC- und abschließend das 2DC-Netzwerk.
+der ge-\\nannten Reihenfolge: zunächst das COD-, anschließend das 1DC- und abschließend das 2DC-Netzwerk.
 
 Allen Netzwerken gemeinsam ist, dass sowohl der Input des Netzwerks als auch dessen Prediction zur Berechnung des Augmented Vectors 
 herangezogen werden. Als Input dient entweder der ursprüngliche Datensatz oder – ab der zweiten Iteration – der jeweils zuletzt erzeugte Augmented 
@@ -23,7 +23,7 @@ Dimension miteinander konkateniert, was zur Definition des Augmented Vectors gem
 
 Beim 1DC-Netzwerk liegt der Input in der Form (N,WxH,C) vor. Da der Kanal in diesem Fall eindimensional ist, wird die Channel-Dimension 
 zunächst entfernt. Anschließend erfolgt die Berechnung des Augmented Vectors gemäß Gleichung 4.1. Nach der Berechnung wird die Channel-Dimension 
-wieder ergänzt, um die ursprüngliche Struktur beizubehalten. In beiden bisher betrachteten Netzwerken (COD und 1DC) wächst der Augmented Vector 
+wieder er-gänzt, um die ursprüngliche Struktur beizubehalten. In beiden bisher betrach-teten Netzwerken (COD und 1DC) wächst der Augmented Vector 
 mit jeder Iteration linear um $N * 10$ Einträge.
 
 Das 2DC-Netzwerk hingegen arbeitet mit einem komplexeren Eingabeformat: (N,W,H,C). Die Prediction liegt auch hier in der 
@@ -31,7 +31,7 @@ Form (N,10) vor. Zur Fusion von Input und Prediction werden für jedes Sample N 
 Form (W,H,C). Diese Arrays enthalten in jedem Eintrag die Wahrscheinlichkeitswerte der Prediction für jede der zehn Klassen in Bezug auf N. 
 Anschließend erfolgt eine Konkatenation entlang der Channel-Dimension, wodurch für jedes N sowohl die Eingangsdaten als auch die 
 Vorhersagewahrscheinlichkeiten aller zehn Klassen kanalweise zusammengeführt werden. Dieses Verfahren 
-führt zur Definition des Augmented Vectors gemäß Gleichung 4.2.
+führt zur Definition des Augmented Vectors gemäß Glei-chung 4.2.
 
 \begin{multline}
     AugVec(Input(N, W, H, C), Prediction(N, 10)) = Input(N, W, H, C.ConVec)\\
@@ -39,7 +39,7 @@ führt zur Definition des Augmented Vectors gemäß Gleichung 4.2.
 \end{multline}
 
 Der sogenannte ConVec bezeichnet den Vektor, in dem die einzelnen Werte der Prediction – entsprechend den Klassen eins bis zehn – jeweils in 
-Form eines Arrays der Dimension (W,H,C) abgelegt sind. Bei jeder Iteration des Netzwerks führt dieses Verfahren jedoch zu einem 
+Form eines Arrays der Dimension (W,H,C) abgelegt sind. Bei jeder Iteration des Netz-werks führt dieses Verfahren jedoch zu einem 
 speicherintensiven Wachstum des Augmented Vectors. Die Skalierung des Speicherbedarfs erfolgt gemäß der in Gleichung 4.3 dargestellten Beziehung.
 
 \begin{equation}

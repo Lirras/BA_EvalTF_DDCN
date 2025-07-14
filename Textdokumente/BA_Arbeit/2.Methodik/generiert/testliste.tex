@@ -1,21 +1,21 @@
-Von den betrachteten Netzwerken sind ConvMaxPool und RegressionTwo Deep Cascade Netzwerke, während alle weiteren Modelle als 
-Direct Cascade Netzwerke klassifiziert werden. Zudem handelt es sich bei RegressionTwo und OneLayer um Regressionsnetzwerke, während die übrigen 
+Von den betrachteten Netzwerken sind ConvMaxPool (CMP) und Regression-Two Deep Cascade Netzwerke, während alle weiteren Modelle als 
+Direct Cascade Netzwerke klassifiziert werden. Zudem handelt es sich bei RegressionTwo (Regr2) und OneLayer (1Lay) um Regressionsnetzwerke, während die übrigen 
 Modelle Klassifikationsnetzwerke darstellen.
 
 Alle Netzwerke wurden mit dem Adam-Optimierer bei einer Lernrate von $1*10^{-3}$ trainiert. Für die Klassifikationsnetzwerke wurde die 
-Verlustfunktion Categorical Cross-Entropy verwendet, kombiniert mit einer Softmax-Aktivierungsfunktion im Ausgangs-Layer. Die 
+Verlustfunktion Categorical Cross-Entropy verwendet, kombiniert mit einer Softmax-Aktivierungs-funktion im Output-Layer. Die 
 Regressionsnetzwerke hingegen verwenden Mean Squared Error (MSE) als Verlustfunktion und eine lineare Aktivierungsfunktion.
 
 Zusätzlich wurden bei allen Direct Cascade Netzwerken Early-Stopping-Kriterien basierend auf den Metriken MAEM, 
 LM und ACCM angewandt.
 
-Für die Klassifikationsnetzwerke erfolgte das Training mit fünf unterschiedlichen Größen des Target-Datensatzes. Eine 
-Ausnahme bildet das 2DC-Netzwerk, das aufgrund technischer Einschränkungen der verwendeten Hardware nur mit sehr kleinen Mengen von Source- 
+Für die Klassifikationsnetzwerke erfolgte das Training mit fünf unterschied-lichen Größen des Target-Datensatzes. Eine 
+Ausnahme bildet das 2DC-Netz-werk, das aufgrund technischer Einschränkungen der verwendeten Hardware nur mit sehr kleinen Mengen von Source- 
 und Target-Daten trainiert werden kann.
 
 Bei den Regressionsnetzwerken wurde jeweils ein Training mit großer sowie mit kleiner Menge an Target-Daten durchgeführt.
 
-Darüber hinaus wurden mit allen Netzwerken Vergleiche zwischen Trainingsläufen mit TF und ohne sowie zwischen Trainings 
+Darüber hinaus wurden mit allen Netzwerken Vergleiche zwischen Trai-ningsläufen mit TF und ohne sowie zwischen Trainings 
 ohne TF und sogenannten vollständigen Netzwerken durchgeführt. Ein vollständiges Netzwerk bezeichnet hierbei ein Modell, das ohne TF 
 und ohne Kaskadierung in einem einzigen vollständigen Training trainiert wird. Dies ist das klassische Training neuronaler Netzwerke. 
 
@@ -83,8 +83,8 @@ Trainingsiteration. Optional enthält die Bezeichnung eine weitere Angabe, die d
     \caption{\label{tab:regrtests} Liste aller Regressionstests}
 \end{table}
 
-Ein Beispiel für eine Referenz auf einen spezifischen Testeintrag ist CMP:TF0/732/10. Diese Kennzeichnung verweist auf den Test des 
-CMP-Netzwerks mit TF, das unmittelbar nach dem ersten Layer erfolgt. In diesem speziellen Fall wird das erste Layer 
+Ein Beispiel für eine Referenz auf einen spezifischen Testeintrag ist \\CMP:TF0/732/10. Diese Kennzeichnung verweist auf den Test des 
+CMP-Netz-werks mit TF, das unmittelbar nach dem ersten Layer erfolgt. In diesem speziellen Fall wird das erste Layer 
 lediglich über eine einzige Epoche trainiert, während alle weiteren Layer nach dem üblichen Trainingsschema optimiert werden. Das gleiche 
 Vorgehen gilt für den Test Regr2:TF0/240/25, bei dem analog das erste Layer nur eine Epoche lang trainiert wird.
 
@@ -95,5 +95,5 @@ das Ziel, die Trainingsdauer zu vergleichen. Die Untersuchungen mit variierenden
 von TF bei unterschiedlichen Datenvolumina sowie die generelle Leistungsfähigkeit der Netzwerke. Tests mit einer erhöhten Anzahl an 
 Gesamtepochen und tieferer Netzstruktur ermöglichen eine detaillierte Betrachtung des Einflusses von TF auf tiefe Netze. Die Versuche, bei denen 
 verschiedene Metriken zum Einsatz kommen, prüfen, inwiefern diese Early-Stopping-Metriken zu einer Leistungsverbesserung führen. Schließlich 
-dienen die Tests mit umfangreichen Testdatensätzen der Überprüfung der Generalisierungsfähigkeit der Netzwerke und der Validierung bisheriger 
+die-nen die Tests mit umfangreichen Testdatensätzen der Überprüfung der Generali-sierungsfähigkeit der Netzwerke und der Validierung bisheriger 
 Erkenntnisse.

@@ -6,7 +6,7 @@ beider Ansätze bestätigt werden kann. Abschließend werden Early-Stopping-Metr
 
 Die beiden Regressionsnetzwerke werden im Folgenden im Detail vorgestellt. Beide Modelle erhalten als Eingabe tabellarische Daten mit drei 
 Merkmalen, deren genaue Beschreibung bereits im Kapitel 2 erfolgte. Für das Training kommt in beiden Fällen der 
-Adam-Optimierer in Kombination mit der Mean-Squared-Error-Verlustfunktion zum Einsatz. Der Output-Layer entspricht einem typischen 
+Adam-Optimierer in Kombination mit der Mean-Squared-Error-Verlustfunktion zum Einsatz. Der Output-Layer entspricht ei-nem typischen 
 Regressions-Setup: ein einzelner linearer Layer mit einer Neuroneneinheit und linearer Aktivierungsfunktion.
 
 \begin{figure}[htpb]
@@ -18,7 +18,7 @@ Regressions-Setup: ein einzelner linearer Layer mit einer Neuroneneinheit und li
     Dropout-Layern gibt der Wert den Prozentsatz der Neuronen an, die während des Trainings zufällig deaktiviert werden.}}
 \end{figure}
 
-In Abbildung \ref{fig:regr2} ist die vollständige Architektur des regression\_two-Netzwerks (Regr2) dargestellt. Es handelt sich dabei um ein 
+In Abbildung \ref{fig:regr2} ist die vollständige Architektur des regression\_two-Netz-werks (Regr2) dargestellt. Es handelt sich dabei um ein 
 Deep-Cascade-Netzwerk, 
 bei dem die Layer schrittweise – also Layer für Layer – trainiert werden. Die Zahl hinter den Linear-Layern gibt jeweils die Anzahl der 
 enthaltenen Neuronen an, während die Angabe hinter den Dropout-Layern den Anteil (bezogen auf den Wert 1) der während des Trainings pro 
@@ -26,7 +26,7 @@ Epoche deaktivierten Neuronen beschreibt.
 
 Das sogenannte Regression\_one\_Layer-Netzwerk (1Lay) stellt das Direct-Cascade-Regressionsmodell dar. Es besteht aus einem einzigen Hidden 
 Layer in Form einer 
-Linear-Schicht mit 128 Neuronen und verwendet die ReLU-Aktivierungsfunktion. Dieses Netzwerk wird iterativ eingesetzt, wobei zwischen den 
-einzelnen Trainingsdurchläufen Wissen in Form eines Augmented Vectors übertragen wird. Dieser Vektor entsteht, indem die Prediction des 
+Linear-Schicht mit 128 Neuronen und verwendet die ReLU-Aktivie-rungsfunktion. Dieses Netzwerk wird iterativ eingesetzt, wobei zwischen den 
+einzelnen Trainingsdurchläufen Wissen in Form eines Augmented Vectors über-tragen wird. Dieser Vektor entsteht, indem die Prediction des 
 jeweils vorherigen Netzwerks als zusätzliche Spalte zur ursprünglichen Input-Tabelle hinzugefügt wird. Die erweiterte Eingabematrix dient 
 anschließend als Input für das nachfolgende Netzwerk.

@@ -1,5 +1,5 @@
 In diesem Abschnitt werden Regressionsnetzwerke unter Einsatz von Early Stopping evaluiert, wobei erläutert wird, warum diese Methode für 
-Klassifikationsnetzwerke nicht zielführend ist. Der Fokus liegt hierbei ausschließlich auf Direct Cascade Netzarchitekturen. 
+Klassifikations-netzwerke nicht zielführend ist. Der Fokus liegt hierbei ausschließlich auf Direct Cascade Netzarchitekturen. 
 Early Stopping stellt eine Methode dar, die eingesetzt wird, um Overfitting des Modells auf die Trainingsdaten entgegenzuwirken.
 
 Für sowohl die Regressions- als auch die Klassifikationsmodelle wurde LM als Stoppkriterium verwendet. Zusätzlich kamen bei der 
@@ -17,11 +17,11 @@ Bei den Klassifikationsnetzen führt das Early Stopping auf Basis von ACCM nur g
 jedoch eine Verbesserung der Modellleistung zu bewirken. Unter Verwendung von LM tritt dieser Abbruch häufiger auf, was zu einer schnelleren 
 Trainingskonvergenz führt. Dennoch bleibt die Leistung der kaskadierten Klassifikationsnetzwerke derart unzureichend, dass ein praktischer 
 Einsatz ausgeschlossen ist. Die Ineffektivität von sowohl LM als auch ACCM in diesem Kontext wird anschaulich in 
-Abbildung \ref{fig:1dconvmetrics} dargestellt. Hervorzuheben ist, dass ACCM die einzige der betrachteten Metriken ist, bei der ein Maximum 
+Abbildung \ref{fig:1dconvmetrics} dargestellt. Hervorzuheben ist, dass ACCM die einzige der betrach-teten Metriken ist, bei der ein Maximum 
 angestrebt wird.
 
 Daher erfolgt im Folgenden eine vertiefte Analyse des Regressionsnetzwerks 1Lay. Dabei zielen die verwendeten Metriken, LM und MAEM, auf eine 
-Minimierung des Fehlermaßes ab.
+Mini-mierung des Fehlermaßes ab.
 
 \begin{figure}[htpb]
     \includegraphics[height=4.5cm]{../../Plots/ba_plots/earlystopping/lossmetric/onelayer_ts.png}
@@ -29,7 +29,7 @@ Minimierung des Fehlermaßes ab.
     \caption{\label{fig:onelayermetrics} 
     \small{Hier sind die Testergebnisse des 1Lay-Netzwerks unter Verwendung von Early Stopping veranschaulicht. Es zeigt sich, 
     dass die Modellperformanz mit Early Stopping schlechter ausfällt als ohne. 
-    Obwohl es in einigen Fällen zu vorzeitigen Trainingsabbrüchen kam, wurde dadurch Overfitting nicht entscheidend verhindert. 
+    Obwohl es in einigen Fällen zu vorzeitigen Trai-ningsabbrüchen kam, wurde dadurch Overfitting nicht entscheidend verhindert. 
     Die eingesetzten Metriken erweisen sich somit als ineffektiv. 
     Die genauen Bezeichnungen der Testläufe lauten: links 1Lay:LM/120/10 und rechts 1Lay:MAEM/120/10.}}
 \end{figure}
@@ -39,7 +39,7 @@ Resultate eines Trainings ohne Early Stopping, wie aus den Werten in Abbildung \
 
 Die Qualität der erzielten Ergebnisse entspricht in etwa der, als hätte das 1Lay-Netzwerk in der Kaskadenversion mit einer geringen Anzahl an 
 Target-Daten direkt auf diese trainiert. Die unzureichende Leistung der Early-Stopping-Metriken ist darauf zurückzuführen, dass sie keine temporären 
-Verschlechterungen im Validierungsdatensatz tolerieren und das Training bei der ersten beobachteten Verschlechterung abbrechen. Dadurch wird 
+Verschlechterungen im Validierungsdatensatz tolerieren und das Training bei der ersten beobach-teten Verschlechterung abbrechen. Dadurch wird 
 häufig nicht das tatsächliche Minimum des Fehlermaßes über den augmentierten Vektor weitergegeben, sondern lediglich ein leicht abweichender 
 Wert.
 

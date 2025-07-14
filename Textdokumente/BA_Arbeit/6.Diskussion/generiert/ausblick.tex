@@ -1,15 +1,15 @@
 Die Klassifikation sollte nicht weiter im Rahmen von Deep- oder Direct-Cascade-Architekturen untersucht werden, da die Performanz unabhängig von 
 der Datenmenge konstant schlechter ist als bei einem vollständig trainierten Netzwerk. Eine potenzielle Verbesserung könnte nur durch die 
-Verwendung alternativer Loss-Funktionen anstelle von Categorical Cross-Entropy oder durch eine modifizierte Konstruktion der Augmented Vectors 
+Verwendung alternativer Loss-Funktionen anstelle von Categorical Cross-Entropy oder durch eine modi-fizierte Konstruktion der Augmented Vectors 
 zwischen den Netzwerkmodulen erzielt werden. Ebenso wäre die Erprobung anderer Kaskadierungsverfahren denkbar, wobei deren Erfolgsaussichten 
 jedoch als gering eingeschätzt werden.
 
-Für die Regressionsnetzwerke besteht die Möglichkeit, alternative Loss-Funktionen anstelle des MSEs einzusetzen. 
+Für die Regressionsnetzwerke besteht die Möglichkeit, alternative Loss-Funk-tionen anstelle des MSEs einzusetzen. 
 Darüber hinaus sollten auch Target-Datensätze mit weniger als einhundert Instanzen als Eingabe untersucht werden, um die Leistungsfähigkeit 
 der Modelle unter noch limitierteren Bedingungen zu evaluieren.
 
-In beiden Anwendungsfällen könnten zudem andere Early-Stopping-Kriterien angewandt werden, die auch geringfügige Verschlechterungen im 
-Validierungsmaß tolerieren. Zusätzlich sind Metriken denkbar, die die Anzahl der Netziterationen adaptiv steuern. Des Weiteren können 
+In beiden Anwendungsfällen könnten zudem andere Early-Stopping-Krite-rien angewandt werden, die auch geringfügige Verschlechterungen im 
+Validie-rungsmaß tolerieren. Zusätzlich sind Metriken denkbar, die die Anzahl der Netziterationen adaptiv steuern. Des Weiteren können 
 Trainingsverfahren ohne feste Maximalanzahl an Epochen implementiert werden, wobei hier das Risiko besteht, dass das Training unendlich lange 
 andauert.
 

@@ -4,7 +4,7 @@ Diese Metriken dienen als Kriterien für das Early Stopping und bestimmen die An
 Das Early Stopping anhand der ACCM erfolgt, sobald die Validierungsgenauigkeit um mindestens 10\% unter der 
 Trainingsgenauigkeit liegt, was auf Overfitting im Netzwerk hinweist.
 
-Bei der LM und MAEM wird das Training beendet, wenn der Validierungswert in der aktuellen Epoche schlechter ausfällt als in der 
+Bei der LM und MAEM wird das Training beendet, wenn der Validierungs-wert in der aktuellen Epoche schlechter ausfällt als in der 
 vorherigen. Dieses Verhalten verursacht, dass das Netzwerk in einem lokalen Minimum konvergiert, aus dem es nicht mehr herausfindet.
 
 Für die Anzahl der Netzwerke im Direct Cascade Verfahren wird keine dieser Metriken zur Steuerung des Trainings eingesetzt. 

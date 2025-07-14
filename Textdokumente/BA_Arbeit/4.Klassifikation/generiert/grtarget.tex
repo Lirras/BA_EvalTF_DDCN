@@ -18,7 +18,7 @@ betrachtet.
     }}
 \end{figure}
 
-In Abbildung \ref{fig:targetgroessedeepdir} sind die Testläufe in Abhängigkeit von der Größe des Trainingsdatensatzes dargestellt. Die erste 
+In Abbildung \ref{fig:targetgroessedeepdir} sind die Testläufe in Abhängigkeit von der Größe des Trai-\\ningsdatensatzes dargestellt. Die erste 
 Zahl in der Legende bezeichnet die Datenmenge, die zweite Zahl die Trainingsdauer. Die Datenmenge bezieht sich ausschließlich auf den 
 Target-Datensatz. Es zeigt sich, dass die Trainingsdauer mit zunehmender Datenmenge ansteigt. Zudem bestätigt sich die Annahme, dass die 
 Performanz bei Kaskadennetzwerken mit TF mit wachsender Datenmenge verbessert wird. Darüber hinaus weist das Deep Cascade 
@@ -30,17 +30,17 @@ komplexere Problemstellungen effizienter zu erlernen.
     \centering
     \includegraphics[height=5cm]{../../Plots/ba_plots/targetgroesse/cod_ts.png}
     \caption{\label{fig:targetgroesselinear} 
-    \small{Abgebildet ist die Veränderung der Test-Accuracy eines linearen Netzwerks in Abhängigkeit von der Größe des Target-Datensatzes. 
+    \small{Abgebildet ist die Veränderung der Test-Accuracy eines linearen Netz-werks in Abhängigkeit von der Größe des Target-Datensatzes. 
     Die dargestellten Tests umfassen die Varianten COD:TF2/732/10, COD:TF2/7k/10, COD:TF2/21k/10, COD:TF2/36k/10 und COD:TF2/51k/10, 
     dargestellt in den Farben Gelb, Grün, Lila, Blau und Rot.}}
 \end{figure}
 
-Abbildung \ref{fig:targetgroesselinear} zeigt die Ergebnisse des Direct Cascade Netzwerks, das ausschließlich lineare Hidden Layer verwendet. 
+Abbildung \ref{fig:targetgroesselinear} zeigt die Ergebnisse des Direct Cascade Netzwerks, das aus-schließlich lineare Hidden Layer verwendet. 
 Auffällig ist, dass dieses Netzwerk unabhängig von der Anzahl der Trainingsdaten stets eine schlechtere Performanz aufweist als die beiden 
 anderen Netzwerke, welche Convolutional Layer enthalten. Dies ist darauf zurückzuführen, dass das lineare Netzwerk die relevanten Merkmale für 
 die Bilderkennung nicht adäquat extrahieren kann, da die Daten eine komplexe und nicht-lineare Struktur aufweisen.
 
-Generell zeigt sich in allen Testplots, dass die erzielte Accuracy der Netzwerke mit TF selbst bei ausreichender Datenmenge, die ein direktes 
+Generell zeigt sich in allen Testplots, dass die erzielte Accuracy der Netz-werke mit TF selbst bei ausreichender Datenmenge, die ein direktes 
 Training auf dem 
 Target-Datensatz ermöglichen würde, nie eine zufriedenstellend hohe Accuracy erreicht. Das direkte Training auf dem Target-Datensatz mit dem 
 Deep Cascade Netzwerk mit sehr vielen Trainingsbeispielen hingegen erzielt eine Accuracy von etwa 70\%, was deutlich über den Ergebnissen der 

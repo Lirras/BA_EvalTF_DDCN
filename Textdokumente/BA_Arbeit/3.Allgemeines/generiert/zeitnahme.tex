@@ -1,4 +1,4 @@
-In diesem Abschnitt werden alle Netzwerke hinsichtlich ihrer Trainingsdauer untersucht. Die Trainingszeit wird in jedem Plot angegeben und ist im Wesentlichen abhängig von der Anzahl der verwendeten Trainingsdaten sowie der maximal erlaubten Epochenanzahl. Daher werden für die 
+In diesem Abschnitt werden alle Netzwerke hinsichtlich ihrer Trainingsdauer untersucht. Die Trainingszeit wird in jedem Plot angegeben und ist im Wesentli-chen abhängig von der Anzahl der verwendeten Trainingsdaten sowie der maxi-mal erlaubten Epochenanzahl. Daher werden für die 
 Klassifikations- und Regressionsnetzwerke jeweils gleiche Mengen an Trainingsdaten und identische Gesamtepochenzahlen verwendet.
 
 Beim Einsatz von TF kommen stets der kleinste Target-Datensatz sowie der größte Source-Datensatz zum Einsatz. Ohne TF wird 
@@ -9,8 +9,8 @@ Die entsprechenden Graphen werden an dieser Stelle nicht dargestellt, da deren A
 anderen Stellen verfügbar sind. Für die Einsichtnahme und Überprüfung dieser Ergebnisse verweisen wir auf das zugehörige GitHub-Repository 
 unter \url{https://github.com/Lirras/BA_EvalTF_DDCN/tree/main/Plots/ba_plots/timing}. 
 
-Es wird keine Early-Stopping-Metrik verwendet. Alle Klassifikationsnetzwerke erhalten identische Eingabedaten, ebenso wie alle 
-Regressionsnetzwerke, um eine bessere Vergleichbarkeit innerhalb der jeweiligen Gruppe zu gewährleisten. Die verschiedenen Netzversionen – 
+Es wird keine Early-Stopping-Metrik verwendet. Alle Klassifikationsnetz-werke erhalten identische Eingabedaten, ebenso wie alle 
+Regressionsnetzwerke, um eine bessere Vergleichbarkeit innerhalb der jeweiligen Gruppe zu gewährleis-ten. Die verschiedenen Netzversionen – 
 Cascade TF, Cascade und Complete – besitzen dabei dieselben Layer in gleicher Anzahl.
 
 Im Folgenden wird eine Tabelle präsentiert, die die Trainingszeiten aller Netzwerke in einer vergleichbaren Form zusammenfasst:
@@ -20,14 +20,14 @@ Im Folgenden wird eine Tabelle präsentiert, die die Trainingszeiten aller Netzw
         \begin{tabular}{l|l|l|l}
             \textbf{Netzwerk} & \textbf{Cascade TF} & \textbf{Cascade} & \textbf{Complete} \\
             \hline
-            ConvMaxPool & 78 & 25 & 20 \\
-            1DConv & 207 & 34 & 30 \\
-            ClassOneDense & 79 & 28 & 13 \\
-            RegressionTwo & 11 & 12 & 17 \\
-            OneLayer & 16 & 18 & 11
+            ConvMaxPool (CMP) & 78 & 25 & 20 \\
+            1DConv (1DC) & 207 & 34 & 30 \\
+            ClassOneDense (COD) & 79 & 28 & 13 \\
+            RegressionTwo (Regr2) & 11 & 12 & 17 \\
+            OneLayer (1Lay) & 16 & 18 & 11
         \end{tabular}
         \caption{
-            \small{Dies stellt den Vergleich der Trainingsdauer zwischen den jeweiligen Netzwerken und deren Varianten dar. Die Zeitangaben erfolgen in Sekunden.}}
+            \small{Dies stellt den Vergleich der Trainingsdauer zwischen den jeweiligen Netz-werken und deren Varianten dar. Die Zeitangaben erfolgen in Sekunden.}}
         \label{tab:time}
     \end{center}
 \end{table}
@@ -41,7 +41,7 @@ Auffällig ist, dass die Regressionsnetzwerke keine signifikanten Unterschiede i
 mit TF sogar weniger Zeit als ohne, was darauf zurückzuführen ist, dass der Target-Datensatz bei der Regression etwas größer als der 
 Source-Datensatz ist. Beide Datensätze umfassen jedoch mit etwas über 200 Trainingsbeispielen nur eine geringe Stichprobengröße.
 
-Im Gegensatz dazu benötigen alle Klassifikationsnetzwerke mit TF eine längere Trainingszeit als ohne TF. Dies liegt daran, dass sie zunächst auf 
+Im Gegensatz dazu benötigen alle Klassifikationsnetzwerke mit TF eine län-gere Trainingszeit als ohne TF. Dies liegt daran, dass sie zunächst auf 
 dem Source-Datensatz trainieren, welcher mit etwa 48.000 Trainingsbeispielen umfangreich ist, während die anderen Netzwerke direkt auf dem 
 kleinen Target-Datensatz mit 732 Samples trainieren.
 
@@ -51,7 +51,7 @@ ist darauf zurückzuführen, dass bei jedem Kaskadennetzwerk das Output-Layer in
 einziges Output-Layer besitzen. Zudem entfallen hier zusätzliche Predictions sowie die Berechnung von Augmented Vectors.
 
 Nicht zuletzt sind die verwendeten Netzwerke nur moderat komplex und der betrachtete Target-Datensatz ist relativ klein, sodass die Trainingszeit 
-weniger vom eigentlichen Training, sondern vielmehr von den damit verbundenen Berechnungen dominiert wird. 
+weniger vom eigentlichen Training, sondern vielmehr von den damit verbundenen Be-rechnungen dominiert wird. 
 Gleichzeitig erfolgt das Training in diesem Fall mit lediglich 40 Epochen, was im Vergleich als relativ geringe Anzahl einzustufen ist. 
 
 \begin{figure}[htpb]
@@ -62,7 +62,7 @@ Gleichzeitig erfolgt das Training in diesem Fall mit lediglich 40 Epochen, was i
     wodurch sich das Verhältnis der Trainingsdauer umkehrt. Veranschaulicht wird dies anhand der Tests 1DC:Comp/732//30 sowie 1DC:TF10/732/10/30.}}
 \end{figure}
 
-Wird mit einer höheren Anzahl an Epochen – beispielsweise 300 – und tieferen Netzarchitekturen trainiert, verschieben sich die zeitlichen 
+Wird mit einer höheren Anzahl an Epochen – beispielsweise 300 – und tie-feren Netzarchitekturen trainiert, verschieben sich die zeitlichen 
 Verhältnisse dahingehend, dass ein vollständig trainiertes Netzwerk mehr Zeit benötigt als ein kaskadiertes Transfer-Learning-Netzwerk. Diese 
 Entwicklung ist in Abbildung \ref{fig:timeother} dargestellt.
 
