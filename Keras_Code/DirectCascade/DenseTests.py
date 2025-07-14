@@ -27,7 +27,7 @@ def regression_test():
     e, f, g, h, cali_test_data, cali_test_target = dat_loader.california_loader()
     model_1 = cls.Regression()
     x = 3
-    # ls = []
+    ls = []
     list_of_dfs = []
     list_of_stds = []
     test_plot = []
@@ -36,9 +36,9 @@ def regression_test():
         hist, hist_2 = model_1.train(a, b, c, d, 10)
         list_of_stds.append(hist_2)
     else:
-        hist = model_1.train(a, b, c, d, 10)
-    list_of_dfs.append(hist)
-    # ls.append(pandas.DataFrame.from_dict(hist.history))
+        hist = model_1.train(e, f, g, h, 10)
+    # list_of_dfs.append(hist)
+    ls.append(pandas.DataFrame.from_dict(hist.history))
 
     bost_pred = model_1.pred(a)
     bost_val_pred = model_1.pred(c)
@@ -57,7 +57,7 @@ def regression_test():
     x += 1
 
     # boston
-    for i in range(9):
+    for i in range(0):
         print(i)
         model = cls.Regression()
         model.initialize((x,))
@@ -66,8 +66,8 @@ def regression_test():
             list_of_stds.append(hist_2)
         else:
             hist = model.train(bost_augmented_vector, b, bost_val_aug_vec, d, epochs)
-        list_of_dfs.append(hist)
-        # ls.append(pandas.DataFrame.from_dict(hist.history))
+        # list_of_dfs.append(hist)
+        ls.append(pandas.DataFrame.from_dict(hist.history))
 
         # boston
         bost_pred = model.pred(bost_augmented_vector)
@@ -88,7 +88,7 @@ def regression_test():
         x += 1
 
     # california
-    for i in range(10):
+    for i in range(7):
         print(i)
         model = cls.Regression()
         model.initialize((x,))
@@ -97,8 +97,8 @@ def regression_test():
             list_of_stds.append(hist_2)
         else:
             hist = model.train(augmented_vector, f, val_aug_vec, h, epochs)
-        list_of_dfs.append(hist)
-        # ls.append(pandas.DataFrame.from_dict(hist.history))
+        # list_of_dfs.append(hist)
+        ls.append(pandas.DataFrame.from_dict(hist.history))
         pred = model.pred(augmented_vector)
         augmented_vector = krl.build_2nd_in_same(augmented_vector, pred)
         val_pred = model.pred(val_aug_vec)
@@ -117,7 +117,7 @@ def regression_test():
                         pltt.add_epoch_counter_to_df(pandas.concat(list_of_stds)), epochs, len(cali_test_data),
                         round(z2-z1), name)
     else:
-        pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.concat(list_of_dfs)), epochs, len(e), round(z2-z1), name)
+        pltt.multiple_plots(pltt.add_epoch_counter_to_df(pandas.concat(ls)), epochs, len(e), round(z2-z1), name)
     print(f'{z2 - z1:0.2f} sec')
 
 
@@ -126,7 +126,7 @@ def classification_test(percentage):
     kfold = False
     z1 = time.perf_counter()
     epochs = 10
-    name = 'Classification_one_Dense'
+    name = 'COD'
     a, b, c, d, mnist_test, mnist_test_lab = dat_loader.mnist_loader()
     e, f, g, h, svhn_test, svhn_test_lab = dat_loader.svhn_loader(percentage)
     x = 1024
@@ -147,7 +147,7 @@ def classification_test(percentage):
         hist, hist_2 = model_before.train(a, b, c, d, epochs)
         list_of_stds.append(hist_2)
     else:
-        hist = model_before.train(a, b, c, d, epochs)
+        hist = model_before.train(a, b, c, d, 1)
     list_of_dfs.append(hist)
     # ls.append(pandas.DataFrame.from_dict(hist.history))
     pred = model_before.pred(a)
@@ -166,7 +166,7 @@ def classification_test(percentage):
     x += 10
 
     # MNIST Iterations:
-    for i in range(9):
+    for i in range(0):
         print(i)
         model_1 = cls.Classification()
         model_1.initialize((x,))
@@ -219,5 +219,5 @@ def classification_test(percentage):
     # return df_tr, df_ts, len(e)
 
 
-# classification_test(0.99)
-regression_test()
+classification_test(0.99)
+# regression_test()

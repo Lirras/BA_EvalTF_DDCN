@@ -61,16 +61,16 @@ def regression_two():
     model = keras.Sequential([keras.Input(shape=(3,))])
     model.compile(optimizer=optim, loss=keras.losses.MeanSquaredError, metrics=['mae'])
     model.add(keras.layers.Dense(units=128, activation='relu'))
-    df_0, pred = krl.predict(model, a, b, c, d, lr, epochs, batch_size, tts_tr)
+    df_0, pred = krl.predict(model, e, f, g, h, lr, epochs, batch_size, tts_tr)
     test_ls.append(krl.build_mae_test(pred, tts_lb))
     model.add(keras.layers.BatchNormalization())
-    df_1, pred = krl.predict(model, a, b, c, d, lr, epochs, batch_size, tts_tr)
+    df_1, pred = krl.predict(model, e, f, g, h, lr, epochs, batch_size, tts_tr)
     test_ls.append(krl.build_mae_test(pred, tts_lb))
     model.add(keras.layers.Dense(units=256, activation='relu'))
-    df_2, pred = krl.predict(model, a, b, c, d, lr, epochs, batch_size, tts_tr)
+    df_2, pred = krl.predict(model, e, f, g, h, lr, epochs, batch_size, tts_tr)
     test_ls.append(krl.build_mae_test(pred, tts_lb))
     model.add(keras.layers.Dropout(0.5))
-    df_3, pred = krl.predict(model, a, b, c, d, lr, epochs, batch_size, tts_tr)
+    df_3, pred = krl.predict(model, e, f, g, h, lr, epochs, batch_size, tts_tr)
     test_ls.append(krl.build_mae_test(pred, tts_lb))
 
     model.add(keras.layers.Dense(units=512, activation='relu'))
@@ -264,3 +264,13 @@ class model_01(keras.Sequential):
 
 regression_two()
 # regression_two_complete()
+
+# Source:
+# Training: 364
+# Validation: 91
+# Test: 51
+
+# Target:
+# Training: 206
+# Validation: 1857
+# Test: 18577

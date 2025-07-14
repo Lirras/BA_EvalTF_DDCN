@@ -224,12 +224,12 @@ def boston_change_house_age(x_train):
 
 def california_loader():
     (x_train, x_test), (y_train, y_test) = keras.datasets.california_housing.load_data(
-        version="small", path="california_housing.npz", test_split=0.2, seed=113
+        version="large", path="california_housing.npz", test_split=0.9, seed=113
     )
     # small
     # large
 
-    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, test_size=0.5, random_state=42)
+    x_tr, y_tr, x_ts, y_ts = train_test_split(x_train, x_test, test_size=0.9, random_state=42)
     x_tr = california_delete_columns(x_tr)
     x_ts = california_change_prices(x_ts)
     y_tr = california_delete_columns(y_tr)
